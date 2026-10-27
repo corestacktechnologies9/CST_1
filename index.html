@@ -122,10 +122,15 @@ const cfg={...CFG0,...JSON.parse(LS('pfm_cfg')||'{}')};
 
 /* ---------- data layer (Supabase or local demo) ---------- */
 const TABLES=['cages','egg_production','hatch_batches','egg_transfers','chick_sales','flocks','weights','daily_logs','flock_transfers','market_sales','mortality','expenses'];
+/* ===== SUPABASE CONNECTION — paste your values here, then re-upload the file =====
+   Supabase Dashboard -> Project Settings -> API (Project URL + anon/public key).
+   Leave both empty to run in local Demo mode. NEVER paste the service_role / secret key. */
+const SUPABASE_URL='https://nrffwcdraultqmckslsz.supabase.co';       // e.g. 'https://abcdefghijkl.supabase.co'
+const SUPABASE_ANON_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5yZmZ3Y2RyYXVsdHFtY2tzbHN6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTMwMDQxODEsImV4cCI6MjEwODU4MDE4MX0.OagsT_EGMzKKUXmiI9FSBLP1qMXtGulotW5IUTSrw0o';  // e.g. 'eyJhbGciOi...'  (anon / public key)
 const DB={
   mode:'local',sb:null,
   async init(){
-    const url=LS('pfm_sb_url'),key=LS('pfm_sb_key');
+    const url=SUPABASE_URL.trim(),key=SUPABASE_ANON_KEY.trim();
     if(url&&key){
       await new Promise((ok,no)=>{const s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js';s.onload=ok;s.onerror=()=>no(new Error('Could not load Supabase library (offline?)'));document.head.appendChild(s)});
       this.sb=supabase.createClient(url,key);this.mode='cloud';
@@ -431,11 +436,6 @@ function pageSet(){
   const demo=DB.mode==='local';
   return `<h2>${t('Settings')}</h2><div class="card"><h3 style="margin-top:0">${t('Alert limit & timing')}</h3><div class="fld"><label>${t('Farm name')}</label><input data-a="cfg" data-k="farm" data-t="1" value="${esc(cfg.farm)}"></div><div class="two">
    ${[['storeDays','Days eggs are stored before loading'],['incDays','Incubation days'],['marketAge','Market age (days)'],['mortPct','Daily mortality alert (% of live birds)'],['bagKg','Feed bag size (KG)'],['rate_pre','Pre-Starter feed rate (₹/KG)'],['rate_starter','Starter feed rate (₹/KG)'],['rate_grower','Grower feed rate (₹/KG)'],['rate_finisher','Finisher feed rate (₹/KG)'],['rate_other','Other feed rate (₹/KG)']].map(([k,l])=>`<div class="fld"><label>${t(l)}</label><input type="number" step="any" data-a="cfg" data-k="${k}" value="${cfg[k]}"></div>`).join('')}</div></div>
-  <div class="card"><h3 style="margin-top:0">${t('Supabase connection')} — <span class="${demo?'warn':'ok'}">${demo?t('Demo mode (data stays in this browser)'):t('Cloud (Supabase)')}</span></h3>
-   <div class="fld"><label>${t('Project URL')}</label><input id="sbu" value="${esc(LS('pfm_sb_url')||'')}" placeholder="https://xxxx.supabase.co"></div>
-   <div class="fld"><label>${t('Anon (public) key')}</label><input id="sbk" value="${esc(LS('pfm_sb_key')||'')}"></div>
-   <div class="bar"><button class="btn pri" data-a="sbsave">${t('Save & reload')}</button>${demo?'':`<button class="btn" data-a="sbclear">${t('Use demo mode')}</button>`}</div>
-   <p class="muted">Run <code>schema.sql</code> in Supabase SQL Editor first, then create a user under Authentication → Users.</p></div>
   <div class="card"><div class="bar">${demo?`<button class="btn" data-a="seed">${t('Load sample data')}</button><button class="btn del" data-a="wipe">${t('Erase demo data')}</button>`:''}<button class="btn" data-a="backup">${t('Backup (JSON)')}</button></div></div>`;
 }
 /* Daily sheet — mirrors the paper "Day Old N" slip: opening stock, mortality, cause, medicine, temperature, light, feed, closing stock */
@@ -605,8 +605,6 @@ document.addEventListener('click',async ev=>{
   else if(a==='wipe'){if(confirm('Erase ALL demo data in this browser?')){TABLES.forEach(t=>D[t]=[]);DB.persist();render()}}
   else if(a==='csv'){exportCSV(k)}
   else if(a==='backup'){download('poultry-backup-'+today()+'.json',JSON.stringify(D,null,1),'application/json')}
-  else if(a==='sbsave'){LS('pfm_sb_url',$('#sbu').value.trim());LS('pfm_sb_key',$('#sbk').value.trim());location.reload()}
-  else if(a==='sbclear'){LS('pfm_sb_url',null);LS('pfm_sb_key',null);location.reload()}
   else if(a==='logout'){await DB.sb.auth.signOut();location.reload()}
 });
 document.addEventListener('change',ev=>{
@@ -630,13 +628,12 @@ function exportCSV(k){
 /* ---------- boot ---------- */
 function loginView(msg){
   app.innerHTML=`<div class="login card"><h2>🐔 Poultry Farm Manager</h2><p class="sub">पोल्ट्री फार्म मैनेजर</p><div class="fld"><label>${t('Email')}</label><input id="em" type="email"></div><div class="fld"><label>${t('Password')}</label><input id="pw" type="password"></div><div class="err" id="lerr">${esc(msg||'')}</div>
-  <div class="row"><button class="btn" id="demo">${t('Use demo mode')}</button><button class="btn pri" id="go">${t('Sign in')}</button></div></div>`;
+  <div class="row"><button class="btn pri" id="go">${t('Sign in')}</button></div></div>`;
   $('#go').onclick=async()=>{const{error}=await DB.sb.auth.signInWithPassword({email:$('#em').value,password:$('#pw').value});if(error)$('#lerr').textContent=error.message;else boot()};
-  $('#demo').onclick=()=>{LS('pfm_sb_url',null);LS('pfm_sb_key',null);location.reload()};
 }
 async function boot(){
   try{await DB.init();if(!(await DB.session()))return loginView();await DB.loadAll();render()}
-  catch(e){app.innerHTML=`<div class="login card"><h2>Connection problem</h2><p class="err">${esc(e.message||e)}</p><button class="btn" onclick="localStorage.removeItem('pfm_sb_url');localStorage.removeItem('pfm_sb_key');location.reload()">Use demo mode</button></div>`}
+  catch(e){app.innerHTML=`<div class="login card"><h2>Connection problem</h2><p class="err">${esc(e.message||e)}</p><button class="btn" onclick="location.reload()">Retry</button></div>`}
 }
 boot();
 </script>
