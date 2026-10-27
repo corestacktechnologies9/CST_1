@@ -55,11 +55,14 @@ td.r,th.r{text-align:right;font-variant-numeric:tabular-nums}tr:last-child td{bo
 #toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:8px 16px;border-radius:99px;display:none;z-index:30}
 .login{max-width:340px;margin:60px auto}.hb{display:flex;align-items:center;gap:6px;margin:3px 0}
 .hb i{display:block;height:14px;border-radius:3px;min-width:2px}.hb span{font-size:12px;white-space:nowrap}
+#wm{position:fixed;right:12px;bottom:8px;font-size:11px;letter-spacing:.03em;color:var(--mut);opacity:.75;pointer-events:none;z-index:4;background:var(--bg);padding:1px 8px;border-radius:99px}
+#wm b{color:var(--brand)}
 @media print{header,nav,.bar,.btn{display:none!important}}
 </style>
 </head>
 <body>
 <div id="app"></div><div id="modal"></div><div id="toast"></div>
+<div id="wm">Powered by <b>Corestack Technologies</b></div>
 <script>
 /* ============================================================
    Poultry Farm Manager — prototype
