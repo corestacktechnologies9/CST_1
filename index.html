@@ -88,7 +88,7 @@ const $=(s,r=document)=>r.querySelector(s);
 let D={}; // all data, loaded in memory
 
 /* ---------- Hindi / English ---------- */
-const H={'Location':'स्थान','Dashboard':'डैशबोर्ड','Parent Birds':'पैरेंट बर्ड्स','Hatchery':'हैचरी','Grow-out Flocks':'ग्रो-आउट झुंड','Market':'बाज़ार बिक्री','Expenses':'खर्च','Mortality':'मृत्यु','Reports':'रिपोर्ट','Settings':'सेटिंग्स',
+const H={'Medicine Inventory':'दवा इन्वेंटरी','Medicine inventory':'दवा इन्वेंटरी','Medicine':'दवा','Medicine item':'दवा आइटम','Medicine stock':'दवा स्टॉक','Add medicine':'दवा जोड़ें','Medicine / vaccine name':'दवा / वैक्सीन का नाम','Medicine from inventory':'इन्वेंटरी से दवा','All locations':'सभी स्थान','Expiry date':'एक्सपायरी तारीख','Wastage / expired':'बर्बादी / एक्सपायर','Min stock (per location)':'न्यूनतम स्टॉक (प्रति स्थान)','Unit':'इकाई','Min stock':'न्यूनतम स्टॉक','Avg cost (₹/unit)':'औसत लागत (₹/इकाई)','Rate (₹ per unit)':'दर (₹ प्रति इकाई)','Location':'स्थान','Dashboard':'डैशबोर्ड','Parent Birds':'पैरेंट बर्ड्स','Hatchery':'हैचरी','Grow-out Flocks':'ग्रो-आउट झुंड','Market':'बाज़ार बिक्री','Expenses':'खर्च','Mortality':'मृत्यु','Reports':'रिपोर्ट','Settings':'सेटिंग्स',
 'Stage 1':'चरण 1','Stage 2':'चरण 2','Stage 3':'चरण 3','Stage 4':'चरण 4','Add':'जोड़ें','Edit':'बदलें','Delete':'हटाएं','Save':'सेव करें','Cancel':'रद्द करें','Details':'विवरण','Back':'वापस',
 'Cage':'पिंजरा','Cages':'पिंजरे','Code':'कोड','Cage code':'पिंजरा कोड','Breed':'नस्ल','Birds placed':'डाले गए पक्षी','Live birds':'जीवित पक्षी','Date':'तारीख','Eggs':'अंडे','Eggs laid':'दिए गए अंडे','Broken':'टूटे','Notes':'टिप्पणी',
 'Amount':'राशि','Category':'श्रेणी','Quantity':'मात्रा','Cause':'कारण','Flock':'झुंड','Batch':'बैच','Customer':'ग्राहक','Rate':'दर','Total':'कुल','Cost':'लागत','Profit':'लाभ','Revenue':'आय','Status':'स्थिति','Stage':'चरण','Machine':'मशीन',
@@ -124,7 +124,7 @@ const CFG0={farm:'Siswa Quail Farm',storeDays:5,incDays:18,marketAge:40,mortPct:
 const cfg={...CFG0,...JSON.parse(LS('pfm_cfg')||'{}')};
 
 /* ---------- data layer (Supabase or local demo) ---------- */
-const TABLES=['cages','egg_production','hatch_batches','egg_transfers','chick_sales','flocks','weights','daily_logs','flock_transfers','reserve_lots','reserve_moves','feed_items','feed_stock','market_sales','mortality','expenses'];
+const TABLES=['cages','egg_production','hatch_batches','egg_transfers','chick_sales','flocks','weights','daily_logs','flock_transfers','reserve_lots','reserve_moves','feed_items','feed_stock','med_items','med_stock','market_sales','mortality','expenses'];
 /* ===== SUPABASE CONNECTION — paste your values here, then re-upload the file =====
    Supabase Dashboard -> Project Settings -> API (Project URL + anon/public key).
    Leave both empty to run in local Demo mode. NEVER paste the service_role / secret key. */
@@ -152,7 +152,7 @@ const DB={
   },
   persist(){LS('pfm_demo_v1',JSON.stringify(D))},
   async insert(k,row){
-    if(k!=='feed_items'&&!row.location)row={...row,location:locFor(k,row)};
+    if(k!=='feed_items'&&k!=='med_items'&&!row.location)row={...row,location:locFor(k,row)};
     if(this.mode==='local'){row={id:uid(),created_at:new Date().toISOString(),...row};D[k].push(row);this.persist();return row}
     const{data,error}=await this.sb.from(k).insert(row).select().single();if(error)throw error;D[k].push(data);return data;
   },
@@ -186,6 +186,29 @@ const byId=(k,id)=>D[k].find(r=>r.id===id);
    Stock of each food = opening + purchases - wastage - KG used in Daily entry - KG used in Expenses (feed).
    Cost of feed used = KG x weighted-average purchase cost of that food (frozen at entry time). */
 const optFeed=()=>D.feed_items.map(i=>[i.id,i.name]);
+const optMed=()=>D.med_items.map(i=>[i.id,i.name+(i.unit?' ('+i.unit+')':'')]);
+const medName=id=>{const m=byId('med_items',id);return m?m.name:'?'};
+const medUnit=id=>{const m=byId('med_items',id);return m&&m.unit||'units'};
+const MEDCAT='Medicine / Vaccine';
+/* Medicine inventory — stock is kept per LOCATION (Tekuatad / Siswa):
+   stock = opening + purchases - wastage - quantity used in Expenses (category Medicine / Vaccine, same location).
+   Cost of medicine used = quantity x weighted-average purchase cost at that location (frozen at entry time). */
+function medStats(id,loc,ex={}){
+  const st=D.med_stock.filter(x=>x.item_id===id&&(loc==null||x.location===loc)&&x.id!==ex.stock),buy=st.filter(x=>x.kind!=='wastage'),waste=sum(st.filter(x=>x.kind==='wastage'),x=>x.qty);
+  const ep=D.expenses.filter(e=>e.med_item_id===id&&(loc==null||e.location===loc)&&e.id!==ex.exp);
+  const inn=sum(buy,x=>x.qty),used=sum(ep,e=>e.qty),bal=inn-waste-used,bc=sum(buy,x=>x.total_cost),avg=inn?bc/inn:0;
+  return{inn,waste,used,usedCost:sum(ep,e=>e.amount),bal,avg,value:Math.max(0,bal)*avg,active:inn>0||used>0||waste>0};
+}
+function medAvgCostAt(id,loc,date){
+  let b=D.med_stock.filter(x=>x.item_id===id&&x.location===loc&&x.kind!=='wastage'&&x.date<=date);
+  if(!b.length)b=D.med_stock.filter(x=>x.item_id===id&&x.location===loc&&x.kind!=='wastage');
+  if(!b.length)b=D.med_stock.filter(x=>x.item_id===id&&x.kind!=='wastage');
+  const q=sum(b,x=>x.qty);return q?sum(b,x=>x.total_cost)/q:0;
+}
+function medCheck(id,loc,q,ex){
+  if(!id||!(q>0))return '';const m=medStats(id,loc,ex||{});
+  return q>m.bal+1e-9?`Only ${n2(m.bal)} ${medUnit(id)} of ${medName(id)} in stock at ${loc} — add the stock in Medicine Inventory first`:'';
+}
 const optLots=()=>D.reserve_lots.map(l=>[l.id,l.lot_code]);
 const feedName=id=>{const f=byId('feed_items',id);return f?f.name:'?'};
 const sub=x=>`<small style="display:block;font-size:11px;font-weight:400;color:var(--mut)">${x}</small>`;
@@ -285,6 +308,22 @@ const ENT={
   before:v=>{if(!v.qty_kg)v.qty_kg=num(v.bags)*cfg.bagKg;
     if(v.kind==='wastage'){v.rate_per_kg=null;v.total_cost=null;return}
     if(v.total_cost!=null)v.rate_per_kg=Math.round(v.total_cost/v.qty_kg*100)/100;else v.total_cost=Math.round(v.rate_per_kg*v.qty_kg*100)/100}},
+ med_items:{title:'Medicine item',cols:['name','unit','min_stock','notes'],fields:[
+  {k:'name',l:'Medicine / vaccine name',t:'text',req:1,hint:'e.g. Ranikhet (ND) vaccine, Enrofloxacin, Vitamin AD3, Electrolyte, Amprolium'},
+  {k:'unit',l:'Unit',t:'select',req:1,def:'ml',opts:['ml','litre','gm','kg','tablet','capsule','vial','dose','bottle','packet'].map(x=>[x,x])},
+  {k:'min_stock',l:'Min stock (per location)',t:'number',hint:'Dashboard alerts when the stock at a location falls to this level'},{k:'notes',l:'Notes',t:'textarea'}],
+  validate:(v,r)=>D.med_items.some(x=>x.name.trim().toLowerCase()===String(v.name).trim().toLowerCase()&&(!r||x.id!==r.id))?'A medicine with this name already exists':''},
+ med_stock:{title:'Medicine stock',cols:['date','item_id','kind','qty','rate','total_cost','expiry_date','supplier','bill_no','notes'],fields:[
+  {k:'date',l:'Date',t:'date',req:1,def:today},{k:'item_id',l:'Medicine',t:'select',opts:optMed,req:1},
+  {k:'kind',l:'Movement',t:'select',tr:1,req:1,def:'purchase',opts:[['purchase','New purchase'],['opening','Opening / existing stock'],['wastage','Wastage / expired']]},
+  {k:'qty',l:'Quantity',t:'number',req:1,hint:'In the medicine\'s own unit (ml, tablet, vial …)'},
+  {k:'rate',l:'Rate (₹ per unit)',t:'number',hint:'Enter the rate OR the total cost — the other is calculated'},{k:'total_cost',l:'Total cost (₹)',t:'number',money:1},
+  {k:'expiry_date',l:'Expiry date',t:'date'},{k:'supplier',l:'Supplier',t:'text'},{k:'bill_no',l:'Bill / invoice no.',t:'text'},{k:'notes',l:'Notes',t:'textarea'}],
+  validate:(v,r)=>{if(!(v.qty>0))return 'Quantity must be more than 0';
+    if(v.kind!=='wastage'&&v.rate==null&&v.total_cost==null)return 'Enter the rate per unit or the total cost';
+    if(v.kind==='wastage'){const m=medStats(v.item_id,v.location,{stock:r&&r.id});if(v.qty>m.bal+1e-9)return `Only ${n2(m.bal)} ${medUnit(v.item_id)} in stock at ${v.location}`}return ''},
+  before:v=>{if(v.kind==='wastage'){v.rate=null;v.total_cost=null;return}
+    if(v.total_cost!=null)v.rate=Math.round(v.total_cost/v.qty*100)/100;else v.total_cost=Math.round(v.rate*v.qty*100)/100}},
  reserve_lots:{title:'Reserve lot',cols:['lot_code','breed','supplier','received_on','initial_birds','initial_m','initial_f','cost_per_bird','notes'],fields:[
   {k:'lot_code',l:'Lot code',t:'text',req:1,def:()=>'R-'+(D.reserve_lots.length+1)},{k:'breed',l:'Breed',t:'text'},{k:'supplier',l:'Supplier / source',t:'text'},
   {k:'received_on',l:'Received on',t:'date',req:1,def:today},
@@ -335,25 +374,27 @@ const ENT={
   validate:(v,r)=>{if(v.qty<=0)return 'Enter a count above 0';const sameRef=r&&r.stage===v.stage&&r.ref_id===v.ref_id?num(r.qty):0;let av=0;
     if(v.stage===1){const c=byId('cages',v.ref_id);av=c?cageStats(c).live:0}else if(v.stage===2){const b=byId('hatch_batches',v.ref_id);av=b?batchStats(b).avail:0}else{const f=byId('flocks',v.ref_id);av=f?flockStats(f).live:0}
     return v.qty>av+sameRef?`Only ${n0(av+sameRef)} birds available there`:''}},
- expenses:{title:'Expense',cols:['date','stage','ref_id','category','feed_item_id','description','qty','unit','amount'],fields:[
+ expenses:{title:'Expense',cols:['date','stage','ref_id','category','feed_item_id','med_item_id','description','qty','unit','amount'],fields:[
   {k:'date',l:'Date',t:'date',req:1,def:today},
   {k:'stage',l:'Stage',t:'select',num:1,opts:[[1,'Stage 1 · Parent Birds'],[2,'Stage 2 · Hatchery'],[3,'Stage 3 · Grow-out Flocks'],[4,'Stage 4 · Market']],req:1,def:1},
   {k:'ref_id',l:'For',t:'select',dep:'stage',blank:'Whole stage (general)',opts:v=>refList(+v.stage||1)},
-  {k:'category',l:'Category',t:'select',tr:1,opts:CATS,req:1},{k:'feed_item_id',l:'Food item',t:'select',opts:optFeed,blank:'—',hint:'For feed expenses: pick the food to deduct from Feed Inventory (Quantity = KG used, category = Feed)'},{k:'description',l:'Description',t:'text'},
-  {k:'qty',l:'Quantity',t:'number',hint:'Optional. With a Food item: KG used'},{k:'unit',l:'Unit',t:'text'},{k:'amount',l:'Amount',t:'number',money:1,hint:'Leave blank when a Food item is chosen — calculated from the stock cost'}],
-  validate:(v,r)=>{if(v.feed_item_id){if(v.category!=='Feed (purchased)')return 'Choose category "Feed (used from inventory)" when a food item is selected';if(!(v.qty>0))return 'Enter the quantity used in KG';return feedCheck(v.feed_item_id,v.qty,{exp:r&&r.id})}return v.amount==null?'Amount is required':''},
-  before:v=>{if(v.feed_item_id){v.unit='kg';if(v.amount==null)v.amount=Math.round(num(v.qty)*avgCostAt(v.feed_item_id,v.date)*100)/100}else v.feed_item_id=null}}
+  {k:'category',l:'Category',t:'select',tr:1,opts:CATS,req:1},{k:'feed_item_id',l:'Food item',t:'select',opts:optFeed,blank:'—',showIf:v=>v.category==='Feed (purchased)',hint:'For feed expenses: pick the food to deduct from Feed Inventory (Quantity = KG used, category = Feed)'},{k:'med_item_id',l:'Medicine from inventory',t:'select',opts:optMed,blank:'— Not from inventory (enter amount)',showIf:v=>v.category===MEDCAT,hint:'Pick the medicine / vaccine — the Quantity used is deducted from the stock of the chosen Location'},{k:'description',l:'Description',t:'text'},
+  {k:'qty',l:'Quantity',t:'number',hint:'Optional. With a Food item: KG used. With a Medicine: units used'},{k:'unit',l:'Unit',t:'text'},{k:'amount',l:'Amount',t:'number',money:1,hint:'Leave blank when a Food item is chosen — calculated from the stock cost'}],
+  validate:(v,r)=>{if(v.med_item_id){if(v.category!==MEDCAT)return 'A medicine can only be chosen for the category Medicine / Vaccine';if(!(v.qty>0))return 'Enter the quantity used ('+medUnit(v.med_item_id)+')';return medCheck(v.med_item_id,v.location,v.qty,{exp:r&&r.id})}
+    if(v.feed_item_id){if(v.category!=='Feed (purchased)')return 'Choose category "Feed (used from inventory)" when a food item is selected';if(!(v.qty>0))return 'Enter the quantity used in KG';return feedCheck(v.feed_item_id,v.qty,{exp:r&&r.id})}return v.amount==null?'Amount is required':''},
+  before:v=>{if(v.med_item_id){v.unit=medUnit(v.med_item_id);if(v.amount==null)v.amount=Math.round(num(v.qty)*medAvgCostAt(v.med_item_id,v.location,v.date)*100)/100}else v.med_item_id=null;
+    if(v.feed_item_id){v.unit='kg';if(v.amount==null)v.amount=Math.round(num(v.qty)*avgCostAt(v.feed_item_id,v.date)*100)/100}else v.feed_item_id=null}}
 };
 // ---- Location (every entry): 1 Tekuatad, 2 Siswa. Stage 1 & 2 default Tekuatad, stage 3 & 4 default Siswa ----
 const LOCS=['Tekuatad','Siswa'];
 const LOCDEFAULT={cages:'Tekuatad',egg_production:'Tekuatad',egg_transfers:'Tekuatad',hatch_batches:'Tekuatad',chick_sales:'Tekuatad',reserve_lots:'Tekuatad',reserve_moves:'Tekuatad',
- flocks:'Siswa',weights:'Siswa',daily_logs:'Siswa',flock_transfers:'Siswa',market_sales:'Siswa',feed_stock:'Siswa'};
+ flocks:'Siswa',weights:'Siswa',daily_logs:'Siswa',flock_transfers:'Siswa',market_sales:'Siswa',feed_stock:'Siswa',med_stock:'Siswa'};
 const locByStage=st=>(+st===1||+st===2)?'Tekuatad':'Siswa';
 const locFor=(k,row)=>(k==='mortality'||k==='expenses')?locByStage(row&&row.stage||1):(LOCDEFAULT[k]||'Siswa');
-Object.keys(ENT).concat([]).forEach(k=>{const E=ENT[k];if(k==='feed_items')return;
+Object.keys(ENT).concat([]).forEach(k=>{const E=ENT[k];if(k==='feed_items'||k==='med_items')return;
  E.fields.splice(Math.min(1,E.fields.length),0,{k:'location',l:'Location',t:'select',opts:LOCS.map(x=>[x,x]),req:1,def:()=>locFor(k)});
  if(E.cols.indexOf('location')<0)E.cols.splice(Math.min(1,E.cols.length),0,'location')});
-const CASC={cages:[['egg_production','cage_id'],['egg_transfers','cage_id'],['reserve_moves','cage_id']],feed_items:[['feed_stock','item_id']],hatch_batches:[['egg_transfers','batch_id'],['chick_sales','batch_id']],flocks:[['weights','flock_id'],['market_sales','flock_id'],['daily_logs','flock_id'],['flock_transfers','from_flock_id'],['flock_transfers','to_flock_id']]};
+const CASC={cages:[['egg_production','cage_id'],['egg_transfers','cage_id'],['reserve_moves','cage_id']],feed_items:[['feed_stock','item_id']],med_items:[['med_stock','item_id']],hatch_batches:[['egg_transfers','batch_id'],['chick_sales','batch_id']],flocks:[['weights','flock_id'],['market_sales','flock_id'],['daily_logs','flock_id'],['flock_transfers','from_flock_id'],['flock_transfers','to_flock_id']]};
 const POLY={cages:[1],hatch_batches:[2],flocks:[3,4]};
 
 /* ---------- calculations ---------- */
@@ -409,7 +450,7 @@ function flockCost(f){const b=byId('hatch_batches',f.batch_id),s=flockStats(f),p
 const S={page:'dash',detail:null,form:null,expStage:'',morStage:'',from:'',to:''};
 const app=$('#app');
 
-const NAV=[['dash','Dashboard'],['s1','Parent Birds',1],['s2','Hatchery',2],['s3','Grow-out Flocks',3],['s4','Market',4],['exp','Expenses'],['feed','Feed Inventory'],['reserve','Reserve Birds'],['mort','Mortality'],['bs','Balance Sheet'],['rep','Reports'],['set','Settings']];
+const NAV=[['dash','Dashboard'],['s1','Parent Birds',1],['s2','Hatchery',2],['s3','Grow-out Flocks',3],['s4','Market',4],['exp','Expenses'],['feed','Feed Inventory'],['med','Medicine Inventory'],['reserve','Reserve Birds'],['mort','Mortality'],['bs','Balance Sheet'],['rep','Reports'],['set','Settings']];
 
 /* ---------- generic table/cell ---------- */
 function cell(E,f,r){
@@ -455,6 +496,7 @@ function pageDash(){
     if(s.done&&s.avail>0)al.push(['',`${b.batch_no}: ${n0(s.avail)} ${t('Available chicks')} — sell or move to grow-out`]);
   });
   if(rs.in>0&&rs.bal<=num(cfg.reserveMin))al.push([rs.bal<=0?'bad':'',`Reserve birds ${rs.bal<=0?'finished':'low'}: ${n0(rs.bal)} left (${mfx(rs.balM,rs.balF)})`]);
+  medRows().filter(x=>x.s.active).forEach(x=>{if(x.s.bal<=0)al.push(['bad',`${x.i.name} (${x.loc}): medicine out of stock`]);else if(x.s.bal<=num(x.i.min_stock))al.push(['',`${x.i.name} (${x.loc}): low medicine stock — ${n2(x.s.bal)} ${x.i.unit||''} left (limit ${n2(x.i.min_stock)})`])});
   fi.forEach(({i,s})=>{if(s.bal<=0)al.push(['bad',`${i.name}: feed out of stock`]);else if(s.bal<=num(i.min_stock_kg))al.push(['',`${i.name}: low stock — ${n2(s.bal)} kg left (limit ${n2(i.min_stock_kg)} kg)${s.days!=null?', ≈ '+Math.floor(s.days)+' days':''}`])});
   D.cages.forEach(c=>{const s=cageStats(c),def=num(c.initial_birds)-s.live;if(def>0&&rs.bal>0)al.push(['',`${c.code}: ${n0(def)} birds below original strength — reserve has ${n0(rs.bal)} (${mfx(rs.balM,rs.balF)}) available for top-up`])});
   fs.forEach(({f,s})=>{if(s.live>0&&!D.daily_logs.some(l=>l.flock_id===f.id&&l.date===td))al.push(['',`${f.code}: no daily entry yet for today`])});
@@ -467,7 +509,7 @@ function pageDash(){
   <div class="grid">${kpi('Parent birds',n0(parents)+sxs(parM,parF),'s1')}${kpi('Reserve birds',n0(rs.bal)+sxs(rs.balM,rs.balF),'s1')}${kpi('Feed stock',n0(fkg)+' kg'+sub(inr(fval)+' · '+fi.filter(x=>x.s.bal<=num(x.i.min_stock_kg)).length+' low / out'))}${kpi('Eggs today',n0(eT),'s1')}${kpi('Eggs (7 days)',n0(e7),'s1')}${kpi('In incubator',n0(inInc),'s2')}${kpi('Chicks ready',n0(chicks),'s2')}${kpi('Grow-out birds',n0(grow)+sxs(growM,growF),'s3')}${kpi('Birds sold',n0(sold),'s4')}${kpi('Total revenue',inr(rev),'s4')}${kpi('Total expenses',inr(exp))}${kpi('Net',`<span class="${rev-exp<0?'bad':'ok'}">${inr(rev-exp)}</span>`)}</div>
   <h3>${t('Alerts')}</h3>${al.length?al.map(a=>`<div class="alert ${a[0]}">${esc(a[1])}</div>`).join(''):`<p class="muted">${t('Nothing needs attention')}</p>`}
   <div class="two"><div class="card"><h3 style="margin-top:0">${t('Eggs per day (last 14 days)')}</h3>${eggSpark()}</div>
-  <div class="card"><h3 style="margin-top:0">${t('Expenses by stage')}</h3>${barChart(ex,inr)}<h3>${t('Mortality by stage')}</h3>${barChart(mt.map(m=>({l:'S'+m[0]+' '+STAGES[m[0]].en,v:m[2]?m[1]/m[2]*100:0,c:'var(--bad)'})),v=>v.toFixed(1)+'%')}</div></div>${feedCard(fi)}`;
+  <div class="card"><h3 style="margin-top:0">${t('Expenses by stage')}</h3>${barChart(ex,inr)}<h3>${t('Mortality by stage')}</h3>${barChart(mt.map(m=>({l:'S'+m[0]+' '+STAGES[m[0]].en,v:m[2]?m[1]/m[2]*100:0,c:'var(--bad)'})),v=>v.toFixed(1)+'%')}</div></div>${feedCard(fi)}${medCard()}`;
 }
 const head=(st)=>`<h2><span class="badge" style="color:var(--${STAGES[st].c})">${t('Stage '+st)}</span> ${t(STAGES[st].en)}</h2><p class="sub">${t(STAGES[st].sub)}</p>`;
 
@@ -523,6 +565,7 @@ function listPage(name,key,title){
 function pageDetail(){
   const {e,id}=S.detail,r=byId(e,id);if(!r){S.detail=null;return pageDash()}
   if(e==='feed_items')return feedDetail(id);
+  if(e==='med_items')return medDetail(id);
   if(e==='reserve_lots')return reserveDetail(id);
   let title,stats,secs;
   const rel=(st)=>allMort().filter(m=>m.stage===st&&m.ref_id===id);
@@ -663,12 +706,44 @@ function feedDetail(id){
   return `<div class="bar"><button class="btn" data-a="back">← ${t('Back')}</button>${addBtn('feed_stock','Add stock / purchase','pri',{kind:'purchase',item_id:id})}</div><h2>${esc(it.name)}</h2>
   <div class="grid">${kpi('Balance (KG)',n2(s.bal))}${kpi('Stock value',inr(s.value))}${kpi('Avg cost (₹/KG)',n2(s.avg))}${kpi('Days left',s.days!=null?Math.max(0,Math.floor(s.days)):'–')}</div><h3>${t('Feed stock')}</h3>`+table(cols,rows);
 }
+const medRows=loc=>{const r=[];D.med_items.forEach(i=>LOCS.filter(l=>!loc||l===loc).forEach(l=>r.push({i,loc:l,s:medStats(i.id,l)})));return r};
+const medSt=x=>!x.s.active?['–','var(--mut)']:x.s.bal<=0?['Out of stock','var(--bad)']:x.s.bal<=num(x.i.min_stock)?['Low','var(--warn)']:['OK','var(--ok)'];
+function pageMed(){
+  const loc=S.medLoc||'',rows=medRows(loc),m0=today().slice(0,7),inLoc=x=>!loc||x.location===loc;
+  const buyM=D.med_stock.filter(x=>inLoc(x)&&x.kind==='purchase'&&String(x.date).slice(0,7)===m0);
+  const usedM=D.expenses.filter(e=>e.med_item_id&&inLoc(e)&&String(e.date).slice(0,7)===m0);
+  const locSel=`<select class="inp" style="width:auto" data-a="filter" data-k="medLoc"><option value="">${t('All locations')}</option>${LOCS.map(l=>`<option ${loc===l?'selected':''}>${l}</option>`).join('')}</select>`;
+  const cols=[{h:'Medicine',f:r=>`<b>${esc(r.i.name)}</b>`},{h:'Location',f:r=>esc(r.loc)},{h:'Unit',f:r=>esc(r.i.unit||'')},{h:'Stock in',c:'r',f:r=>n2(r.s.inn)},{h:'Used (expenses)',c:'r',f:r=>n2(r.s.used)},{h:'Wastage',c:'r',f:r=>n2(r.s.waste)},
+   {h:'Balance',c:'r',f:r=>`<b>${n2(r.s.bal)}</b>`},{h:'Avg cost (₹/unit)',c:'r',f:r=>n2(r.s.avg)},{h:'Stock value',c:'r',f:r=>inr(r.s.value)},{h:'Min stock',c:'r',f:r=>n2(r.i.min_stock)},
+   {h:'Status',f:r=>{const [l,c]=medSt(r);return `<span class="badge" style="color:${c}">${t(l)}</span>`}},
+   {h:'',c:'r',f:r=>btns('med_items',r.i.id,`<button class="btn sm" data-a="detail" data-e="med_items" data-id="${r.i.id}">${t('Details')}</button> `)}];
+  const pre=l=>l?{location:l}:{};
+  return `<h2>${t('Medicine Inventory')}</h2><p class="sub">Keep medicine / vaccine stock separately for Tekuatad and Siswa. Stock goes up with purchases and comes down automatically when you add an Expense with category Medicine / Vaccine and pick the medicine — it is deducted from the stock of that expense's Location.</p>
+  <div class="bar">${addBtn('med_items','Add medicine','pri')}${addBtn('med_stock','Add stock / purchase','',{kind:'purchase',...pre(loc)})}${addBtn('med_stock','Opening / existing stock','',{kind:'opening',...pre(loc)})}${addBtn('med_stock','Record wastage','',{kind:'wastage',...pre(loc)})}${addBtn('expenses','Add expense','',{category:MEDCAT,...pre(loc)})}${locSel}</div>
+  <div class="grid">${kpi('Stock value',inr(sum(rows,x=>x.s.value))+(loc?'':sub(LOCS.map(l=>l+' '+inr(sum(rows.filter(x=>x.loc===l),x=>x.s.value))).join(' · '))))}${kpi('Purchased this month',inr(sum(buyM,x=>x.total_cost)))}${kpi('Used this month',inr(sum(usedM,x=>x.amount)))}${kpi('Low / out of stock',rows.filter(x=>x.s.active&&x.s.bal<=num(x.i.min_stock)).length)}</div>
+  <h3>${t('Medicine')}</h3>`+table(cols,rows,'No records')+`<h3>${t('Medicine stock')}</h3>`+autoTable('med_stock',D.med_stock.filter(inLoc),25);
+}
+function medDetail(id){
+  const it=byId('med_items',id),rows=[],KL={purchase:'New purchase',opening:'Opening / existing stock',wastage:'Wastage / expired'};
+  D.med_stock.filter(x=>x.item_id===id).forEach(x=>rows.push({date:x.date,loc:x.location,type:KL[x.kind],det:[x.supplier,x.bill_no,x.expiry_date?'Exp '+fdate(x.expiry_date):''].filter(Boolean).join(' · '),q:x.kind==='wastage'?-x.qty:x.qty,amt:x.total_cost,e:'med_stock',eid:x.id}));
+  D.expenses.filter(x=>x.med_item_id===id).forEach(x=>rows.push({date:x.date,loc:x.location,type:'Used (expenses)',det:'S'+x.stage+(x.ref_id?' · '+refLabel(x.stage,x.ref_id):'')+(x.description?' · '+x.description:''),q:-num(x.qty),amt:x.amount,e:'expenses',eid:x.id}));
+  rows.sort((a,b)=>b.date.localeCompare(a.date));
+  const cols=[{h:'Date',f:r=>fdate(r.date)},{h:'Location',f:r=>esc(r.loc||'–')},{h:'Movement',f:r=>t(r.type)},{h:'Details',f:r=>esc(r.det||'–')},{h:'Quantity',c:'r',f:r=>`<span class="${r.q<0?'bad':'ok'}">${r.q>0?'+':''}${n2(r.q)}</span>`},{h:'Amount',c:'r',f:r=>r.amt!=null?inr(r.amt):'–'},{h:'',c:'r',f:r=>btns(r.e,r.eid)}];
+  return `<div class="bar"><button class="btn" data-a="back">← ${t('Back')}</button>${addBtn('med_stock','Add stock / purchase','pri',{kind:'purchase',item_id:id})}</div><h2>${esc(it.name)} <small class="muted">(${esc(it.unit||'')})</small></h2>
+  <div class="grid">${LOCS.map(l=>{const m=medStats(id,l);return kpi('Balance — '+l,n2(m.bal)+' '+(it.unit||'')+sub(inr(m.value)+' · avg ₹'+n2(m.avg)))}).join('')}${kpi('Total balance',n2(medStats(id).bal)+' '+(it.unit||''))}</div><h3>${t('Medicine stock')}</h3>`+table(cols,rows);
+}
+function medCard(){
+  const rows=medRows().filter(x=>x.s.active);
+  return `<div class="card"><h3 style="margin-top:0">${t('Medicine inventory')}</h3>`+(D.med_items.length?`<div class="tw"><table><thead><tr><th>${t('Medicine')}</th>${LOCS.map(l=>`<th class="r">${l}</th>`).join('')}</tr></thead><tbody>`
+   +D.med_items.map(i=>`<tr><td>${esc(i.name)}</td>${LOCS.map(l=>{const x=rows.find(r=>r.i.id===i.id&&r.loc===l);if(!x)return '<td class="r muted">–</td>';const [,c]=medSt(x);return `<td class="r" style="color:${c}"><b>${n2(x.s.bal)}</b> ${esc(i.unit||'')}</td>`}).join('')}</tr>`).join('')+`</tbody></table></div>`
+   :`<p class="muted">${t('No records')}</p><button class="btn sm" data-a="nav" data-k="med">${t('Medicine Inventory')}</button>`)+`</div>`;
+}
 function feedCard(fi){
   return `<div class="card"><h3 style="margin-top:0">${t('Feed inventory')}</h3>`+(fi.length?barChart(fi.map(x=>({l:x.i.name,v:Math.max(0,x.s.bal),c:x.s.bal<=0?'var(--bad)':x.s.bal<=num(x.i.min_stock_kg)?'var(--warn)':'var(--brand)'})),v=>n0(v)+' kg')
    +`<p class="muted" style="margin:8px 0 0">${fi.map(x=>`${esc(x.i.name)}: ${x.s.days!=null?'≈ '+Math.max(0,Math.floor(x.s.days))+' days left':'no recent use'}`).join(' · ')}</p>`
    :`<p class="muted">${t('No records')}</p><button class="btn sm" data-a="nav" data-k="feed">${t('Feed Inventory')}</button>`)+`</div>`;
 }
-const PAGES={dash:pageDash,s1:pageS1,s2:pageS2,s3:pageS3,s4:pageS4,exp:()=>listPage('expenses','expStage','Expenses'),mort:()=>listPage('mortality','morStage','Mortality'),rep:pageRep,bs:pageBS,feed:pageFeed,reserve:pageReserve,set:pageSet};
+const PAGES={dash:pageDash,s1:pageS1,s2:pageS2,s3:pageS3,s4:pageS4,exp:()=>listPage('expenses','expStage','Expenses'),mort:()=>listPage('mortality','morStage','Mortality'),rep:pageRep,bs:pageBS,feed:pageFeed,med:pageMed,reserve:pageReserve,set:pageSet};
 
 function render(){
   const y=scrollY,inputs=document.activeElement&&document.activeElement.dataset&&document.activeElement.dataset.a==='cfg';
@@ -706,7 +781,7 @@ function openForm(name,row,preset){
 }
 function drawModal(){
   const {name,row,vals}=S.form,E=ENT[name];
-  $('#modal').innerHTML=`<div class="dlg"><h3>${row?t('Edit'):t('Add')} · ${t(E.title)}</h3>${E.fields.filter(f=>!f.nf).map(f=>fieldHTML(f,vals)).join('')}<div class="err" id="err"></div><div class="row"><button class="btn" data-a="close">${t('Cancel')}</button><button class="btn pri" data-a="save">${t('Save')}</button></div></div>`;
+  $('#modal').innerHTML=`<div class="dlg"><h3>${row?t('Edit'):t('Add')} · ${t(E.title)}</h3>${E.fields.filter(f=>!f.nf&&(!f.showIf||f.showIf(vals))).map(f=>fieldHTML(f,vals)).join('')}<div class="err" id="err"></div><div class="row"><button class="btn" data-a="close">${t('Cancel')}</button><button class="btn pri" data-a="save">${t('Save')}</button></div></div>`;
   $('#modal').classList.add('on');const f=$('#modal input,#modal select');if(f&&!row)f.focus();
 }
 const closeModal=()=>{$('#modal').classList.remove('on');$('#modal').innerHTML='';S.form=null};
@@ -725,6 +800,7 @@ async function saveForm(){
 async function delRecord(name,id){
   const r=byId(name,id);if(!r)return;
   if(name==='feed_items'&&(D.daily_logs.some(l=>l.feed_item_id===id)||D.expenses.some(x=>x.feed_item_id===id)))return alert('This food has usage records (daily entries / expenses). Remove or change those first.');
+  if(name==='med_items'&&D.expenses.some(x=>x.med_item_id===id))return alert('This medicine has been used in expenses. Remove or change those expenses first.');
   if(name==='reserve_lots'&&D.reserve_moves.some(x=>x.lot_id===id))return alert('This lot has top-up / mortality entries. Remove those first.');
   if(name==='hatch_batches'&&D.flocks.some(f=>f.batch_id===id))return alert('This batch has flocks moved to grow-out. Delete or reassign those flocks first.');
   if(!confirm('Delete this record'+(CASC[name]?' and everything linked to it':'')+'?'))return;
@@ -776,6 +852,11 @@ async function seed(){
     await ins('daily_logs',{flock_id:F.id,date:d,mortality:m,mortality_m:Math.floor(m/2),mortality_f:m-Math.floor(m/2),cause:m?['Disease','Heat stress','Unknown'][R(0,2)]:null,medicine:a%7===3?'Vitamin B-complex':null,temp_am:R(33,37)-Math.min(a,20)/4,temp_pm:R(32,36)-Math.min(a,20)/4,light_hrs:a<14?24:16,feed_item_id:FI[a<7?'pre':a<28?'starter':'grower'].id,feed_cost:Math.round(Math.round(4+a*1.3)*avgCostAt(FI[a<7?'pre':a<28?'starter':'grower'].id,d)*100)/100,feed_bags:null,feed_kg:Math.round(4+a*1.3)})}}
   const F3=await ins('flocks',{code:'F-03',batch_id:null,placed_on:ago(5),chicks_placed:0,placed_m:0,placed_f:0,chick_price:null,shed:'Chamber 3',notes:'Receives birds from F-02'});
   await ins('flock_transfers',{date:ago(5),from_flock_id:F2.id,to_flock_id:F3.id,qty:150,qty_m:75,qty_f:75,wt_kg:8,notes:'Moved to Chamber 3'});
+  const MI={};for(const [k,nm,u,mn] of [['nd','Ranikhet (ND) vaccine','dose',200],['abx','Enrofloxacin','ml',100],['vit','Vitamin AD3 + Electrolyte','gm',500],['cocci','Amprolium (Cocci)','gm',300]])MI[k]=await ins('med_items',{name:nm,unit:u,min_stock:mn,notes:''});
+  for(const [k,loc,d,q,rate,sup] of [['nd','Tekuatad',30,1000,1.5,'Vet Agro'],['nd','Siswa',30,1000,1.5,'Vet Agro'],['abx','Tekuatad',25,500,3.2,'Vet Agro'],['abx','Siswa',25,300,3.2,'Vet Agro'],['vit','Siswa',20,2000,0.8,'Kisan Agro'],['cocci','Siswa',10,250,1.4,'Vet Agro']])
+    await ins('med_stock',{date:ago(d),location:loc,item_id:MI[k].id,kind:'purchase',qty:q,rate,total_cost:Math.round(q*rate*100)/100,supplier:sup,bill_no:'MD-'+R(100,999),expiry_date:addDays(ago(d),365),notes:''});
+  await ins('expenses',{stage:3,ref_id:F1.id,date:ago(12),category:'Medicine / Vaccine',med_item_id:MI.nd.id,location:'Siswa',description:'ND vaccine',qty:600,unit:'dose',amount:Math.round(600*1.5*100)/100});
+  await ins('expenses',{stage:1,ref_id:cg[0].id,date:ago(9),category:'Medicine / Vaccine',med_item_id:MI.abx.id,location:'Tekuatad',description:'Antibiotic course',qty:120,unit:'ml',amount:Math.round(120*3.2*100)/100});
   toast('Sample data loaded');render();
 }
 
@@ -805,6 +886,7 @@ document.addEventListener('change',ev=>{
   if(a==='rf'){S[el.dataset.k]=el.value;render();return}
   if(a==='cfg'){cfg[el.dataset.k]=el.dataset.t?el.value:(Number(el.value)||0);LS('pfm_cfg',JSON.stringify(cfg));toast('✓ '+t('Save'));return}
   if(S.form&&el.closest('#modal')){const E=ENT[S.form.name];
+    if(E.fields.some(f=>f.showIf)&&el.dataset.k==='category'){S.form.vals={...S.form.vals,...readForm(E)};drawModal();return}
     if(E.fields.some(f=>f.dep===el.dataset.k)){S.form.vals={...S.form.vals,...readForm(E)};
       E.fields.filter(f=>f.dep===el.dataset.k).forEach(f=>{S.form.vals[f.k]=''});
       const f0=E.fields.filter(f=>f.dep===el.dataset.k)[0];const o=f0.opts(S.form.vals);S.form.vals[f0.k]=f0.blank?'':(o[0]?o[0][0]:'');
