@@ -88,7 +88,7 @@ const $=(s,r=document)=>r.querySelector(s);
 let D={}; // all data, loaded in memory
 
 /* ---------- Hindi / English ---------- */
-const H={'Dashboard':'डैशबोर्ड','Parent Birds':'पैरेंट बर्ड्स','Hatchery':'हैचरी','Grow-out Flocks':'ग्रो-आउट झुंड','Market':'बाज़ार बिक्री','Expenses':'खर्च','Mortality':'मृत्यु','Reports':'रिपोर्ट','Settings':'सेटिंग्स',
+const H={'Location':'स्थान','Dashboard':'डैशबोर्ड','Parent Birds':'पैरेंट बर्ड्स','Hatchery':'हैचरी','Grow-out Flocks':'ग्रो-आउट झुंड','Market':'बाज़ार बिक्री','Expenses':'खर्च','Mortality':'मृत्यु','Reports':'रिपोर्ट','Settings':'सेटिंग्स',
 'Stage 1':'चरण 1','Stage 2':'चरण 2','Stage 3':'चरण 3','Stage 4':'चरण 4','Add':'जोड़ें','Edit':'बदलें','Delete':'हटाएं','Save':'सेव करें','Cancel':'रद्द करें','Details':'विवरण','Back':'वापस',
 'Cage':'पिंजरा','Cages':'पिंजरे','Code':'कोड','Cage code':'पिंजरा कोड','Breed':'नस्ल','Birds placed':'डाले गए पक्षी','Live birds':'जीवित पक्षी','Date':'तारीख','Eggs':'अंडे','Eggs laid':'दिए गए अंडे','Broken':'टूटे','Notes':'टिप्पणी',
 'Amount':'राशि','Category':'श्रेणी','Quantity':'मात्रा','Cause':'कारण','Flock':'झुंड','Batch':'बैच','Customer':'ग्राहक','Rate':'दर','Total':'कुल','Cost':'लागत','Profit':'लाभ','Revenue':'आय','Status':'स्थिति','Stage':'चरण','Machine':'मशीन',
@@ -152,6 +152,7 @@ const DB={
   },
   persist(){LS('pfm_demo_v1',JSON.stringify(D))},
   async insert(k,row){
+    if(k!=='feed_items'&&!row.location)row={...row,location:locFor(k,row)};
     if(this.mode==='local'){row={id:uid(),created_at:new Date().toISOString(),...row};D[k].push(row);this.persist();return row}
     const{data,error}=await this.sb.from(k).insert(row).select().single();if(error)throw error;D[k].push(data);return data;
   },
@@ -343,6 +344,15 @@ const ENT={
   validate:(v,r)=>{if(v.feed_item_id){if(v.category!=='Feed (purchased)')return 'Choose category "Feed (used from inventory)" when a food item is selected';if(!(v.qty>0))return 'Enter the quantity used in KG';return feedCheck(v.feed_item_id,v.qty,{exp:r&&r.id})}return v.amount==null?'Amount is required':''},
   before:v=>{if(v.feed_item_id){v.unit='kg';if(v.amount==null)v.amount=Math.round(num(v.qty)*avgCostAt(v.feed_item_id,v.date)*100)/100}else v.feed_item_id=null}}
 };
+// ---- Location (every entry): 1 Tekuatad, 2 Siswa. Stage 1 & 2 default Tekuatad, stage 3 & 4 default Siswa ----
+const LOCS=['Tekuatad','Siswa'];
+const LOCDEFAULT={cages:'Tekuatad',egg_production:'Tekuatad',egg_transfers:'Tekuatad',hatch_batches:'Tekuatad',chick_sales:'Tekuatad',reserve_lots:'Tekuatad',reserve_moves:'Tekuatad',
+ flocks:'Siswa',weights:'Siswa',daily_logs:'Siswa',flock_transfers:'Siswa',market_sales:'Siswa',feed_stock:'Siswa'};
+const locByStage=st=>(+st===1||+st===2)?'Tekuatad':'Siswa';
+const locFor=(k,row)=>(k==='mortality'||k==='expenses')?locByStage(row&&row.stage||1):(LOCDEFAULT[k]||'Siswa');
+Object.keys(ENT).concat([]).forEach(k=>{const E=ENT[k];if(k==='feed_items')return;
+ E.fields.splice(Math.min(1,E.fields.length),0,{k:'location',l:'Location',t:'select',opts:LOCS.map(x=>[x,x]),req:1,def:()=>locFor(k)});
+ if(E.cols.indexOf('location')<0)E.cols.splice(Math.min(1,E.cols.length),0,'location')});
 const CASC={cages:[['egg_production','cage_id'],['egg_transfers','cage_id'],['reserve_moves','cage_id']],feed_items:[['feed_stock','item_id']],hatch_batches:[['egg_transfers','batch_id'],['chick_sales','batch_id']],flocks:[['weights','flock_id'],['market_sales','flock_id'],['daily_logs','flock_id'],['flock_transfers','from_flock_id'],['flock_transfers','to_flock_id']]};
 const POLY={cages:[1],hatch_batches:[2],flocks:[3,4]};
 
@@ -797,7 +807,8 @@ document.addEventListener('change',ev=>{
   if(S.form&&el.closest('#modal')){const E=ENT[S.form.name];
     if(E.fields.some(f=>f.dep===el.dataset.k)){S.form.vals={...S.form.vals,...readForm(E)};
       E.fields.filter(f=>f.dep===el.dataset.k).forEach(f=>{S.form.vals[f.k]=''});
-      const f0=E.fields.filter(f=>f.dep===el.dataset.k)[0];const o=f0.opts(S.form.vals);S.form.vals[f0.k]=f0.blank?'':(o[0]?o[0][0]:'');drawModal()}}
+      const f0=E.fields.filter(f=>f.dep===el.dataset.k)[0];const o=f0.opts(S.form.vals);S.form.vals[f0.k]=f0.blank?'':(o[0]?o[0][0]:'');
+      if(el.dataset.k==='stage'&&E.fields.some(f=>f.k==='location'))S.form.vals.location=locByStage(S.form.vals.stage);drawModal()}}
 });
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&S.form)closeModal()});
 function download(name,text,type){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['﻿'+text],{type:type+';charset=utf-8'}));a.download=name;a.click()}
