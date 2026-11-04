@@ -3,6 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="preconnect" href="https://nrffwcdraultqmckslsz.supabase.co" crossorigin>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 <title>Poultry Farm Manager · पोल्ट्री फार्म मैनेजर</title>
 <style>
 :root{--bg:#f6f5f0;--card:#fff;--ink:#1f2a24;--mut:#6b756f;--line:#e3e1d8;--brand:#2f6b3f;--brand2:#e8f1ea;
@@ -61,7 +64,7 @@ td.r,th.r{text-align:right;font-variant-numeric:tabular-nums}tr:last-child td{bo
 </style>
 </head>
 <body>
-<div id="app"></div><div id="modal"></div><div id="toast"></div>
+<div id="app"></div><div id="modal"></div><div id="toast"></div><div id="sync" style="display:none;position:fixed;bottom:10px;right:12px;background:var(--card);border:1px solid var(--line);border-radius:99px;padding:3px 10px;font-size:12px;color:var(--mut);z-index:20"></div>
 <div id="wm">Powered by <b>Corestack Technologies</b></div>
 <script>
 /* ============================================================
@@ -88,7 +91,7 @@ const $=(s,r=document)=>r.querySelector(s);
 let D={}; // all data, loaded in memory
 
 /* ---------- Hindi / English ---------- */
-const H={'Medicine Inventory':'दवा इन्वेंटरी','Medicine inventory':'दवा इन्वेंटरी','Medicine':'दवा','Medicine item':'दवा आइटम','Medicine stock':'दवा स्टॉक','Add medicine':'दवा जोड़ें','Medicine / vaccine name':'दवा / वैक्सीन का नाम','Medicine from inventory':'इन्वेंटरी से दवा','All locations':'सभी स्थान','Expiry date':'एक्सपायरी तारीख','Wastage / expired':'बर्बादी / एक्सपायर','Min stock (per location)':'न्यूनतम स्टॉक (प्रति स्थान)','Unit':'इकाई','Min stock':'न्यूनतम स्टॉक','Avg cost (₹/unit)':'औसत लागत (₹/इकाई)','Rate (₹ per unit)':'दर (₹ प्रति इकाई)','Location':'स्थान','Dashboard':'डैशबोर्ड','Parent Birds':'पैरेंट बर्ड्स','Hatchery':'हैचरी','Grow-out Flocks':'ग्रो-आउट झुंड','Market':'बाज़ार बिक्री','Expenses':'खर्च','Mortality':'मृत्यु','Reports':'रिपोर्ट','Settings':'सेटिंग्स',
+const H={'Customers':'ग्राहक','Customer':'ग्राहक','Customer name':'ग्राहक का नाम','New customer name':'नए ग्राहक का नाम','Add customer':'ग्राहक जोड़ें','Address / city':'पता / शहर','Phone':'फ़ोन','Sales':'बिक्री','Sales history':'बिक्री का इतिहास','Total sales':'कुल बिक्री','Received':'प्राप्त','Pending dues':'बकाया','Due':'बकाया','Last sale':'आख़िरी बिक्री','Birds / chicks bought':'खरीदे पक्षी / चूज़े','Labour':'मज़दूरी / लेबर','Labourer':'मज़दूर','Labourers':'मज़दूर','Add labourer':'मज़दूर जोड़ें','Daily wage entry':'दैनिक मज़दूरी एंट्री','Location (mapped to)':'स्थान (निर्धारित)','Work area (stage)':'कार्य क्षेत्र (स्टेज)','Rate per day (₹)':'दर प्रति दिन (₹)','Attendance':'उपस्थिति','Present':'उपस्थित','Half day':'आधा दिन','Absent':'अनुपस्थित','Overtime / extra (₹)':'ओवरटाइम / अतिरिक्त (₹)','Wages (₹)':'मज़दूरी (₹)','Total wages':'कुल मज़दूरी','Days worked':'काम के दिन','Avg wage / day':'औसत मज़दूरी / दिन','Location-wise wages':'स्थान-वार मज़दूरी','Daily attendance sheet':'दैनिक उपस्थिति शीट','Mark all present':'सभी उपस्थित','Save attendance':'उपस्थिति सेव करें','Labourers mapped':'निर्धारित मज़दूर','Active labourers':'सक्रिय मज़दूर','Customer dues':'ग्राहक बकाया','Labour wages (this month)':'मज़दूरी (इस माह)','Signing in':'साइन इन हो रहा है','Search':'खोजें','Medicine Inventory':'दवा इन्वेंटरी','Medicine inventory':'दवा इन्वेंटरी','Medicine':'दवा','Medicine item':'दवा आइटम','Medicine stock':'दवा स्टॉक','Add medicine':'दवा जोड़ें','Medicine / vaccine name':'दवा / वैक्सीन का नाम','Medicine from inventory':'इन्वेंटरी से दवा','All locations':'सभी स्थान','Expiry date':'एक्सपायरी तारीख','Wastage / expired':'बर्बादी / एक्सपायर','Min stock (per location)':'न्यूनतम स्टॉक (प्रति स्थान)','Unit':'इकाई','Min stock':'न्यूनतम स्टॉक','Avg cost (₹/unit)':'औसत लागत (₹/इकाई)','Rate (₹ per unit)':'दर (₹ प्रति इकाई)','Location':'स्थान','Dashboard':'डैशबोर्ड','Parent Birds':'पैरेंट बर्ड्स','Hatchery':'हैचरी','Grow-out Flocks':'ग्रो-आउट झुंड','Market':'बाज़ार बिक्री','Expenses':'खर्च','Mortality':'मृत्यु','Reports':'रिपोर्ट','Settings':'सेटिंग्स',
 'Stage 1':'चरण 1','Stage 2':'चरण 2','Stage 3':'चरण 3','Stage 4':'चरण 4','Add':'जोड़ें','Edit':'बदलें','Delete':'हटाएं','Save':'सेव करें','Cancel':'रद्द करें','Details':'विवरण','Back':'वापस',
 'Cage':'पिंजरा','Cages':'पिंजरे','Code':'कोड','Cage code':'पिंजरा कोड','Breed':'नस्ल','Birds placed':'डाले गए पक्षी','Live birds':'जीवित पक्षी','Date':'तारीख','Eggs':'अंडे','Eggs laid':'दिए गए अंडे','Broken':'टूटे','Notes':'टिप्पणी',
 'Amount':'राशि','Category':'श्रेणी','Quantity':'मात्रा','Cause':'कारण','Flock':'झुंड','Batch':'बैच','Customer':'ग्राहक','Rate':'दर','Total':'कुल','Cost':'लागत','Profit':'लाभ','Revenue':'आय','Status':'स्थिति','Stage':'चरण','Machine':'मशीन',
@@ -124,7 +127,8 @@ const CFG0={farm:'Siswa Quail Farm',storeDays:5,incDays:18,marketAge:40,mortPct:
 const cfg={...CFG0,...JSON.parse(LS('pfm_cfg')||'{}')};
 
 /* ---------- data layer (Supabase or local demo) ---------- */
-const TABLES=['cages','egg_production','hatch_batches','egg_transfers','chick_sales','flocks','weights','daily_logs','flock_transfers','reserve_lots','reserve_moves','feed_items','feed_stock','med_items','med_stock','market_sales','mortality','expenses'];
+const NOLOC=['customers','labourers'];
+const TABLES=['cages','egg_production','hatch_batches','egg_transfers','chick_sales','flocks','weights','daily_logs','flock_transfers','reserve_lots','reserve_moves','feed_items','feed_stock','med_items','med_stock','customers','labourers','labour_wages','market_sales','mortality','expenses'];
 /* ===== SUPABASE CONNECTION — paste your values here, then re-upload the file =====
    Supabase Dashboard -> Project Settings -> API (Project URL + anon/public key).
    Leave both empty to run in local Demo mode. NEVER paste the service_role / secret key. */
@@ -135,34 +139,59 @@ const DB={
   async init(){
     const url=SUPABASE_URL.trim(),key=SUPABASE_ANON_KEY.trim();
     if(url&&key){
-      await new Promise((ok,no)=>{const s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js';s.onload=ok;s.onerror=()=>no(new Error('Could not load Supabase library (offline?)'));document.head.appendChild(s)});
+      if(!window.supabase)await new Promise((ok,no)=>{const s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js';s.onload=ok;s.onerror=()=>no(new Error('Could not load Supabase library (offline?)'));document.head.appendChild(s)});
       this.sb=supabase.createClient(url,key);this.mode='cloud';
     }
   },
-  async session(){if(this.mode!=='cloud')return true;const{data}=await this.sb.auth.getSession();return !!data.session},
+  uid:null,missing:[],pend:0,q:Promise.resolve(),
+  async session(){if(this.mode!=='cloud')return true;const{data}=await this.sb.auth.getSession();this.uid=data.session?data.session.user.id:null;return !!data.session},
+  /* instant start: last downloaded data is kept in this browser and shown at once, then refreshed in the background */
+  loadCache(){try{const raw=localStorage.getItem('pfm_cache_v2_'+this.uid);if(!raw)return false;const o=JSON.parse(raw);TABLES.forEach(k=>D[k]=o[k]||[]);return true}catch(e){return false}},
+  saveCache(){clearTimeout(this._ct);this._ct=setTimeout(()=>{if(this.mode!=='cloud'||!this.uid)return;try{localStorage.setItem('pfm_cache_v2_'+this.uid,JSON.stringify(D))}catch(e){try{localStorage.removeItem('pfm_cache_v2_'+this.uid)}catch(_){}}},500)},
+  clearCache(){try{localStorage.removeItem('pfm_cache_v2_'+this.uid)}catch(e){}},
   async loadAll(){
     if(this.mode==='local'){
       const raw=JSON.parse(LS('pfm_demo_v1')||'{}');TABLES.forEach(k=>D[k]=raw[k]||[]);return;
     }
-    for(const k of TABLES){
+    const T={},miss=[];
+    await Promise.all(TABLES.map(async k=>{            // all tables are downloaded in parallel
       let all=[],from=0;
-      for(;;){const{data,error}=await this.sb.from(k).select('*').range(from,from+999);if(error)throw error;all=all.concat(data);if(data.length<1000)break;from+=1000}
-      D[k]=all;
-    }
+      for(;;){const{data,error}=await this.sb.from(k).select('*').range(from,from+999);
+        if(error){if(error.code==='PGRST205'||error.code==='42P01'||/schema cache|does not exist/i.test(error.message||'')){miss.push(k);all=[];break}throw error}
+        all=all.concat(data);if(data.length<1000)break;from+=1000}
+      T[k]=all}));
+    this.missing=miss;
+    if(this.pend===0){TABLES.forEach(k=>D[k]=T[k]||[]);this.saveCache();return true}   // never overwrite changes that are still being saved
+    return false;
   },
+  async refresh(){await this.q;try{if(await this.loadAll()&&!S.form)render()}catch(e){console.warn('refresh failed',e)}},
   persist(){LS('pfm_demo_v1',JSON.stringify(D))},
-  async insert(k,row){
-    if(k!=='feed_items'&&k!=='med_items'&&!row.location)row={...row,location:locFor(k,row)};
-    if(this.mode==='local'){row={id:uid(),created_at:new Date().toISOString(),...row};D[k].push(row);this.persist();return row}
-    const{data,error}=await this.sb.from(k).insert(row).select().single();if(error)throw error;D[k].push(data);return data;
+  _sync(){const el=document.getElementById('sync');if(el){el.textContent=this.pend?'⟳ Saving…':'';el.style.display=this.pend?'block':'none'}},
+  _enq(fn){this.pend++;this._sync();const p=this.q.then(fn);this.q=p.catch(()=>{});return p.finally(()=>{this.pend--;this._sync();if(!this.pend)this.saveCache()})},
+  _fail(e){toast('⚠ Not saved to the server: '+(e&&e.message||e),6000);render()},
+  /* Cloud writes are optimistic: the screen updates at once, the server write runs in order in the background and is rolled back (with a warning) if it fails */
+  async insert(k,row,o={}){
+    if(k!=='feed_items'&&k!=='med_items'&&!NOLOC.includes(k)&&!row.location)row={...row,location:locFor(k,row)};
+    row={id:uid(),created_at:new Date().toISOString(),...row};
+    if(this.mode==='local'){D[k].push(row);this.persist();return row}
+    D[k].push(row);
+    const job=this._enq(async()=>{const{error}=await this.sb.from(k).insert(row);if(error)throw error});
+    const undo=()=>{D[k]=D[k].filter(r=>r.id!==row.id)};
+    if(o.wait){try{await job}catch(e){undo();throw e}}else job.catch(e=>{undo();this._fail(e)});
+    return row;
   },
   async update(k,id,row){
-    if(this.mode==='local'){const i=D[k].findIndex(r=>r.id===id);D[k][i]={...D[k][i],...row};this.persist();return}
-    const{data,error}=await this.sb.from(k).update(row).eq('id',id).select().single();if(error)throw error;const i=D[k].findIndex(r=>r.id===id);D[k][i]=data;
+    const i=D[k].findIndex(r=>r.id===id),old=D[k][i];D[k][i]={...old,...row};
+    if(this.mode==='local'){this.persist();return D[k][i]}
+    this._enq(async()=>{const{error}=await this.sb.from(k).update(row).eq('id',id);if(error)throw error})
+      .catch(e=>{const j=D[k].findIndex(r=>r.id===id);if(j>=0)D[k][j]=old;this._fail(e)});
+    return D[k][i];
   },
   async remove(k,id){
-    if(this.mode==='cloud'){const{error}=await this.sb.from(k).delete().eq('id',id);if(error)throw error}
-    D[k]=D[k].filter(r=>r.id!==id);if(this.mode==='local')this.persist();
+    const old=D[k].find(r=>r.id===id);D[k]=D[k].filter(r=>r.id!==id);
+    if(this.mode==='local'){this.persist();return}
+    this._enq(async()=>{const{error}=await this.sb.from(k).delete().eq('id',id);if(error)throw error})
+      .catch(e=>{if(old)D[k].push(old);this._fail(e)});
   }
 };
 
@@ -209,6 +238,20 @@ function medCheck(id,loc,q,ex){
   if(!id||!(q>0))return '';const m=medStats(id,loc,ex||{});
   return q>m.bal+1e-9?`Only ${n2(m.bal)} ${medUnit(id)} of ${medName(id)} in stock at ${loc} — add the stock in Medicine Inventory first`:'';
 }
+const optCust=()=>[...D.customers].sort((a,b)=>a.name.localeCompare(b.name)).map(c=>[c.id,c.name+(c.phone?' · '+c.phone:'')]);
+const ATT={'Present':1,'Half day':0.5,'Absent':0};
+const monthOf=d=>String(d||'').slice(0,7);
+const normN=x=>String(x||'').trim().toLowerCase();
+/* every sale (chicks + market) of a customer — linked by customer_id, or by the same name on older entries */
+function custSales(c){
+  const all=[...D.chick_sales.map(x=>({...x,_t:'Chicks',_e:'chick_sales',_q:x.qty,_ref:refLabel(2,x.batch_id)})),...D.market_sales.map(x=>({...x,_t:x.sale_type==='live'?'Live birds':'Slaughtered',_e:'market_sales',_q:x.birds,_ref:refLabel(3,x.flock_id)}))];
+  return all.filter(x=>x.customer_id===c.id||(!x.customer_id&&x.customer&&normN(x.customer)===normN(c.name))).sort((a,b)=>b.date.localeCompare(a.date));
+}
+function custStats(c){const l=custSales(c),amount=sum(l,x=>x.amount),paid=sum(l,x=>x.paid);return{l,n:l.length,qty:sum(l,x=>x._q),amount,paid,due:amount-paid,last:l.length?l[0].date:null}}
+const custDueTotal=()=>sum(D.customers,c=>Math.max(0,custStats(c).due));
+function labStats(id,m,loc){const w=D.labour_wages.filter(x=>x.labourer_id===id&&(!m||monthOf(x.date)===m)&&(!loc||x.location===loc));
+  return{w,pres:w.filter(x=>x.attendance==='Present').length,half:w.filter(x=>x.attendance==='Half day').length,abs:w.filter(x=>x.attendance==='Absent').length,days:sum(w,x=>x.days),wages:sum(w,x=>x.amount)}}
+const labMonthSub=()=>{const m=today().slice(0,7);return LOCS.map(l=>l+' '+inr(sum(D.labour_wages.filter(x=>monthOf(x.date)===m&&x.location===l),x=>x.amount))).join(' · ')};
 const optLots=()=>D.reserve_lots.map(l=>[l.id,l.lot_code]);
 const feedName=id=>{const f=byId('feed_items',id);return f?f.name:'?'};
 const sub=x=>`<small style="display:block;font-size:11px;font-weight:400;color:var(--mut)">${x}</small>`;
@@ -258,6 +301,9 @@ const SEXV={
  reserve_moves:(v,r)=>{if(v.kind==='in')return '';const rs=reserveStats(r&&r.id,v.lot_id);return chk(v,'qty_m','qty_f',rs.balM,rs.balF,0,0,'birds in this reserve lot')},
  daily_logs:(v,r)=>{const f=byId('flocks',v.flock_id);if(!f)return '';const s=flockStats(f),same=r&&r.flock_id===v.flock_id;return chk(v,'mortality_m','mortality_f',s.liveM,s.liveF,same?num(r.mortality_m):0,same?num(r.mortality_f):0,'birds in this flock')}
 };
+/* Customer picker used on every sale: choose an existing customer from the master, or type a new one (it is added to the master automatically) */
+const CUSTF=[{k:'customer_id',l:'Customer',t:'select',opts:()=>optCust(),blank:'+ New customer (type details below)',redraw:1},
+ {k:'customer',l:'New customer name',t:'text',showIf:v=>!v.customer_id},{k:'customer_phone',l:'Phone',t:'text',showIf:v=>!v.customer_id},{k:'customer_address',l:'Address / city',t:'text',showIf:v=>!v.customer_id}];
 const ENT={
  cages:{title:'Cage',cols:['code','breed','placed_on','initial_birds','initial_m','initial_f','notes'],fields:[
   {k:'code',l:'Cage code',t:'text',req:1,def:()=>'P-'+(D.cages.length+1)},{k:'breed',l:'Breed',t:'text'},
@@ -280,7 +326,7 @@ const ENT={
   before:v=>{if(!v.set_date)v.set_date=addDays(v.received_on,cfg.storeDays)}},
  chick_sales:{title:'Chicks sold',cols:['date','batch_id','qty','qty_m','qty_f','rate','amount','paid','customer'],fields:[
   {k:'date',l:'Date',t:'date',req:1,def:today},{k:'batch_id',l:'Batch',t:'select',opts:optBatches,req:1},
-  ...sexF('qty_m','qty_f'),{k:'qty',l:'Quantity',t:'number',hint:'Total — filled automatically from Male + Female'},{k:'rate',l:'Rate',t:'number',req:1,hint:'₹ per chick'},{k:'customer',l:'Customer',t:'text'},
+  ...sexF('qty_m','qty_f'),{k:'qty',l:'Quantity',t:'number',hint:'Total — filled automatically from Male + Female'},{k:'rate',l:'Rate',t:'number',req:1,hint:'₹ per chick'},...CUSTF,
   {k:'paid',l:'Paid',t:'number',hint:'Amount received so far'},{k:'amount',l:'Amount',t:'number',nf:1,money:1},{k:'notes',l:'Notes',t:'textarea'}],
   before:v=>{v.amount=num(v.qty)*num(v.rate)},
   validate:(v,r)=>{const b=byId('hatch_batches',v.batch_id);if(!b)return 'Pick a batch';const av=batchStats(b).avail+(r&&r.batch_id===v.batch_id?num(r.qty):0);return v.qty>av?`Only ${n0(av)} chicks available in this batch`:''}},
@@ -308,6 +354,27 @@ const ENT={
   before:v=>{if(!v.qty_kg)v.qty_kg=num(v.bags)*cfg.bagKg;
     if(v.kind==='wastage'){v.rate_per_kg=null;v.total_cost=null;return}
     if(v.total_cost!=null)v.rate_per_kg=Math.round(v.total_cost/v.qty_kg*100)/100;else v.total_cost=Math.round(v.rate_per_kg*v.qty_kg*100)/100}},
+ customers:{title:'Customer',cols:['name','phone','address','notes'],fields:[
+  {k:'name',l:'Customer name',t:'text',req:1},{k:'phone',l:'Phone',t:'text'},{k:'address',l:'Address / city',t:'text'},{k:'notes',l:'Notes',t:'textarea'}],
+  validate:(v,r)=>D.customers.some(x=>x.id!==(r&&r.id)&&x.name.trim().toLowerCase()===String(v.name).trim().toLowerCase()&&String(x.phone||'')===String(v.phone||''))?'A customer with this name and phone already exists':''},
+ labourers:{title:'Labourer',cols:['name','role','location','stage','rate_per_day','status','phone','notes'],fields:[
+  {k:'name',l:'Labourer name',t:'text',req:1},{k:'phone',l:'Phone',t:'text'},
+  {k:'role',l:'Type',t:'select',req:1,def:'Daily wage',opts:[['Permanent','Permanent'],['Daily wage','Daily wage'],['Contract','Contract']]},
+  {k:'location',l:'Location (mapped to)',t:'select',req:1,def:'Siswa',opts:()=>LOCS.map(x=>[x,x])},
+  {k:'stage',l:'Work area (stage)',t:'select',num:1,blank:'All / general',opts:[[1,'Stage 1 · Parent Birds'],[2,'Stage 2 · Hatchery'],[3,'Stage 3 · Grow-out Flocks'],[4,'Stage 4 · Market']]},
+  {k:'rate_per_day',l:'Rate per day (₹)',t:'number',req:1},{k:'joined_on',l:'Joined on',t:'date',def:today},
+  {k:'status',l:'Status',t:'select',req:1,def:'Active',opts:[['Active','Active'],['Left','Left']]},{k:'notes',l:'Notes',t:'textarea'}],
+  validate:v=>num(v.rate_per_day)<0?'Rate cannot be negative':''},
+ labour_wages:{title:'Daily wage entry',cols:['date','labourer_id','attendance','days','rate','extra','amount','notes'],fields:[
+  {k:'date',l:'Date',t:'date',req:1,def:today},
+  {k:'labourer_id',l:'Labourer',t:'select',opts:()=>D.labourers.map(l=>[l.id,l.name+' ('+l.location+')'+(l.status==='Left'?' — left':'')]),req:1,redraw:1,
+   onChange:(v,init,pre)=>{const l=byId('labourers',v.labourer_id);if(!l)return;if(!(init&&pre&&pre.location))v.location=l.location;if(!(init&&pre&&pre.rate!=null))v.rate=l.rate_per_day}},
+  {k:'attendance',l:'Attendance',t:'select',req:1,def:'Present',opts:[['Present','Present (1 day)'],['Half day','Half day (0.5 day)'],['Absent','Absent']]},
+  {k:'rate',l:'Rate per day (₹)',t:'number',hint:'Filled from the labourer — change it for this day if needed'},
+  {k:'extra',l:'Overtime / extra (₹)',t:'number',def:0},
+  {k:'days',l:'Days',t:'number',nf:1},{k:'amount',l:'Wages (₹)',t:'number',nf:1,money:1},{k:'notes',l:'Notes',t:'textarea'}],
+  validate:(v,r)=>D.labour_wages.some(x=>x.id!==(r&&r.id)&&x.labourer_id===v.labourer_id&&x.date===v.date&&x.location===v.location)?'This labourer already has an entry for this date at this location — edit that entry instead':'',
+  before:v=>{v.days=ATT[v.attendance]!=null?ATT[v.attendance]:0;if(v.rate==null)v.rate=num((byId('labourers',v.labourer_id)||{}).rate_per_day);v.amount=Math.round((v.days*num(v.rate)+num(v.extra))*100)/100}},
  med_items:{title:'Medicine item',cols:['name','unit','min_stock','notes'],fields:[
   {k:'name',l:'Medicine / vaccine name',t:'text',req:1,hint:'e.g. Ranikhet (ND) vaccine, Enrofloxacin, Vitamin AD3, Electrolyte, Amprolium'},
   {k:'unit',l:'Unit',t:'select',req:1,def:'ml',opts:['ml','litre','gm','kg','tablet','capsule','vial','dose','bottle','packet'].map(x=>[x,x])},
@@ -361,7 +428,7 @@ const ENT={
   ...sexF('birds_m','birds_f'),{k:'birds',l:'Birds',t:'number',hint:'Total — filled automatically from Male + Female'},{k:'total_kg',l:'Live weight (kg)',t:'number',hint:'Total live weight of these birds'},
   {k:'dressed_kg',l:'Dressed weight (kg)',t:'number',hint:'Only for slaughtered birds — rate is applied on this weight'},
   {k:'rate_basis',l:'Rate basis',t:'select',tr:1,opts:[['per_kg','Per kg'],['per_bird','Per bird']],req:1},
-  {k:'rate',l:'Rate',t:'number',req:1},{k:'customer',l:'Customer',t:'text'},{k:'paid',l:'Paid',t:'number',hint:'Amount received so far'},
+  {k:'rate',l:'Rate',t:'number',req:1},...CUSTF,{k:'paid',l:'Paid',t:'number',hint:'Amount received so far'},
   {k:'amount',l:'Amount',t:'number',nf:1,money:1},{k:'notes',l:'Notes',t:'textarea'}],
   before:v=>{const kg=v.sale_type==='slaughtered'&&num(v.dressed_kg)?num(v.dressed_kg):num(v.total_kg);v.amount=v.rate_basis==='per_bird'?num(v.birds)*num(v.rate):kg*num(v.rate);if(v.sale_type==='live')v.dressed_kg=null},
   validate:(v,r)=>{const f=byId('flocks',v.flock_id);if(!f)return 'Pick a flock';const av=flockStats(f).live+(r&&r.flock_id===v.flock_id?num(r.birds):0);
@@ -378,7 +445,7 @@ const ENT={
   {k:'date',l:'Date',t:'date',req:1,def:today},
   {k:'stage',l:'Stage',t:'select',num:1,opts:[[1,'Stage 1 · Parent Birds'],[2,'Stage 2 · Hatchery'],[3,'Stage 3 · Grow-out Flocks'],[4,'Stage 4 · Market']],req:1,def:1},
   {k:'ref_id',l:'For',t:'select',dep:'stage',blank:'Whole stage (general)',opts:v=>refList(+v.stage||1)},
-  {k:'category',l:'Category',t:'select',tr:1,opts:CATS,req:1},{k:'feed_item_id',l:'Food item',t:'select',opts:optFeed,blank:'—',showIf:v=>v.category==='Feed (purchased)',hint:'For feed expenses: pick the food to deduct from Feed Inventory (Quantity = KG used, category = Feed)'},{k:'med_item_id',l:'Medicine from inventory',t:'select',opts:optMed,blank:'— Not from inventory (enter amount)',showIf:v=>v.category===MEDCAT,hint:'Pick the medicine / vaccine — the Quantity used is deducted from the stock of the chosen Location'},{k:'description',l:'Description',t:'text'},
+  {k:'category',l:'Category',t:'select',tr:1,opts:CATS,req:1,redraw:1},{k:'feed_item_id',l:'Food item',t:'select',opts:optFeed,blank:'—',showIf:v=>v.category==='Feed (purchased)',hint:'For feed expenses: pick the food to deduct from Feed Inventory (Quantity = KG used, category = Feed)'},{k:'med_item_id',l:'Medicine from inventory',t:'select',opts:optMed,blank:'— Not from inventory (enter amount)',showIf:v=>v.category===MEDCAT,hint:'Pick the medicine / vaccine — the Quantity used is deducted from the stock of the chosen Location'},{k:'description',l:'Description',t:'text'},
   {k:'qty',l:'Quantity',t:'number',hint:'Optional. With a Food item: KG used. With a Medicine: units used'},{k:'unit',l:'Unit',t:'text'},{k:'amount',l:'Amount',t:'number',money:1,hint:'Leave blank when a Food item is chosen — calculated from the stock cost'}],
   validate:(v,r)=>{if(v.med_item_id){if(v.category!==MEDCAT)return 'A medicine can only be chosen for the category Medicine / Vaccine';if(!(v.qty>0))return 'Enter the quantity used ('+medUnit(v.med_item_id)+')';return medCheck(v.med_item_id,v.location,v.qty,{exp:r&&r.id})}
     if(v.feed_item_id){if(v.category!=='Feed (purchased)')return 'Choose category "Feed (used from inventory)" when a food item is selected';if(!(v.qty>0))return 'Enter the quantity used in KG';return feedCheck(v.feed_item_id,v.qty,{exp:r&&r.id})}return v.amount==null?'Amount is required':''},
@@ -388,10 +455,10 @@ const ENT={
 // ---- Location (every entry): 1 Tekuatad, 2 Siswa. Stage 1 & 2 default Tekuatad, stage 3 & 4 default Siswa ----
 const LOCS=['Tekuatad','Siswa'];
 const LOCDEFAULT={cages:'Tekuatad',egg_production:'Tekuatad',egg_transfers:'Tekuatad',hatch_batches:'Tekuatad',chick_sales:'Tekuatad',reserve_lots:'Tekuatad',reserve_moves:'Tekuatad',
- flocks:'Siswa',weights:'Siswa',daily_logs:'Siswa',flock_transfers:'Siswa',market_sales:'Siswa',feed_stock:'Siswa',med_stock:'Siswa'};
+ flocks:'Siswa',weights:'Siswa',daily_logs:'Siswa',flock_transfers:'Siswa',market_sales:'Siswa',feed_stock:'Siswa',med_stock:'Siswa',labour_wages:'Siswa'};
 const locByStage=st=>(+st===1||+st===2)?'Tekuatad':'Siswa';
 const locFor=(k,row)=>(k==='mortality'||k==='expenses')?locByStage(row&&row.stage||1):(LOCDEFAULT[k]||'Siswa');
-Object.keys(ENT).concat([]).forEach(k=>{const E=ENT[k];if(k==='feed_items'||k==='med_items')return;
+Object.keys(ENT).concat([]).forEach(k=>{const E=ENT[k];if(k==='feed_items'||k==='med_items'||NOLOC.includes(k))return;
  E.fields.splice(Math.min(1,E.fields.length),0,{k:'location',l:'Location',t:'select',opts:LOCS.map(x=>[x,x]),req:1,def:()=>locFor(k)});
  if(E.cols.indexOf('location')<0)E.cols.splice(Math.min(1,E.cols.length),0,'location')});
 const CASC={cages:[['egg_production','cage_id'],['egg_transfers','cage_id'],['reserve_moves','cage_id']],feed_items:[['feed_stock','item_id']],med_items:[['med_stock','item_id']],hatch_batches:[['egg_transfers','batch_id'],['chick_sales','batch_id']],flocks:[['weights','flock_id'],['market_sales','flock_id'],['daily_logs','flock_id'],['flock_transfers','from_flock_id'],['flock_transfers','to_flock_id']]};
@@ -450,7 +517,7 @@ function flockCost(f){const b=byId('hatch_batches',f.batch_id),s=flockStats(f),p
 const S={page:'dash',detail:null,form:null,expStage:'',morStage:'',from:'',to:''};
 const app=$('#app');
 
-const NAV=[['dash','Dashboard'],['s1','Parent Birds',1],['s2','Hatchery',2],['s3','Grow-out Flocks',3],['s4','Market',4],['exp','Expenses'],['feed','Feed Inventory'],['med','Medicine Inventory'],['reserve','Reserve Birds'],['mort','Mortality'],['bs','Balance Sheet'],['rep','Reports'],['set','Settings']];
+const NAV=[['dash','Dashboard'],['s1','Parent Birds',1],['s2','Hatchery',2],['s3','Grow-out Flocks',3],['s4','Market',4],['exp','Expenses'],['feed','Feed Inventory'],['med','Medicine Inventory'],['cust','Customers'],['lab','Labour'],['reserve','Reserve Birds'],['mort','Mortality'],['bs','Balance Sheet'],['rep','Reports'],['set','Settings']];
 
 /* ---------- generic table/cell ---------- */
 function cell(E,f,r){
@@ -506,7 +573,7 @@ function pageDash(){
   const mt=[[1,sum(cs,c=>c.mort),sum(D.cages,c=>c.initial_birds)+sum(D.reserve_moves.filter(x=>x.kind==='topup'),x=>x.qty)],[2,sum(bs,x=>x.s.mort),sum(bs,x=>x.s.hatched)],[3,sum(fs,x=>x.s.mort),sum(D.flocks,f=>f.chicks_placed)]];
   const ex=[1,2,3,4].map(s=>({l:'S'+s+' '+STAGES[s].en,v:sum(D.expenses.filter(e=>e.stage===s),e=>e.amount)+(s===3?sum(fs,x=>x.s.feedCost):0),c:`var(--${STAGES[s].c})`}));
   return `<h2>${t('Dashboard')}</h2><p class="sub">${fdate(td)}</p>
-  <div class="grid">${kpi('Parent birds',n0(parents)+sxs(parM,parF),'s1')}${kpi('Reserve birds',n0(rs.bal)+sxs(rs.balM,rs.balF),'s1')}${kpi('Feed stock',n0(fkg)+' kg'+sub(inr(fval)+' · '+fi.filter(x=>x.s.bal<=num(x.i.min_stock_kg)).length+' low / out'))}${kpi('Eggs today',n0(eT),'s1')}${kpi('Eggs (7 days)',n0(e7),'s1')}${kpi('In incubator',n0(inInc),'s2')}${kpi('Chicks ready',n0(chicks),'s2')}${kpi('Grow-out birds',n0(grow)+sxs(growM,growF),'s3')}${kpi('Birds sold',n0(sold),'s4')}${kpi('Total revenue',inr(rev),'s4')}${kpi('Total expenses',inr(exp))}${kpi('Net',`<span class="${rev-exp<0?'bad':'ok'}">${inr(rev-exp)}</span>`)}</div>
+  <div class="grid">${kpi('Parent birds',n0(parents)+sxs(parM,parF),'s1')}${kpi('Reserve birds',n0(rs.bal)+sxs(rs.balM,rs.balF),'s1')}${kpi('Feed stock',n0(fkg)+' kg'+sub(inr(fval)+' · '+fi.filter(x=>x.s.bal<=num(x.i.min_stock_kg)).length+' low / out'))}${kpi('Customer dues',inr(custDueTotal())+sub(n0(D.customers.length)+' customers'))}${kpi('Labour wages (this month)',inr(sum(D.labour_wages.filter(x=>monthOf(x.date)===today().slice(0,7)),x=>x.amount))+sub(labMonthSub()))}${kpi('Eggs today',n0(eT),'s1')}${kpi('Eggs (7 days)',n0(e7),'s1')}${kpi('In incubator',n0(inInc),'s2')}${kpi('Chicks ready',n0(chicks),'s2')}${kpi('Grow-out birds',n0(grow)+sxs(growM,growF),'s3')}${kpi('Birds sold',n0(sold),'s4')}${kpi('Total revenue',inr(rev),'s4')}${kpi('Total expenses',inr(exp))}${kpi('Net',`<span class="${rev-exp<0?'bad':'ok'}">${inr(rev-exp)}</span>`)}</div>
   <h3>${t('Alerts')}</h3>${al.length?al.map(a=>`<div class="alert ${a[0]}">${esc(a[1])}</div>`).join(''):`<p class="muted">${t('Nothing needs attention')}</p>`}
   <div class="two"><div class="card"><h3 style="margin-top:0">${t('Eggs per day (last 14 days)')}</h3>${eggSpark()}</div>
   <div class="card"><h3 style="margin-top:0">${t('Expenses by stage')}</h3>${barChart(ex,inr)}<h3>${t('Mortality by stage')}</h3>${barChart(mt.map(m=>({l:'S'+m[0]+' '+STAGES[m[0]].en,v:m[2]?m[1]/m[2]*100:0,c:'var(--bad)'})),v=>v.toFixed(1)+'%')}</div></div>${feedCard(fi)}${medCard()}`;
@@ -566,6 +633,8 @@ function pageDetail(){
   const {e,id}=S.detail,r=byId(e,id);if(!r){S.detail=null;return pageDash()}
   if(e==='feed_items')return feedDetail(id);
   if(e==='med_items')return medDetail(id);
+  if(e==='customers')return custDetail(id);
+  if(e==='labourers')return labDetail(id);
   if(e==='reserve_lots')return reserveDetail(id);
   let title,stats,secs;
   const rel=(st)=>allMort().filter(m=>m.stage===st&&m.ref_id===id);
@@ -738,19 +807,64 @@ function medCard(){
    +D.med_items.map(i=>`<tr><td>${esc(i.name)}</td>${LOCS.map(l=>{const x=rows.find(r=>r.i.id===i.id&&r.loc===l);if(!x)return '<td class="r muted">–</td>';const [,c]=medSt(x);return `<td class="r" style="color:${c}"><b>${n2(x.s.bal)}</b> ${esc(i.unit||'')}</td>`}).join('')}</tr>`).join('')+`</tbody></table></div>`
    :`<p class="muted">${t('No records')}</p><button class="btn sm" data-a="nav" data-k="med">${t('Medicine Inventory')}</button>`)+`</div>`;
 }
+function pageCust(){
+  const q=normN(S.custQ),rows=D.customers.map(c=>({c,s:custStats(c)})).filter(x=>!q||normN(x.c.name).includes(q)||normN(x.c.phone).includes(q)||normN(x.c.address).includes(q)).sort((a,b)=>b.s.amount-a.s.amount);
+  const cols=[{h:'Customer',f:r=>`<b>${esc(r.c.name)}</b>`},{h:'Phone',f:r=>esc(r.c.phone||'–')},{h:'Address / city',f:r=>esc(r.c.address||'–')},{h:'Sales',c:'r',f:r=>n0(r.s.n)},{h:'Birds / chicks bought',c:'r',f:r=>n0(r.s.qty)},
+   {h:'Total sales',c:'r',f:r=>inr(r.s.amount)},{h:'Paid',c:'r',f:r=>inr(r.s.paid)},{h:'Due',c:'r',f:r=>`<span class="${r.s.due>0?'bad':''}">${inr(r.s.due)}</span>`},{h:'Last sale',f:r=>r.s.last?fdate(r.s.last):'–'},
+   {h:'',c:'r',f:r=>btns('customers',r.c.id,`<button class="btn sm" data-a="detail" data-e="customers" data-id="${r.c.id}">${t('Details')}</button> `)}];
+  return `<h2>${t('Customers')}</h2><p class="sub">Customer master. Every chick / bird sale picks a customer from here, or adds a new one — so each customer's full buying history and pending dues are in one place.</p>
+  <div class="bar">${addBtn('customers','Add customer','pri')}<input class="inp" style="width:220px" placeholder="${t('Search')}…" value="${esc(S.custQ||'')}" data-a="filter" data-k="custQ"></div>
+  <div class="grid">${kpi('Customers',n0(D.customers.length))}${kpi('Total sales',inr(sum(rows,x=>x.s.amount)))}${kpi('Received',inr(sum(rows,x=>x.s.paid)))}${kpi('Pending dues',inr(sum(rows,x=>Math.max(0,x.s.due))))}</div>`+table(cols,rows,'No records');
+}
+function custDetail(id){
+  const c=byId('customers',id),st=custStats(c);
+  const cols=[{h:'Date',f:r=>fdate(r.date)},{h:'Sale',f:r=>t(r._t)},{h:'Batch / flock',f:r=>esc(r._ref)},{h:'Quantity',c:'r',f:r=>n0(r._q)},{h:'Rate',c:'r',f:r=>n2(r.rate)},{h:'Amount',c:'r',f:r=>inr(r.amount)},{h:'Paid',c:'r',f:r=>inr(r.paid)},{h:'Due',c:'r',f:r=>inr(num(r.amount)-num(r.paid))},{h:'',c:'r',f:r=>btns(r._e,r.id)}];
+  return `<div class="bar"><button class="btn" data-a="back">← ${t('Back')}</button>${addBtn('chick_sales','Chicks sold','',{customer_id:id})}${addBtn('market_sales','Market sale','',{customer_id:id})}</div><h2>${esc(c.name)}</h2><p class="sub">${esc([c.phone,c.address].filter(Boolean).join(' · ')||'')}</p>
+  <div class="grid">${kpi('Sales',n0(st.n))}${kpi('Total sales',inr(st.amount))}${kpi('Received',inr(st.paid))}${kpi('Due',inr(st.due),st.due>0?'bad':'')}</div><h3>${t('Sales history')}</h3>`+table(cols,st.l,'No records');
+}
+function pageLab(){
+  const m=S.labMonth||today().slice(0,7),loc=S.labLoc||'',sd=S.labDate||today(),sl=S.labSheetLoc||LOCS[0];
+  const sel=(key,val,all)=>`<select class="inp" style="width:auto" data-a="filter" data-k="${key}">${all?`<option value="">${t('All locations')}</option>`:''}${LOCS.map(l=>`<option ${val===l?'selected':''}>${l}</option>`).join('')}</select>`;
+  const wm=D.labour_wages.filter(x=>monthOf(x.date)===m&&(!loc||x.location===loc)),act=D.labourers.filter(l=>l.status!=='Left'&&(!loc||l.location===loc));
+  const locRows=LOCS.map(l=>{const w=D.labour_wages.filter(x=>monthOf(x.date)===m&&x.location===l),d=sum(w,x=>x.days),a=sum(w,x=>x.amount);return{l,n:D.labourers.filter(x=>x.status!=='Left'&&x.location===l).length,d,a,avg:d?a/d:0,ppl:new Set(w.map(x=>x.labourer_id)).size}});
+  const locCols=[{h:'Location',f:r=>`<b>${r.l}</b>`},{h:'Labourers mapped',c:'r',f:r=>n0(r.n)},{h:'Worked (people)',c:'r',f:r=>n0(r.ppl)},{h:'Days worked',c:'r',f:r=>n2(r.d)},{h:'Total wages',c:'r',f:r=>`<b>${inr(r.a)}</b>`},{h:'Avg wage / day',c:'r',f:r=>inr(r.avg)}];
+  const labCols=[{h:'Labourer',f:r=>`<b>${esc(r.l.name)}</b>${r.l.status==='Left'?sub('left'):''}`},{h:'Type',f:r=>esc(r.l.role||'')},{h:'Location (mapped to)',f:r=>esc(r.l.location||'–')},{h:'Work area (stage)',f:r=>r.l.stage?'S'+r.l.stage+' · '+STAGES[r.l.stage].en:'–'},{h:'Rate per day (₹)',c:'r',f:r=>inr(r.l.rate_per_day)},
+   {h:'Days (month)',c:'r',f:r=>n2(r.s.days)+sub(r.s.pres+' P · '+r.s.half+' H · '+r.s.abs+' A')},...LOCS.map(l=>({h:'Wages — '+l,c:'r',f:r=>inr(labStats(r.l.id,m,l).wages)})),{h:'Total wages',c:'r',f:r=>`<b>${inr(r.s.wages)}</b>`},
+   {h:'',c:'r',f:r=>btns('labourers',r.l.id,`<button class="btn sm" data-a="detail" data-e="labourers" data-id="${r.l.id}">${t('Details')}</button> `)}];
+  const labRows=D.labourers.filter(l=>!loc||l.location===loc||labStats(l.id,m,loc).days>0).map(l=>({l,s:labStats(l.id,m,loc||undefined)})).sort((a,b)=>String(a.l.location).localeCompare(b.l.location)||a.l.name.localeCompare(b.l.name));
+  const sheet=D.labourers.filter(l=>l.status!=='Left'&&l.location===sl);
+  const exist=l=>D.labour_wages.find(x=>x.labourer_id===l.id&&x.date===sd&&x.location===sl);
+  const sheetHTML=`<div class="card"><h3 style="margin-top:0">${t('Daily attendance sheet')}</h3><div class="bar"><input class="inp" style="width:auto" type="date" value="${sd}" data-a="filter" data-k="labDate">${sel('labSheetLoc',sl)}<button class="btn" data-a="allPresent">${t('Mark all present')}</button><button class="btn pri" data-a="saveAtt">${t('Save attendance')}</button></div>`
+   +(sheet.length?`<div class="tw"><table><thead><tr><th>${t('Labourer')}</th><th>${t('Type')}</th><th class="r">${t('Rate per day (₹)')}</th><th>${t('Attendance')}</th><th class="r">${t('Overtime / extra (₹)')}</th><th class="r">${t('Wages (₹)')}</th></tr></thead><tbody>`
+     +sheet.map(l=>{const e=exist(l);return `<tr data-lab="${l.id}"><td><b>${esc(l.name)}</b></td><td>${esc(l.role||'')}</td><td class="r"><input class="inp att-rate" style="width:90px" type="number" step="any" value="${e?num(e.rate):num(l.rate_per_day)}"></td>
+       <td><select class="inp att-sel" style="width:auto"><option value="">–</option>${Object.keys(ATT).map(a=>`<option value="${a}" ${e&&e.attendance===a?'selected':''}>${t(a)}</option>`).join('')}</select></td><td class="r"><input class="inp att-extra" style="width:90px" type="number" step="any" value="${e?num(e.extra):0}"></td><td class="r">${e?inr(e.amount):'–'}</td></tr>`}).join('')+`</tbody></table></div>`
+     :`<p class="muted">${t('No labourers are mapped to this location yet — add a labourer first.')}</p>`)+`</div>`;
+  return `<h2>${t('Labour')}</h2><p class="sub">Map each labourer to a location with a daily rate, mark attendance every day, and see wages worked out per labourer and per location.</p>
+  <div class="bar">${addBtn('labourers','Add labourer','pri')}${addBtn('labour_wages','Daily wage entry','',loc?{location:loc}:null)}<input class="inp" style="width:auto" type="month" value="${m}" data-a="filter" data-k="labMonth">${sel('labLoc',loc,1)}</div>
+  <div class="grid">${kpi('Active labourers',n0(act.length))}${kpi('Days worked',n2(sum(wm,x=>x.days)))}${kpi('Total wages',inr(sum(wm,x=>x.amount)))}${kpi('Avg wage / day',inr(sum(wm,x=>x.days)?sum(wm,x=>x.amount)/sum(wm,x=>x.days):0))}</div>
+  <h3>${t('Location-wise wages')} · ${m}</h3>`+table(locCols,locRows)+sheetHTML+`<h3>${t('Labourers')} · ${m}</h3>`+table(labCols,labRows,'No records')+`<h3>${t('Daily wage entry')}</h3>`+autoTable('labour_wages',D.labour_wages.filter(x=>!loc||x.location===loc),30);
+}
+function labDetail(id){
+  const l=byId('labourers',id),m=S.labMonth||today().slice(0,7),all=labStats(id),mm=labStats(id,m);
+  const rows=[...all.w].sort((a,b)=>b.date.localeCompare(a.date));
+  const cols=[{h:'Date',f:r=>fdate(r.date)},{h:'Location',f:r=>esc(r.location||'–')},{h:'Attendance',f:r=>t(r.attendance)},{h:'Days',c:'r',f:r=>n2(r.days)},{h:'Rate per day (₹)',c:'r',f:r=>inr(r.rate)},{h:'Overtime / extra (₹)',c:'r',f:r=>inr(r.extra)},{h:'Wages (₹)',c:'r',f:r=>inr(r.amount)},{h:'',c:'r',f:r=>btns('labour_wages',r.id)}];
+  const byLoc=LOCS.map(x=>{const s2=labStats(id,m,x);return kpi('Wages — '+x+' ('+m+')',inr(s2.wages)+sub(n2(s2.days)+' days'))}).join('');
+  return `<div class="bar"><button class="btn" data-a="back">← ${t('Back')}</button>${addBtn('labour_wages','Daily wage entry','pri',{labourer_id:id})}</div><h2>${esc(l.name)} <small class="muted">· ${esc(l.role||'')} · ${esc(l.location||'')} · ${inr(l.rate_per_day)}/day</small></h2>
+  <div class="grid">${kpi('Days this month',n2(mm.days))}${kpi('Wages this month',inr(mm.wages))}${byLoc}${kpi('All-time wages',inr(all.wages)+sub(n2(all.days)+' days'))}</div><h3>${t('Daily wage entry')}</h3>`+table(cols,rows,'No records');
+}
 function feedCard(fi){
   return `<div class="card"><h3 style="margin-top:0">${t('Feed inventory')}</h3>`+(fi.length?barChart(fi.map(x=>({l:x.i.name,v:Math.max(0,x.s.bal),c:x.s.bal<=0?'var(--bad)':x.s.bal<=num(x.i.min_stock_kg)?'var(--warn)':'var(--brand)'})),v=>n0(v)+' kg')
    +`<p class="muted" style="margin:8px 0 0">${fi.map(x=>`${esc(x.i.name)}: ${x.s.days!=null?'≈ '+Math.max(0,Math.floor(x.s.days))+' days left':'no recent use'}`).join(' · ')}</p>`
    :`<p class="muted">${t('No records')}</p><button class="btn sm" data-a="nav" data-k="feed">${t('Feed Inventory')}</button>`)+`</div>`;
 }
-const PAGES={dash:pageDash,s1:pageS1,s2:pageS2,s3:pageS3,s4:pageS4,exp:()=>listPage('expenses','expStage','Expenses'),mort:()=>listPage('mortality','morStage','Mortality'),rep:pageRep,bs:pageBS,feed:pageFeed,med:pageMed,reserve:pageReserve,set:pageSet};
+const PAGES={cust:pageCust,lab:pageLab,dash:pageDash,s1:pageS1,s2:pageS2,s3:pageS3,s4:pageS4,exp:()=>listPage('expenses','expStage','Expenses'),mort:()=>listPage('mortality','morStage','Mortality'),rep:pageRep,bs:pageBS,feed:pageFeed,med:pageMed,reserve:pageReserve,set:pageSet};
 
 function render(){
   const y=scrollY,inputs=document.activeElement&&document.activeElement.dataset&&document.activeElement.dataset.a==='cfg';
   app.innerHTML=`<header><h1>🐔 ${esc(cfg.farm)} <span class="muted" style="font-weight:400;font-size:12px">· Farm Manager${LANG==='en'?'':' / फार्म मैनेजर'}</span></h1>
    <span class="pill">${DB.mode==='local'?'Demo':'Cloud'}</span><div class="seg">${[['en','EN'],['both','EN+हि'],['hi','हिं']].map(([k,l])=>`<button class="${LANG===k?'on':''}" data-a="lang" data-k="${k}">${l}</button>`).join('')}</div>${DB.mode==='cloud'?`<button class="btn sm" data-a="logout">${t('Sign out')}</button>`:''}</header>
   <div class="layout"><nav>${NAV.map(([k,l,s])=>(k==='s1'?`<div class="sep">${t('Stage')}</div>`:k==='exp'?'<div class="sep"> </div>':'')+`<button class="${S.page===k&&!S.detail?'on':''}" data-a="nav" data-k="${k}">${s?`<span style="color:var(--${STAGES[s].c})">●</span> `:''}${t(l)}</button>`).join('')}</nav>
-  <main>${S.detail?pageDetail():PAGES[S.page]()}</main></div>`;
+  <main>${DB.missing&&DB.missing.length?`<div class="card" style="border-color:var(--warn)"><b>⚠ Database update needed</b> — these tables are missing in Supabase: ${esc(DB.missing.join(', '))}. Run the new migration SQL files in the SQL Editor, then refresh.</div>`:''}${S.detail?pageDetail():PAGES[S.page]()}</main></div>`;
   scrollTo(0,y);
 }
 
@@ -777,6 +891,7 @@ function openForm(name,row,preset){
   Object.assign(vals,row||{},preset||{});
   // sensible auto-fill: pick the first available option for required selects with no value
   E.fields.filter(f=>f.t==='select'&&f.req&&(vals[f.k]===''||vals[f.k]==null)).forEach(f=>{const o=typeof f.opts==='function'?f.opts(vals):f.opts;if(o.length)vals[f.k]=o[0][0]});
+  if(!row)E.fields.filter(f=>f.onChange).forEach(f=>f.onChange(vals,true,preset));
   S.form={name,row,vals};drawModal();
 }
 function drawModal(){
@@ -785,7 +900,16 @@ function drawModal(){
   $('#modal').classList.add('on');const f=$('#modal input,#modal select');if(f&&!row)f.focus();
 }
 const closeModal=()=>{$('#modal').classList.remove('on');$('#modal').innerHTML='';S.form=null};
-const toast=m=>{const e=$('#toast');e.textContent=m;e.style.display='block';clearTimeout(toast.h);toast.h=setTimeout(()=>e.style.display='none',2200)};
+const toast=(m,ms=2200)=>{const e=$('#toast');e.textContent=m;e.style.display='block';clearTimeout(toast.h);toast.h=setTimeout(()=>e.style.display='none',ms)};
+async function resolveCustomer(v){ // existing customer chosen -> use it; otherwise add / match the typed customer in the master
+  const nm=String(v.customer||'').trim(),ph=String(v.customer_phone||'').trim(),ad=String(v.customer_address||'').trim();delete v.customer_phone;delete v.customer_address;
+  if(v.customer_id){const c=byId('customers',v.customer_id);if(c)v.customer=c.name;return}
+  if(!nm){v.customer=null;v.customer_id=null;return}
+  let c=D.customers.find(x=>x.name.trim().toLowerCase()===nm.toLowerCase()&&(!ph||!x.phone||String(x.phone)===ph));
+  if(!c)c=await DB.insert('customers',{name:nm,phone:ph||null,address:ad||null});
+  else{const up={};if(ph&&!c.phone)up.phone=ph;if(ad&&!c.address)up.address=ad;if(Object.keys(up).length)await DB.update('customers',c.id,up)}
+  v.customer_id=c.id;v.customer=c.name;
+}
 async function saveForm(){
   const {name,row}=S.form,E=ENT[name],v=readForm(E),err=m=>{$('#err').textContent=m};const sexErr=applySex(name,v);
   for(const f of E.fields){if(f.req&&!f.nf&&(v[f.k]==null||v[f.k]===''))return err(`${f.l} is required`)}
@@ -794,12 +918,15 @@ async function saveForm(){
   if(E.validate){const m=E.validate(v,row);if(m)return err(m)}
   if(SEXV[name]){const m=SEXV[name](v,row);if(m)return err(m)}
   if(E.before)E.before(v,row);
+  try{if(E.fields.some(f=>f.k==='customer_id'))await resolveCustomer(v);}catch(e){return err(e.message||String(e))}
   try{row?await DB.update(name,row.id,v):await DB.insert(name,v)}catch(e){return err(e.message||String(e))}
   closeModal();toast('✓ '+t('Save'));render();
 }
 async function delRecord(name,id){
   const r=byId(name,id);if(!r)return;
   if(name==='feed_items'&&(D.daily_logs.some(l=>l.feed_item_id===id)||D.expenses.some(x=>x.feed_item_id===id)))return alert('This food has usage records (daily entries / expenses). Remove or change those first.');
+  if(name==='customers'&&custSales(byId('customers',id)).length)return alert('This customer has sales recorded. Sales keep the customer name; delete or reassign the sales first.');
+  if(name==='labourers'&&D.labour_wages.some(x=>x.labourer_id===id))return alert('This labourer has wage entries. Set Status = Left instead of deleting, or delete the wage entries first.');
   if(name==='med_items'&&D.expenses.some(x=>x.med_item_id===id))return alert('This medicine has been used in expenses. Remove or change those expenses first.');
   if(name==='reserve_lots'&&D.reserve_moves.some(x=>x.lot_id===id))return alert('This lot has top-up / mortality entries. Remove those first.');
   if(name==='hatch_batches'&&D.flocks.some(f=>f.batch_id===id))return alert('This batch has flocks moved to grow-out. Delete or reassign those flocks first.');
@@ -815,7 +942,7 @@ async function delRecord(name,id){
 /* ---------- sample data ---------- */
 async function seed(){
   if(DB.mode!=='local')return;if(D.cages.length&&!confirm('Add sample data to existing demo data?'))return;
-  const ago=n=>addDays(today(),-n),R=(a,b)=>a+Math.floor(Math.random()*(b-a+1)),ins=(k,r)=>DB.insert(k,r);
+  const ago=n=>addDays(today(),-n),R=(a,b)=>a+Math.floor(Math.random()*(b-a+1)),ins=(k,r)=>DB.insert(k,r,{wait:true});
   const cg=[];for(const [i,[n,b]] of [[250,'Cobb 500 PS'],[260,'Cobb 500 PS'],[240,'Ross 308 PS'],[255,'Ross 308 PS']].entries())cg.push(await ins('cages',{code:'P-'+(i+1),breed:b,initial_birds:n,initial_m:Math.round(n/4),initial_f:n-Math.round(n/4),placed_on:ago(110),notes:''}));
   for(const c of cg){let live=c.initial_birds;for(let d=75;d>=0;d--){if(Math.random()<.12){const q=R(1,3);await ins('mortality',{stage:1,ref_id:c.id,date:ago(d),qty:q,qty_m:0,qty_f:q,cause:['Disease','Heat stress','Unknown','Culled'][R(0,3)],notes:''});live-=q}
     const tot=Math.round(live*(0.72+Math.random()*.12));await ins('egg_production',{cage_id:c.id,date:ago(d),eggs_total:tot,eggs_broken:R(1,8),notes:''})}
@@ -857,6 +984,12 @@ async function seed(){
     await ins('med_stock',{date:ago(d),location:loc,item_id:MI[k].id,kind:'purchase',qty:q,rate,total_cost:Math.round(q*rate*100)/100,supplier:sup,bill_no:'MD-'+R(100,999),expiry_date:addDays(ago(d),365),notes:''});
   await ins('expenses',{stage:3,ref_id:F1.id,date:ago(12),category:'Medicine / Vaccine',med_item_id:MI.nd.id,location:'Siswa',description:'ND vaccine',qty:600,unit:'dose',amount:Math.round(600*1.5*100)/100});
   await ins('expenses',{stage:1,ref_id:cg[0].id,date:ago(9),category:'Medicine / Vaccine',med_item_id:MI.abx.id,location:'Tekuatad',description:'Antibiotic course',qty:120,unit:'ml',amount:Math.round(120*3.2*100)/100});
+  const CU={};for(const [nm,ph,ad] of [['Ramesh Poultry','9415001122','Gorakhpur'],['Sharma Farms','9415003344','Deoria'],['Gorakhpur Mandi','','Gorakhpur'],['City Meat Shop','9415005566','Gorakhpur']])CU[nm]=await ins('customers',{name:nm,phone:ph||null,address:ad});
+  for(const k of ['chick_sales','market_sales'])for(const x of [...D[k]])if(x.customer&&CU[x.customer])await DB.update(k,x.id,{customer_id:CU[x.customer].id});
+  const LB=[];for(const [nm,role,loc,stg,rate] of [['Ram Kishan','Permanent','Tekuatad',1,400],['Sunita Devi','Daily wage','Tekuatad',2,350],['Mohan Lal','Daily wage','Tekuatad',1,300],['Rajesh Kumar','Permanent','Siswa',3,450],['Dinesh Yadav','Daily wage','Siswa',3,350],['Geeta Devi','Daily wage','Siswa',4,320]])
+    LB.push(await ins('labourers',{name:nm,role,location:loc,stage:stg,rate_per_day:rate,joined_on:ago(120),status:'Active',phone:null,notes:''}));
+  for(const l of LB)for(let d=0;d<10;d++){const r=R(0,9),at=r<7?'Present':r<9?'Half day':'Absent',days=ATT[at],extra=at==='Present'&&R(0,6)===0?50:0;
+    await ins('labour_wages',{date:ago(d),location:l.location,labourer_id:l.id,attendance:at,days,rate:l.rate_per_day,extra,amount:Math.round((days*l.rate_per_day+extra)*100)/100})}
   toast('Sample data loaded');render();
 }
 
@@ -878,7 +1011,14 @@ document.addEventListener('click',async ev=>{
   else if(a==='wipe'){if(confirm('Erase ALL demo data in this browser?')){TABLES.forEach(t=>D[t]=[]);DB.persist();render()}}
   else if(a==='csv'){exportCSV(k)}
   else if(a==='backup'){download('poultry-backup-'+today()+'.json',JSON.stringify(D,null,1),'application/json')}
-  else if(a==='logout'){await DB.sb.auth.signOut();location.reload()}
+  else if(a==='allPresent'){document.querySelectorAll('.att-sel').forEach(x=>{if(!x.value)x.value='Present'})}
+  else if(a==='saveAtt'){const sd=S.labDate||today(),sl=S.labSheetLoc||LOCS[0];let n=0;
+    for(const tr of document.querySelectorAll('tr[data-lab]')){const lid=tr.dataset.lab,at=tr.querySelector('.att-sel').value,rate=num(tr.querySelector('.att-rate').value),extra=num(tr.querySelector('.att-extra').value);
+      const ex=D.labour_wages.find(x=>x.labourer_id===lid&&x.date===sd&&x.location===sl);if(!at)continue;
+      const days=ATT[at],row={date:sd,location:sl,labourer_id:lid,attendance:at,days,rate,extra,amount:Math.round((days*rate+extra)*100)/100};
+      ex?await DB.update('labour_wages',ex.id,row):await DB.insert('labour_wages',row);n++}
+    toast('✓ '+n+' '+t('saved'));render()}
+  else if(a==='logout'){DB.clearCache();await DB.sb.auth.signOut();location.reload()}
 });
 document.addEventListener('change',ev=>{
   const el=ev.target,a=el.dataset.a;
@@ -886,7 +1026,7 @@ document.addEventListener('change',ev=>{
   if(a==='rf'){S[el.dataset.k]=el.value;render();return}
   if(a==='cfg'){cfg[el.dataset.k]=el.dataset.t?el.value:(Number(el.value)||0);LS('pfm_cfg',JSON.stringify(cfg));toast('✓ '+t('Save'));return}
   if(S.form&&el.closest('#modal')){const E=ENT[S.form.name];
-    if(E.fields.some(f=>f.showIf)&&el.dataset.k==='category'){S.form.vals={...S.form.vals,...readForm(E)};drawModal();return}
+    {const f=E.fields.find(f=>f.k===el.dataset.k&&f.redraw);if(f){S.form.vals={...S.form.vals,...readForm(E)};if(f.onChange)f.onChange(S.form.vals);drawModal();return}}
     if(E.fields.some(f=>f.dep===el.dataset.k)){S.form.vals={...S.form.vals,...readForm(E)};
       E.fields.filter(f=>f.dep===el.dataset.k).forEach(f=>{S.form.vals[f.k]=''});
       const f0=E.fields.filter(f=>f.dep===el.dataset.k)[0];const o=f0.opts(S.form.vals);S.form.vals[f0.k]=f0.blank?'':(o[0]?o[0][0]:'');
@@ -902,14 +1042,25 @@ function exportCSV(k){
 
 /* ---------- boot ---------- */
 function loginView(msg){
-  app.innerHTML=`<div class="login card"><h2>🐔 Poultry Farm Manager</h2><p class="sub">पोल्ट्री फार्म मैनेजर</p><div class="fld"><label>${t('Email')}</label><input id="em" type="email"></div><div class="fld"><label>${t('Password')}</label><input id="pw" type="password"></div><div class="err" id="lerr">${esc(msg||'')}</div>
+  app.innerHTML=`<div class="login card"><h2>🐔 Poultry Farm Manager</h2><p class="sub">पोल्ट्री फार्म मैनेजर</p><div class="fld"><label>${t('Email')}</label><input id="em" type="email" autocomplete="username"></div><div class="fld"><label>${t('Password')}</label><input id="pw" type="password" autocomplete="current-password"></div><div class="err" id="lerr">${esc(msg||'')}</div>
   <div class="row"><button class="btn pri" id="go">${t('Sign in')}</button></div></div>`;
-  $('#go').onclick=async()=>{const{error}=await DB.sb.auth.signInWithPassword({email:$('#em').value,password:$('#pw').value});if(error)$('#lerr').textContent=error.message;else boot()};
+  const go=async()=>{const b=$('#go');if(b.disabled)return;b.disabled=true;b.textContent=t('Signing in')+'…';$('#lerr').textContent='';
+    try{const{data,error}=await DB.sb.auth.signInWithPassword({email:$('#em').value.trim(),password:$('#pw').value});
+      if(error)throw error;DB.uid=data.session.user.id;await startApp()}
+    catch(e){b.disabled=false;b.textContent=t('Sign in');$('#lerr').textContent=e.message||String(e)}};
+  $('#go').onclick=go;$('#pw').onkeydown=e=>{if(e.key==='Enter')go()};$('#em').onkeydown=e=>{if(e.key==='Enter')$('#pw').focus()};$('#em').focus();
 }
+const loadingView=()=>{app.innerHTML=`<div class="login card"><h2>🐔 Poultry Farm Manager</h2><p class="sub">Loading your farm data… / डेटा लोड हो रहा है…</p></div>`};
+async function startApp(){
+  if(DB.mode==='cloud'&&DB.loadCache()){render();DB.refresh();return}    // instant: show saved data, refresh in background
+  loadingView();await DB.loadAll();render();
+}
+const domReady=new Promise(r=>document.readyState==='loading'?document.addEventListener('DOMContentLoaded',r):r());
 async function boot(){
-  try{await DB.init();if(!(await DB.session()))return loginView();await DB.loadAll();render()}
+  try{await domReady;await DB.init();if(!(await DB.session()))return loginView();await startApp()}
   catch(e){app.innerHTML=`<div class="login card"><h2>Connection problem</h2><p class="err">${esc(e.message||e)}</p><button class="btn" onclick="location.reload()">Retry</button></div>`}
 }
+window.addEventListener('beforeunload',e=>{if(DB.pend){e.preventDefault();e.returnValue=''}});
 boot();
 </script>
 </body>
