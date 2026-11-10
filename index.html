@@ -91,7 +91,7 @@ const $=(s,r=document)=>r.querySelector(s);
 let D={}; // all data, loaded in memory
 
 /* ---------- Hindi / English ---------- */
-const H={'Store':'स्टोर','Overview':'सारांश','Medicine':'दवा','Other Supplies':'अन्य सामान','Other supply':'अन्य सामान','Supply item':'सामान आइटम','Add supply item':'सामान आइटम जोड़ें','Supplies stock':'सामान स्टॉक','Supplies purchase':'सामान खरीद','Feed purchase':'दाना खरीद','Medicine purchase':'दवा खरीद','Transfer between locations':'स्थानों के बीच ट्रांसफर','Transfers between locations':'स्थानों के बीच ट्रांसफर','Transfers in / out':'ट्रांसफर आवक / जावक','From location':'किस स्थान से','To location':'किस स्थान को','Inventory':'इन्वेंटरी','Item':'आइटम','Store stock value':'स्टोर स्टॉक मूल्य','Items in store':'स्टोर में आइटम','Transfers this month':'इस माह ट्रांसफर','Stock value by location':'स्थान-वार स्टॉक मूल्य','Total value':'कुल मूल्य','Total':'कुल','Cost per unit (₹)':'लागत प्रति इकाई (₹)','Expense category':'खर्च श्रेणी','Item name':'आइटम का नाम','Supply item from inventory':'इन्वेंटरी से सामान','Transfer out':'ट्रांसफर जावक','Transfer in':'ट्रांसफर आवक','Customers':'ग्राहक','Customer':'ग्राहक','Customer name':'ग्राहक का नाम','New customer name':'नए ग्राहक का नाम','Add customer':'ग्राहक जोड़ें','Address / city':'पता / शहर','Phone':'फ़ोन','Sales':'बिक्री','Sales history':'बिक्री का इतिहास','Total sales':'कुल बिक्री','Received':'प्राप्त','Pending dues':'बकाया','Due':'बकाया','Last sale':'आख़िरी बिक्री','Birds / chicks bought':'खरीदे पक्षी / चूज़े','Labour':'मज़दूरी / लेबर','Labourer':'मज़दूर','Labourers':'मज़दूर','Add labourer':'मज़दूर जोड़ें','Daily wage entry':'दैनिक मज़दूरी एंट्री','Location (mapped to)':'स्थान (निर्धारित)','Work area (stage)':'कार्य क्षेत्र (स्टेज)','Rate per day (₹)':'दर प्रति दिन (₹)','Attendance':'उपस्थिति','Present':'उपस्थित','Half day':'आधा दिन','Absent':'अनुपस्थित','Overtime / extra (₹)':'ओवरटाइम / अतिरिक्त (₹)','Wages (₹)':'मज़दूरी (₹)','Total wages':'कुल मज़दूरी','Days worked':'काम के दिन','Avg wage / day':'औसत मज़दूरी / दिन','Location-wise wages':'स्थान-वार मज़दूरी','Daily attendance sheet':'दैनिक उपस्थिति शीट','Mark all present':'सभी उपस्थित','Save attendance':'उपस्थिति सेव करें','Labourers mapped':'निर्धारित मज़दूर','Active labourers':'सक्रिय मज़दूर','Customer dues':'ग्राहक बकाया','Labour wages (this month)':'मज़दूरी (इस माह)','Signing in':'साइन इन हो रहा है','Search':'खोजें','Medicine Inventory':'दवा इन्वेंटरी','Medicine inventory':'दवा इन्वेंटरी','Medicine':'दवा','Medicine item':'दवा आइटम','Medicine stock':'दवा स्टॉक','Add medicine':'दवा जोड़ें','Medicine / vaccine name':'दवा / वैक्सीन का नाम','Medicine from inventory':'इन्वेंटरी से दवा','All locations':'सभी स्थान','Expiry date':'एक्सपायरी तारीख','Wastage / expired':'बर्बादी / एक्सपायर','Min stock (per location)':'न्यूनतम स्टॉक (प्रति स्थान)','Unit':'इकाई','Min stock':'न्यूनतम स्टॉक','Avg cost (₹/unit)':'औसत लागत (₹/इकाई)','Rate (₹ per unit)':'दर (₹ प्रति इकाई)','Location':'स्थान','Dashboard':'डैशबोर्ड','Parent Birds':'पैरेंट बर्ड्स','Hatchery':'हैचरी','Grow-out Flocks':'ग्रो-आउट झुंड','Market':'बाज़ार बिक्री','Expenses':'खर्च','Mortality':'मृत्यु','Reports':'रिपोर्ट','Settings':'सेटिंग्स',
+const H={'Cages':'पिंजरे','Daily feed sheet':'दैनिक दाना शीट','Feed efficiency':'दाना दक्षता','Feed planning':'दाना योजना','Add cages in bulk':'एक साथ कई पिंजरे जोड़ें','Cage code prefix':'पिंजरा कोड उपसर्ग','Start number':'शुरुआती नंबर','Number of cages':'पिंजरों की संख्या','Hens (female) per cage':'प्रति पिंजरा मादा','Males per cage':'प्रति पिंजरा नर','Hen-day laying % (7d)':'प्रति मादा अंडा दर % (7 दिन)','Hen-day laying %':'प्रति मादा अंडा दर %','vs standard':'मानक से तुलना','Full':'पूरा','Hens per male':'प्रति नर मादा','No males':'नर नहीं','Too few males':'नर कम','Daily feed need':'दैनिक दाना ज़रूरत','Feed given today':'आज दिया दाना','Male ratio alerts':'नर अनुपात अलर्ट','Fill suggested':'सुझाई मात्रा भरें','Save feed sheet':'दाना शीट सेव करें','Suggested (KG)':'सुझाई मात्रा (KG)','Feed given (KG)':'दिया गया दाना (KG)','Suggested total':'कुल सुझाई मात्रा','bags':'बोरी','stock':'स्टॉक','Recent cage feed entries':'हाल की पिंजरा दाना एंट्री','Parent cage feed':'पैरेंट पिंजरा दाना','Used (parent cages)':'उपयोग (पैरेंट पिंजरे)','g / bird / day':'ग्राम / पक्षी / दिन','Feed per egg (g)':'प्रति अंडा दाना (ग्राम)','Feed per dozen eggs (KG)':'प्रति दर्जन अंडे दाना (KG)','Feed cost per egg':'प्रति अंडा दाना लागत','Flags':'संकेत','Above feed norm':'मानक से ज़्यादा दाना','Below feed norm':'मानक से कम दाना','Low laying':'कम अंडा उत्पादन','Feed given':'दिया गया दाना','Avg g / bird / day':'औसत ग्राम / पक्षी / दिन','Feed per egg':'प्रति अंडा दाना','Cages flagged':'संकेत वाले पिंजरे','days entered':'दिन दर्ज','Last':'पिछले','days':'दिन','Norm':'मानक','Target laying':'लक्ष्य अंडा दर','Parent feed':'पैरेंट दाना','Parent birds':'पैरेंट पक्षी','Daily need':'दैनिक ज़रूरत','Daily need (KG)':'दैनिक ज़रूरत (KG)','Actual use (7-day avg)':'वास्तविक उपयोग (7 दिन औसत)','Monthly need (30 days)':'मासिक ज़रूरत (30 दिन)','Stock of this feed':'इस दाने का स्टॉक','Stock of this feed (KG)':'इस दाने का स्टॉक (KG)','Days left (all locations)':'बचे दिन (सभी स्थान)','To order for 30 days':'30 दिन के लिए ऑर्डर','Target strength':'मानक संख्या','Feed saved for':'दाना सेव हुआ','cages':'पिंजरे','Feed cost (cage feed)':'दाना लागत (पिंजरा)','Daily feed':'दैनिक दाना','Top-up':'टॉप-अप','Cage standard — hens (female) per cage':'पिंजरा मानक — प्रति पिंजरा मादा','Cage standard — males per cage':'पिंजरा मानक — प्रति पिंजरा नर','Male ratio alert — max hens per male':'नर अनुपात अलर्ट — प्रति नर अधिकतम मादा','Parent feed norm — planned (g / bird / day)':'पैरेंट दाना मानक — योजना (ग्राम / पक्षी / दिन)','Parent feed norm — minimum (g / bird / day)':'पैरेंट दाना मानक — न्यूनतम','Parent feed norm — maximum (g / bird / day)':'पैरेंट दाना मानक — अधिकतम','Target hen-day laying %':'लक्ष्य अंडा दर % (प्रति मादा)','Feed reorder alert (days of feed left)':'दाना ऑर्डर अलर्ट (बचे दिन)','Store':'स्टोर','Overview':'सारांश','Medicine':'दवा','Other Supplies':'अन्य सामान','Other supply':'अन्य सामान','Supply item':'सामान आइटम','Add supply item':'सामान आइटम जोड़ें','Supplies stock':'सामान स्टॉक','Supplies purchase':'सामान खरीद','Feed purchase':'दाना खरीद','Medicine purchase':'दवा खरीद','Transfer between locations':'स्थानों के बीच ट्रांसफर','Transfers between locations':'स्थानों के बीच ट्रांसफर','Transfers in / out':'ट्रांसफर आवक / जावक','From location':'किस स्थान से','To location':'किस स्थान को','Inventory':'इन्वेंटरी','Item':'आइटम','Store stock value':'स्टोर स्टॉक मूल्य','Items in store':'स्टोर में आइटम','Transfers this month':'इस माह ट्रांसफर','Stock value by location':'स्थान-वार स्टॉक मूल्य','Total value':'कुल मूल्य','Total':'कुल','Cost per unit (₹)':'लागत प्रति इकाई (₹)','Expense category':'खर्च श्रेणी','Item name':'आइटम का नाम','Supply item from inventory':'इन्वेंटरी से सामान','Transfer out':'ट्रांसफर जावक','Transfer in':'ट्रांसफर आवक','Customers':'ग्राहक','Customer':'ग्राहक','Customer name':'ग्राहक का नाम','New customer name':'नए ग्राहक का नाम','Add customer':'ग्राहक जोड़ें','Address / city':'पता / शहर','Phone':'फ़ोन','Sales':'बिक्री','Sales history':'बिक्री का इतिहास','Total sales':'कुल बिक्री','Received':'प्राप्त','Pending dues':'बकाया','Due':'बकाया','Last sale':'आख़िरी बिक्री','Birds / chicks bought':'खरीदे पक्षी / चूज़े','Labour':'मज़दूरी / लेबर','Labourer':'मज़दूर','Labourers':'मज़दूर','Add labourer':'मज़दूर जोड़ें','Daily wage entry':'दैनिक मज़दूरी एंट्री','Location (mapped to)':'स्थान (निर्धारित)','Work area (stage)':'कार्य क्षेत्र (स्टेज)','Rate per day (₹)':'दर प्रति दिन (₹)','Attendance':'उपस्थिति','Present':'उपस्थित','Half day':'आधा दिन','Absent':'अनुपस्थित','Overtime / extra (₹)':'ओवरटाइम / अतिरिक्त (₹)','Wages (₹)':'मज़दूरी (₹)','Total wages':'कुल मज़दूरी','Days worked':'काम के दिन','Avg wage / day':'औसत मज़दूरी / दिन','Location-wise wages':'स्थान-वार मज़दूरी','Daily attendance sheet':'दैनिक उपस्थिति शीट','Mark all present':'सभी उपस्थित','Save attendance':'उपस्थिति सेव करें','Labourers mapped':'निर्धारित मज़दूर','Active labourers':'सक्रिय मज़दूर','Customer dues':'ग्राहक बकाया','Labour wages (this month)':'मज़दूरी (इस माह)','Signing in':'साइन इन हो रहा है','Search':'खोजें','Medicine Inventory':'दवा इन्वेंटरी','Medicine inventory':'दवा इन्वेंटरी','Medicine':'दवा','Medicine item':'दवा आइटम','Medicine stock':'दवा स्टॉक','Add medicine':'दवा जोड़ें','Medicine / vaccine name':'दवा / वैक्सीन का नाम','Medicine from inventory':'इन्वेंटरी से दवा','All locations':'सभी स्थान','Expiry date':'एक्सपायरी तारीख','Wastage / expired':'बर्बादी / एक्सपायर','Min stock (per location)':'न्यूनतम स्टॉक (प्रति स्थान)','Unit':'इकाई','Min stock':'न्यूनतम स्टॉक','Avg cost (₹/unit)':'औसत लागत (₹/इकाई)','Rate (₹ per unit)':'दर (₹ प्रति इकाई)','Location':'स्थान','Dashboard':'डैशबोर्ड','Parent Birds':'पैरेंट बर्ड्स','Hatchery':'हैचरी','Grow-out Flocks':'ग्रो-आउट झुंड','Market':'बाज़ार बिक्री','Expenses':'खर्च','Mortality':'मृत्यु','Reports':'रिपोर्ट','Settings':'सेटिंग्स',
 'Stage 1':'चरण 1','Stage 2':'चरण 2','Stage 3':'चरण 3','Stage 4':'चरण 4','Add':'जोड़ें','Edit':'बदलें','Delete':'हटाएं','Save':'सेव करें','Cancel':'रद्द करें','Details':'विवरण','Back':'वापस',
 'Cage':'पिंजरा','Cages':'पिंजरे','Code':'कोड','Cage code':'पिंजरा कोड','Breed':'नस्ल','Birds placed':'डाले गए पक्षी','Live birds':'जीवित पक्षी','Date':'तारीख','Eggs':'अंडे','Eggs laid':'दिए गए अंडे','Broken':'टूटे','Notes':'टिप्पणी',
 'Amount':'राशि','Category':'श्रेणी','Quantity':'मात्रा','Cause':'कारण','Flock':'झुंड','Batch':'बैच','Customer':'ग्राहक','Rate':'दर','Total':'कुल','Cost':'लागत','Profit':'लाभ','Revenue':'आय','Status':'स्थिति','Stage':'चरण','Machine':'मशीन',
@@ -123,12 +123,12 @@ let LANG=LS('pfm_lang')||'both';
 const t=s=>{const h=H[s];return LANG==='en'||!h?s:LANG==='hi'?h:s+' / '+h};
 
 /* ---------- configuration ---------- */
-const CFG0={farm:'Siswa Quail Farm',storeDays:5,incDays:18,marketAge:40,mortPct:1,bagKg:50,reserveMin:20,rate_pre:0,rate_starter:0,rate_grower:0,rate_finisher:0,rate_other:0};
+const CFG0={farm:'Siswa Quail Farm',storeDays:5,incDays:18,marketAge:40,mortPct:1,bagKg:50,reserveMin:20,cageStdF:15,cageStdM:5,maxHensPerMale:4,feedNorm:33,feedNormMin:30,feedNormMax:35,layTarget:70,feedReorderDays:7,rate_pre:0,rate_starter:0,rate_grower:0,rate_finisher:0,rate_other:0};
 const cfg={...CFG0,...JSON.parse(LS('pfm_cfg')||'{}')};
 
 /* ---------- data layer (Supabase or local demo) ---------- */
 const NOLOC=['customers','labourers','sup_items','store_transfers'];
-const TABLES=['cages','egg_production','hatch_batches','egg_transfers','chick_sales','flocks','weights','daily_logs','flock_transfers','reserve_lots','reserve_moves','feed_items','feed_stock','med_items','med_stock','sup_items','sup_stock','store_transfers','customers','labourers','labour_wages','market_sales','mortality','expenses'];
+const TABLES=['cages','egg_production','hatch_batches','egg_transfers','chick_sales','flocks','weights','daily_logs','flock_transfers','reserve_lots','reserve_moves','feed_items','feed_stock','med_items','med_stock','sup_items','sup_stock','store_transfers','cage_feed','customers','labourers','labour_wages','market_sales','mortality','expenses'];
 /* ===== SUPABASE CONNECTION — paste your values here, then re-upload the file =====
    Supabase Dashboard -> Project Settings -> API (Project URL + anon/public key).
    Leave both empty to run in local Demo mode. NEVER paste the service_role / secret key. */
@@ -165,7 +165,8 @@ const DB={
     return false;
   },
   async refresh(){await this.q;try{if(await this.loadAll()&&!S.form)render()}catch(e){console.warn('refresh failed',e)}},
-  persist(){LS('pfm_demo_v1',JSON.stringify(D))},
+  persist(){if(!this._bulk)LS('pfm_demo_v1',JSON.stringify(D))},
+  async batch(fn){this._bulk=true;try{await fn()}finally{this._bulk=false;if(this.mode==='local')this.persist()}},
   _sync(){const el=document.getElementById('sync');if(el){el.textContent=this.pend?'⟳ Saving…':'';el.style.display=this.pend?'block':'none'}},
   _enq(fn){this.pend++;this._sync();const p=this.q.then(fn);this.q=p.catch(()=>{});return p.finally(()=>{this.pend--;this._sync();if(!this.pend)this.saveCache()})},
   _fail(e){toast('⚠ Not saved to the server: '+(e&&e.message||e),6000);render()},
@@ -237,11 +238,11 @@ const medName=id=>invName('med',id),medUnit=id=>invUnit('med',id);
 function invStats(v,id,loc,ex={}){
   const c=INV[v],q=c.q,st=D[c.stock].filter(x=>x.item_id===id&&(loc==null||x.location===loc)&&x.id!==ex.stock),buy=st.filter(x=>x.kind!=='wastage'),waste=sum(st.filter(x=>x.kind==='wastage'),x=>x[q]);
   const ep=D.expenses.filter(e=>e[c.expf]===id&&(loc==null||e.location===loc)&&e.id!==ex.exp);
-  const lg=c.logs?D.daily_logs.filter(l=>l.feed_item_id===id&&(loc==null||l.location===loc)&&l.id!==ex.log):[];
+  const lg=c.logs?D.daily_logs.filter(l=>l.feed_item_id===id&&(loc==null||l.location===loc)&&l.id!==ex.log):[],cfd=c.logs?D.cage_feed.filter(x=>x.feed_item_id===id&&(loc==null||x.location===loc)&&x.id!==ex.cf):[];
   const tr=loc==null?[]:D.store_transfers.filter(x=>x.inv===v&&x.item_id===id&&x.id!==ex.tr),ti=tr.filter(x=>x.to_location===loc),to=tr.filter(x=>x.from_location===loc);
-  const inn=sum(buy,x=>x[q]),tin=sum(ti,x=>x.qty),tout=sum(to,x=>x.qty),used=sum(ep,e=>e.qty)+sum(lg,l=>l.feed_kg),bal=inn+tin-tout-waste-used;
+  const inn=sum(buy,x=>x[q]),tin=sum(ti,x=>x.qty),tout=sum(to,x=>x.qty),used=sum(ep,e=>e.qty)+sum(lg,l=>l.feed_kg)+sum(cfd,x=>x.feed_kg),bal=inn+tin-tout-waste-used;
   const cin=inn+tin,cc=sum(buy,x=>x.total_cost)+sum(ti,x=>num(x.qty)*num(x.rate)),avg=cin?cc/cin:0;
-  return{inn,tin,tout,waste,used,usedCost:sum(ep,e=>e.amount)+sum(lg,l=>l.feed_cost),bal,avg,value:Math.max(0,bal)*avg,active:inn>0||tin>0||tout>0||used>0||waste>0};
+  return{inn,tin,tout,waste,used,usedCost:sum(ep,e=>e.amount)+sum(lg,l=>l.feed_cost)+sum(cfd,x=>x.feed_cost),bal,avg,value:Math.max(0,bal)*avg,active:inn>0||tin>0||tout>0||used>0||waste>0};
 }
 function invAvgCostAt(v,id,loc,date){
   const c=INV[v],q=c.q,sel=(strict)=>[D[c.stock].filter(x=>x.item_id===id&&x.location===loc&&x.kind!=='wastage'&&(!strict||x.date<=date)),D.store_transfers.filter(x=>x.inv===v&&x.item_id===id&&x.to_location===loc&&(!strict||x.date<=date))];
@@ -276,10 +277,10 @@ const feedName=id=>{const f=byId('feed_items',id);return f?f.name:'?'};
 const sub=x=>`<small style="display:block;font-size:11px;font-weight:400;color:var(--mut)">${x}</small>`;
 function feedStats(id,ex={}){
   const st=D.feed_stock.filter(x=>x.item_id===id&&x.id!==ex.stock),buy=st.filter(x=>x.kind!=='wastage'),waste=sum(st.filter(x=>x.kind==='wastage'),x=>x.qty_kg);
-  const lg=D.daily_logs.filter(l=>l.feed_item_id===id&&l.id!==ex.log),ep=D.expenses.filter(e=>e.feed_item_id===id&&e.id!==ex.exp);
-  const inn=sum(buy,x=>x.qty_kg),usedF=sum(lg,l=>l.feed_kg),usedO=sum(ep,e=>e.qty),bal=inn-waste-usedF-usedO,bq=inn,bc=sum(buy,x=>x.total_cost),avg=bq?bc/bq:0;
-  const d7=addDays(today(),-6),use7=sum(lg.filter(l=>l.date>=d7),l=>l.feed_kg)+sum(ep.filter(e=>e.date>=d7),e=>e.qty);
-  return{inn,waste,usedF,usedO,bal,avg,value:Math.max(0,bal)*avg,use7,days:use7>0?bal/(use7/7):null};
+  const lg=D.daily_logs.filter(l=>l.feed_item_id===id&&l.id!==ex.log),ep=D.expenses.filter(e=>e.feed_item_id===id&&e.id!==ex.exp),cf=D.cage_feed.filter(x=>x.feed_item_id===id&&x.id!==ex.cf);
+  const inn=sum(buy,x=>x.qty_kg),usedF=sum(lg,l=>l.feed_kg),usedO=sum(ep,e=>e.qty),usedC=sum(cf,x=>x.feed_kg),bal=inn-waste-usedF-usedO-usedC,bq=inn,bc=sum(buy,x=>x.total_cost),avg=bq?bc/bq:0;
+  const d7=addDays(today(),-6),use7=sum(lg.filter(l=>l.date>=d7),l=>l.feed_kg)+sum(ep.filter(e=>e.date>=d7),e=>e.qty)+sum(cf.filter(x=>x.date>=d7),x=>x.feed_kg);
+  return{inn,waste,usedF,usedO,usedC,bal,avg,value:Math.max(0,bal)*avg,use7,days:use7>0?bal/(use7/7):null};
 }
 function avgCostAt(id,date){ // weighted-average purchase cost per KG up to a date (falls back to all purchases)
   let b=D.feed_stock.filter(x=>x.item_id===id&&x.kind!=='wastage'&&x.date<=date);if(!b.length)b=D.feed_stock.filter(x=>x.item_id===id&&x.kind!=='wastage');
@@ -327,6 +328,25 @@ const ENT={
  cages:{title:'Cage',cols:['code','breed','placed_on','initial_birds','initial_m','initial_f','notes'],fields:[
   {k:'code',l:'Cage code',t:'text',req:1,def:()=>'P-'+(D.cages.length+1)},{k:'breed',l:'Breed',t:'text'},
   ...sexF('initial_m','initial_f'),{k:'initial_birds',l:'Initial birds',t:'number',hint:'Total — filled automatically from Male + Female'},{k:'placed_on',l:'Placed on',t:'date',req:1,def:today},{k:'notes',l:'Notes',t:'textarea'}]},
+ cage_bulk:{title:'Add cages in bulk',cols:[],fields:[
+  {k:'prefix',l:'Cage code prefix',t:'text',req:1,def:'P-'},
+  {k:'start',l:'Start number',t:'number',req:1,def:()=>{const n=D.cages.map(c=>parseInt(String(c.code).replace(/\D+/g,''),10)).filter(x=>!isNaN(x));return n.length?Math.max(...n)+1:1}},
+  {k:'count',l:'Number of cages',t:'number',req:1,def:60},
+  {k:'initial_f',l:'Hens (female) per cage',t:'number',req:1,def:()=>num(cfg.cageStdF)},{k:'initial_m',l:'Males per cage',t:'number',req:1,def:()=>num(cfg.cageStdM)},
+  {k:'breed',l:'Breed',t:'text'},{k:'placed_on',l:'Placed on',t:'date',req:1,def:today}],
+  validate:v=>{if(!(v.count>=1&&v.count<=500))return 'Number of cages must be between 1 and 500';if(!(v.start>=0))return 'Enter the start number';
+    const codes=[...Array(v.count)].map((_,i)=>v.prefix+(v.start+i)),dup=codes.filter(x=>D.cages.some(c=>c.code===x));return dup.length?`These cage codes already exist: ${dup.slice(0,6).join(', ')}${dup.length>6?'…':''}`:''},
+  save:async v=>{await DB.batch(async()=>{for(let i=0;i<v.count;i++)await DB.insert('cages',{code:v.prefix+(v.start+i),breed:v.breed,initial_m:num(v.initial_m),initial_f:num(v.initial_f),initial_birds:num(v.initial_m)+num(v.initial_f),placed_on:v.placed_on,location:v.location,notes:''})});
+    toast('✓ '+v.count+' cages added')}},
+ cage_feed:{title:'Parent cage feed',cols:['date','cage_id','feed_item_id','birds','feed_kg','feed_cost','notes'],fields:[
+  {k:'date',l:'Date',t:'date',req:1,def:today},
+  {k:'cage_id',l:'Cage',t:'select',opts:optCages,req:1,redraw:1,onChange:(v,init,pre)=>{const c=byId('cages',v.cage_id);if(c&&c.location&&!(init&&pre&&pre.location))v.location=c.location}},
+  {k:'feed_item_id',l:'Food item',t:'select',opts:optFeed,req:1},{k:'feed_kg',l:'Feed given (KG)',t:'number',req:1},
+  {k:'birds',l:'Birds in cage',t:'number',nf:1},{k:'feed_cost',l:'Feed cost',t:'number',nf:1,money:1},{k:'notes',l:'Notes',t:'textarea'}],
+  validate:(v,r)=>{if(!(v.feed_kg>0))return 'Feed must be more than 0';
+    if(D.cage_feed.some(x=>x.id!==(r&&r.id)&&x.cage_id===v.cage_id&&x.date===v.date&&x.feed_item_id===v.feed_item_id))return 'This cage already has this feed for this date — edit that entry instead';
+    return feedCheck(v.feed_item_id,v.feed_kg,{cf:r&&r.id})},
+  before:v=>{const c=byId('cages',v.cage_id);v.birds=c?cageStats(c).live:null;v.feed_cost=Math.round(num(v.feed_kg)*avgCostAt(v.feed_item_id,v.date)*100)/100}},
  egg_production:{title:'Eggs laid',cols:['date','cage_id','eggs_total','eggs_broken','notes'],fields:[
   {k:'date',l:'Date',t:'date',req:1,def:today},{k:'cage_id',l:'Cage',t:'select',opts:optCages,req:1},
   {k:'eggs_total',l:'Eggs laid',t:'number',req:1},{k:'eggs_broken',l:'Broken',t:'number',def:0},{k:'notes',l:'Notes',t:'textarea'}]},
@@ -502,13 +522,13 @@ const ENT={
 // ---- Location (every entry): 1 Tekuatad, 2 Siswa. Stage 1 & 2 default Tekuatad, stage 3 & 4 default Siswa ----
 const LOCS=['Tekuatad','Siswa'];
 const LOCDEFAULT={cages:'Tekuatad',egg_production:'Tekuatad',egg_transfers:'Tekuatad',hatch_batches:'Tekuatad',chick_sales:'Tekuatad',reserve_lots:'Tekuatad',reserve_moves:'Tekuatad',
- flocks:'Siswa',weights:'Siswa',daily_logs:'Siswa',flock_transfers:'Siswa',market_sales:'Siswa',feed_stock:'Siswa',med_stock:'Siswa',sup_stock:'Siswa',labour_wages:'Siswa'};
+ flocks:'Siswa',weights:'Siswa',daily_logs:'Siswa',flock_transfers:'Siswa',market_sales:'Siswa',feed_stock:'Siswa',med_stock:'Siswa',sup_stock:'Siswa',cage_feed:'Tekuatad',cage_bulk:'Tekuatad',labour_wages:'Siswa'};
 const locByStage=st=>(+st===1||+st===2)?'Tekuatad':'Siswa';
 const locFor=(k,row)=>(k==='mortality'||k==='expenses')?locByStage(row&&row.stage||1):(LOCDEFAULT[k]||'Siswa');
 Object.keys(ENT).concat([]).forEach(k=>{const E=ENT[k];if(k==='feed_items'||k==='med_items'||NOLOC.includes(k))return;
  E.fields.splice(Math.min(1,E.fields.length),0,{k:'location',l:'Location',t:'select',opts:LOCS.map(x=>[x,x]),req:1,def:()=>locFor(k)});
  if(E.cols.indexOf('location')<0)E.cols.splice(Math.min(1,E.cols.length),0,'location')});
-const CASC={cages:[['egg_production','cage_id'],['egg_transfers','cage_id'],['reserve_moves','cage_id']],feed_items:[['feed_stock','item_id']],med_items:[['med_stock','item_id']],sup_items:[['sup_stock','item_id']],hatch_batches:[['egg_transfers','batch_id'],['chick_sales','batch_id']],flocks:[['weights','flock_id'],['market_sales','flock_id'],['daily_logs','flock_id'],['flock_transfers','from_flock_id'],['flock_transfers','to_flock_id']]};
+const CASC={cages:[['egg_production','cage_id'],['egg_transfers','cage_id'],['reserve_moves','cage_id'],['cage_feed','cage_id']],feed_items:[['feed_stock','item_id']],med_items:[['med_stock','item_id']],sup_items:[['sup_stock','item_id']],hatch_batches:[['egg_transfers','batch_id'],['chick_sales','batch_id']],flocks:[['weights','flock_id'],['market_sales','flock_id'],['daily_logs','flock_id'],['flock_transfers','from_flock_id'],['flock_transfers','to_flock_id']]};
 const POLY={cages:[1],hatch_batches:[2],flocks:[3,4]};
 
 /* ---------- calculations ---------- */
@@ -526,7 +546,7 @@ function cageStats(c){
   const eggs=D.egg_production.filter(e=>e.cage_id===c.id),mort=mortOf(1,c.id),tp=D.reserve_moves.filter(x=>x.kind==='topup'&&x.cage_id===c.id),top=sum(tp,x=>x.qty),topM=sum(tp,x=>x.qty_m),topF=sum(tp,x=>x.qty_f),live=num(c.initial_birds)+top-mort;
   const total=sum(eggs,e=>e.eggs_total),broken=sum(eggs,e=>e.eggs_broken),sent=sum(D.egg_transfers.filter(x=>x.cage_id===c.id),x=>x.eggs);
   const from=addDays(today(),-6),w=sum(eggs.filter(e=>e.date>=from),e=>e.eggs_total);
-  const ms_=mortSex(1,c.id);return{mort,live,liveM:num(c.initial_m)+topM-ms_[0],liveF:num(c.initial_f)+topF-ms_[1],top,topM,topF,total,broken,sent,stock:total-broken-sent,lay:live>0?w/(live*7)*100:0,exp:expOf(1,c.id)};
+  const ms_=mortSex(1,c.id),sexed=c.initial_m!=null||c.initial_f!=null,hens=sexed?Math.max(0,num(c.initial_f)+topF-ms_[1]):live,feedCost=sum(D.cage_feed.filter(x=>x.cage_id===c.id),x=>x.feed_cost);return{hens,sexed,feedCost,mort,live,liveM:num(c.initial_m)+topM-ms_[0],liveF:num(c.initial_f)+topF-ms_[1],top,topM,topF,total,broken,sent,stock:total-broken-sent,lay:hens>0?w/(hens*7)*100:0,exp:expOf(1,c.id)+feedCost};
 }
 /* Reserve parent birds: pool that tops up Stage-1 cages after mortality */
 function reserveStats(exId,lotId){ // lotId undefined = all lots; a lot id = that lot; null = older entries that have no lot
@@ -556,7 +576,7 @@ function flockStats(f){
   const w=D.weights.filter(x=>x.flock_id===f.id).sort((a,b)=>b.date.localeCompare(a.date))[0];
   return{mM:mm[0],mF:mm[1],sM,sF,tiM,tiF,toM,toF,liveM:num(f.placed_m)+tiM-toM-mm[0]-sM,liveF:num(f.placed_f)+tiF-toF-mm[1]-sF,mort,sold,tin,tout,feedKg,feedCost,live:num(f.chicks_placed)+tin-tout-mort-sold,age:diffDays(today(),f.placed_on),weight:w?w.avg_weight_g:null,revenue:sum(ms,s=>s.amount),paid:sum(ms,s=>s.paid),exp3:expOf(3,f.id),exp4:expOf(4,f.id)};
 }
-const costPerEgg=()=>{const e=sum(D.expenses.filter(x=>x.stage===1),x=>x.amount),n=sum(D.egg_production,x=>x.eggs_total);return n?e/n:0};
+const costPerEgg=()=>{const e=sum(D.expenses.filter(x=>x.stage===1),x=>x.amount)+sum(D.cage_feed,x=>x.feed_cost),n=sum(D.egg_production,x=>x.eggs_total);return n?e/n:0};
 function batchCost(b){const s=batchStats(b),total=s.received*costPerEgg()+s.exp;return{total,perChick:s.hatched?total/s.hatched:0}}
 function flockCost(f){const b=byId('hatch_batches',f.batch_id),s=flockStats(f),pc=f.chick_price!=null&&f.chick_price!==''?num(f.chick_price):(b?batchCost(b).perChick:0),chick=num(f.chicks_placed)*pc,other=s.exp3+s.exp4+s.feedCost,heads=num(f.chicks_placed)+s.tin;return{chick,other,total:chick+other,perBird:heads?(chick+other)/heads:0}}
 
@@ -601,7 +621,7 @@ function pageDash(){
   const td=today(),w=addDays(td,-6);
   const fi=D.feed_items.map(i=>({i,s:feedStats(i.id)})),fkg=sum(fi,x=>x.s.bal),fval=sum(fi,x=>x.s.value),rs=reserveStats(),parents=sum(cs,c=>c.live),parM=sum(cs,c=>c.liveM),parF=sum(cs,c=>c.liveF),eT=sum(D.egg_production.filter(e=>e.date===td),e=>e.eggs_total),e7=sum(D.egg_production.filter(e=>e.date>=w),e=>e.eggs_total);
   const inInc=sum(bs.filter(x=>!x.s.done),x=>x.s.set),chicks=sum(bs,x=>x.s.avail),grow=sum(fs,x=>x.s.live),growM=sum(fs,x=>x.s.liveM),growF=sum(fs,x=>x.s.liveF),sold=sum(fs,x=>x.s.sold);
-  const exp=sum(D.expenses,e=>e.amount)+sum(fs,x=>x.s.feedCost),rev=sum(D.chick_sales,s=>s.amount)+sum(D.market_sales,s=>s.amount);
+  const exp=sum(D.expenses,e=>e.amount)+sum(fs,x=>x.s.feedCost)+sum(D.cage_feed,x=>x.feed_cost),rev=sum(D.chick_sales,s=>s.amount)+sum(D.market_sales,s=>s.amount);
   const al=[];
   bs.forEach(({b,s})=>{
     if(s.status==='storage'&&diffDays(b.set_date,td)<=2)al.push(['',`${b.batch_no}: ${t('Set date')} ${fdate(b.set_date)} — ${diffDays(b.set_date,td)===0?'today':'in '+diffDays(b.set_date,td)+' day(s)'}`]);
@@ -612,13 +632,15 @@ function pageDash(){
   if(rs.in>0&&rs.bal<=num(cfg.reserveMin))al.push([rs.bal<=0?'bad':'',`Reserve birds ${rs.bal<=0?'finished':'low'}: ${n0(rs.bal)} left (${mfx(rs.balM,rs.balF)})`]);
   ['med','sup'].forEach(v=>invRows(v).filter(x=>x.s.active).forEach(x=>{const w=v==='med'?'medicine':'supply';if(x.s.bal<=0)al.push(['bad',`${x.i.name} (${x.loc}): ${w} out of stock`]);else if(x.s.bal<=minOf(v,x.i))al.push(['',`${x.i.name} (${x.loc}): low ${w} stock — ${n2(x.s.bal)} ${x.i.unit||''} left (limit ${n2(minOf(v,x.i))})`])}));
   fi.forEach(({i,s})=>{if(s.bal<=0)al.push(['bad',`${i.name}: feed out of stock`]);else if(s.bal<=num(i.min_stock_kg))al.push(['',`${i.name}: low stock — ${n2(s.bal)} kg left (limit ${n2(i.min_stock_kg)} kg)${s.days!=null?', ≈ '+Math.floor(s.days)+' days':''}`])});
-  D.cages.forEach(c=>{const s=cageStats(c),def=num(c.initial_birds)-s.live;if(def>0&&rs.bal>0)al.push(['',`${c.code}: ${n0(def)} birds below original strength — reserve has ${n0(rs.bal)} (${mfx(rs.balM,rs.balF)}) available for top-up`])});
+  {const sh=D.cages.map(c=>cageNeed(c)).filter(n=>n.def>0);if(sh.length)al.push(['',`${sh.length} cage(s) below standard (${cfg.cageStdF} hens + ${cfg.cageStdM} males) — short ${n0(sum(sh,x=>x.dF))} hens, ${n0(sum(sh,x=>x.dM))} males${rs.bal>0?` · reserve has ${n0(rs.bal)} (${mfx(rs.balM,rs.balF)}) for top-up`:' · reserve is empty'}`]);
+   const mi=D.cages.map(c=>({c,m:maleIssue(cageStats(c))})).filter(x=>x.m);if(mi.length)al.push([mi.some(x=>x.m==='bad')?'bad':'',`Male ratio: ${mi.length} cage(s) have more than ${cfg.maxHensPerMale} hens per male — ${mi.slice(0,10).map(x=>x.c.code).join(', ')}${mi.length>10?'…':''}`]);
+   if(D.cages.length){const fp=feedPlan(),it=fp.item&&byId('feed_items',fp.item);fp.byLoc.forEach(x=>{if(it&&x.days!=null&&x.days<=num(cfg.feedReorderDays))al.push([x.days<=2?'bad':'',`${x.l}: ${it.name} for parent birds will last about ${Math.max(0,Math.floor(x.days))} day(s) — order ≈ ${x.bags} bags (${n0(x.order)} kg) for 30 days`])})}}
   fs.forEach(({f,s})=>{if(s.live>0&&!D.daily_logs.some(l=>l.flock_id===f.id&&l.date===td))al.push(['',`${f.code}: no daily entry yet for today`])});
   fs.forEach(({f,s})=>{if(s.live>0&&s.age>=cfg.marketAge)al.push(['ok',`${f.code}: ${t('Ready for market')} — ${s.age} days, ${n0(s.live)} birds`])});
   allMort().filter(m=>m.date===td).forEach(m=>{const live=m.stage===1?(byId('cages',m.ref_id)?cageStats(byId('cages',m.ref_id)).live:0):m.stage===3?(byId('flocks',m.ref_id)?flockStats(byId('flocks',m.ref_id)).live:0):0;
     if(live&&m.qty/(live+m.qty)*100>=cfg.mortPct)al.push(['bad',`${t('Mortality')}: ${refLabel(m.stage,m.ref_id)} — ${m.qty} birds today (${(m.qty/(live+m.qty)*100).toFixed(1)}%)`])});
   const mt=[[1,sum(cs,c=>c.mort),sum(D.cages,c=>c.initial_birds)+sum(D.reserve_moves.filter(x=>x.kind==='topup'),x=>x.qty)],[2,sum(bs,x=>x.s.mort),sum(bs,x=>x.s.hatched)],[3,sum(fs,x=>x.s.mort),sum(D.flocks,f=>f.chicks_placed)]];
-  const ex=[1,2,3,4].map(s=>({l:'S'+s+' '+STAGES[s].en,v:sum(D.expenses.filter(e=>e.stage===s),e=>e.amount)+(s===3?sum(fs,x=>x.s.feedCost):0),c:`var(--${STAGES[s].c})`}));
+  const ex=[1,2,3,4].map(s=>({l:'S'+s+' '+STAGES[s].en,v:sum(D.expenses.filter(e=>e.stage===s),e=>e.amount)+(s===3?sum(fs,x=>x.s.feedCost):0)+(s===1?sum(D.cage_feed,x=>x.feed_cost):0),c:`var(--${STAGES[s].c})`}));
   return `<h2>${t('Dashboard')}</h2><p class="sub">${fdate(td)}</p>
   <div class="grid">${kpi('Parent birds',n0(parents)+sxs(parM,parF),'s1')}${kpi('Reserve birds',n0(rs.bal)+sxs(rs.balM,rs.balF),'s1')}${kpi('Feed stock',n0(fkg)+' kg'+sub(inr(fval)+' · '+fi.filter(x=>x.s.bal<=num(x.i.min_stock_kg)).length+' low / out'))}${kpi('Store stock value',inr(sum(storeTotals(),x=>sum(x.vals,y=>y)))+sub(LOCS.map((l,i)=>l+' '+inr(sum(storeTotals(),x=>x.vals[i]))).join(' · ')))}${kpi('Customer dues',inr(custDueTotal())+sub(n0(D.customers.length)+' customers'))}${kpi('Labour wages (this month)',inr(sum(D.labour_wages.filter(x=>monthOf(x.date)===today().slice(0,7)),x=>x.amount))+sub(labMonthSub()))}${kpi('Eggs today',n0(eT),'s1')}${kpi('Eggs (7 days)',n0(e7),'s1')}${kpi('In incubator',n0(inInc),'s2')}${kpi('Chicks ready',n0(chicks),'s2')}${kpi('Grow-out birds',n0(grow)+sxs(growM,growF),'s3')}${kpi('Birds sold',n0(sold),'s4')}${kpi('Total revenue',inr(rev),'s4')}${kpi('Total expenses',inr(exp))}${kpi('Net',`<span class="${rev-exp<0?'bad':'ok'}">${inr(rev-exp)}</span>`)}</div>
   <h3>${t('Alerts')}</h3>${al.length?al.map(a=>`<div class="alert ${a[0]}">${esc(a[1])}</div>`).join(''):`<p class="muted">${t('Nothing needs attention')}</p>`}
@@ -627,14 +649,85 @@ function pageDash(){
 }
 const head=(st)=>`<h2><span class="badge" style="color:var(--${STAGES[st].c})">${t('Stage '+st)}</span> ${t(STAGES[st].en)}</h2><p class="sub">${t(STAGES[st].sub)}</p>`;
 
+/* ===== Stage 1 — cage standard, male ratio, daily feed, efficiency, planning ===== */
+const STD=()=>({m:num(cfg.cageStdM),f:num(cfg.cageStdF)});
+function cageNeed(c,s){ // shortfall against the cage standard (falls back to the cage's own starting strength when no standard is set)
+  s=s||cageStats(c);const st=STD(),tot=st.m+st.f;
+  if(tot>0){if(s.sexed){const dM=Math.max(0,st.m-s.liveM),dF=Math.max(0,st.f-s.liveF);return{target:tot,dM,dF,def:dM+dF,sexed:true}}return{target:tot,dM:0,dF:0,def:Math.max(0,tot-s.live),sexed:false}}
+  const dM=Math.max(0,num(c.initial_m)-s.liveM),dF=Math.max(0,num(c.initial_f)-s.liveF);return{target:num(c.initial_birds),dM,dF,def:s.sexed?dM+dF:Math.max(0,num(c.initial_birds)-s.live),sexed:s.sexed};
+}
+const maleIssue=s=>!s.sexed||s.liveF<=0?null:s.liveM<=0?'bad':s.liveF/s.liveM>num(cfg.maxHensPerMale||4)?'warn':null;
+const normKg=birds=>birds*num(cfg.feedNorm)/1000;
+const byCode=(a,b)=>String(a.code).localeCompare(String(b.code),undefined,{numeric:true});
+function cageEff(c,days){
+  const s=cageStats(c),from=addDays(today(),-(days-1)),cf=D.cage_feed.filter(x=>x.cage_id===c.id&&x.date>=from),dates=[...new Set(cf.map(x=>x.date))];
+  const kg=sum(cf,x=>x.feed_kg),cost=sum(cf,x=>x.feed_cost),bd=sum(dates,d=>Math.max(...cf.filter(x=>x.date===d).map(x=>num(x.birds)||s.live)));
+  const eg=D.egg_production.filter(e=>e.cage_id===c.id&&e.date>=from),eggsF=sum(eg.filter(e=>dates.includes(e.date)),e=>e.eggs_total),eggsAll=sum(eg,e=>e.eggs_total);
+  const gpb=bd?kg*1000/bd:null,lay=s.hens?eggsAll/(s.hens*days)*100:null,flags=[];
+  if(gpb!=null&&gpb>num(cfg.feedNormMax))flags.push(['Above feed norm','var(--warn)']);
+  if(gpb!=null&&gpb<num(cfg.feedNormMin))flags.push(['Below feed norm','var(--warn)']);
+  if(lay!=null&&lay<num(cfg.layTarget))flags.push(['Low laying','var(--bad)']);
+  const mi=maleIssue(s);if(mi)flags.push([s.liveM<=0?'No males':'Too few males',mi==='bad'?'var(--bad)':'var(--warn)']);
+  return{s,kg,cost,fd:dates.length,bd,gpb,eggsF,eggsAll,gpe:eggsF?kg*1000/eggsF:null,kgDoz:eggsF?kg*12/eggsF:null,cpe:eggsF?cost/eggsF:null,lay,flags};
+}
+function parentFeedItem(){
+  if(S.cfItem&&byId('feed_items',S.cfItem))return S.cfItem;
+  const l=[...D.cage_feed].sort((a,b)=>b.date.localeCompare(a.date))[0];return l?l.feed_item_id:(D.feed_items[0]&&D.feed_items[0].id);
+}
+function feedPlan(){
+  const item=parentFeedItem(),bag=num(cfg.bagKg)||50;
+  const byLoc=LOCS.map(l=>{const cs=D.cages.filter(c=>(c.location||'Tekuatad')===l).map(c=>cageStats(c)),birds=sum(cs,x=>x.live),need=normKg(birds),bal=item?invStats('feed',item,l).bal:0;
+    const days=need>0?bal/need:null,order=Math.max(0,need*30-bal);return{l,birds,need,bal,days,order,bags:Math.ceil(order/bag)}}).filter(x=>x.birds>0);
+  const birds=sum(byLoc,x=>x.birds),need=sum(byLoc,x=>x.need),d7=addDays(today(),-6),used7=sum(D.cage_feed.filter(x=>x.date>=d7),x=>x.feed_kg);
+  return{item,bag,byLoc,birds,need,min:birds*num(cfg.feedNormMin)/1000,max:birds*num(cfg.feedNormMax)/1000,month:need*30,used7,usedDay:used7/7,global:item?feedStats(item).bal:0};
+}
+const flagHTML=f=>f.map(([l,c])=>`<span class="badge" style="color:${c};margin:1px 2px">${t(l)}</span>`).join('')||`<span class="badge" style="color:var(--ok)">${t('OK')}</span>`;
 function pageS1(){
-  const rows=D.cages.map(c=>({c,s:cageStats(c)}));
-  const cols=[{h:'Cage',f:r=>`<b>${esc(r.c.code)}</b>`},{h:'Breed',f:r=>esc(r.c.breed||'–')},{h:'Placed on',f:r=>fdate(r.c.placed_on)},{h:'Initial birds',c:'r',f:r=>n0(r.c.initial_birds)},
-   {h:'Mortality',c:'r',f:r=>n0(r.s.mort)},{h:'Mortality %',c:'r',f:r=>pct(r.s.mort,r.c.initial_birds+r.s.top)},{h:'Top-up from reserve',c:'r',f:r=>r.s.top?n0(r.s.top):'–'},{h:'Live birds',c:'r',f:r=>`<b>${n0(r.s.live)}</b>`},{h:'Live M / F',c:'r',f:r=>mf(r.s.liveM,r.s.liveF)},{h:'Eggs laid',c:'r',f:r=>n0(r.s.total)},
-   {h:'Laying % (7d)',c:'r',f:r=>r.s.live?r.s.lay.toFixed(1)+'%':'–'},{h:'Sent to hatchery',c:'r',f:r=>n0(r.s.sent)},{h:'Eggs in stock',c:'r',f:r=>`<b>${n0(r.s.stock)}</b>`},{h:'Expenses',c:'r',f:r=>inr(r.s.exp)},
-   {h:'',c:'r',f:r=>btns('cages',r.c.id,`<button class="btn sm" data-a="detail" data-e="cages" data-id="${r.c.id}">${t('Details')}</button> `)}];
-  return head(1)+`<div class="bar">${addBtn('cages','Add cage','pri')}${addBtn('egg_production','Log eggs')}${addBtn('egg_transfers','Send eggs to hatchery')}${addBtn('reserve_moves','Top-up cage from reserve','',{kind:'topup'})}${addBtn('mortality','Log mortality','',{stage:1})}${addBtn('expenses','Add expense','',{stage:1})}</div>`
-   +table(cols,rows)+reserveSummary()+`<h3>${t('Recent egg log')}</h3>`+autoTable('egg_production',D.egg_production,12)+`<h3>${t('Recent transfers')}</h3>`+autoTable('egg_transfers',D.egg_transfers,8);
+  const tab=S.s1Tab||'cages',tabs=[['cages','Cages'],['feed','Daily feed sheet'],['eff','Feed efficiency'],['plan','Feed planning']];
+  const rows=[...D.cages].sort(byCode).map(c=>{const st=cageStats(c);return{c,s:st,n:cageNeed(c,st)}});
+  const hens=sum(rows,r=>r.s.hens),males=sum(rows,r=>r.s.sexed?r.s.liveM:0),birds=sum(rows,r=>r.s.live),d7=addDays(today(),-6),e7=sum(D.egg_production.filter(e=>e.date>=d7),e=>e.eggs_total);
+  const fp=feedPlan(),todayKg=sum(D.cage_feed.filter(x=>x.date===today()),x=>x.feed_kg),short=rows.filter(r=>r.n.def>0),mi=rows.filter(r=>maleIssue(r.s));
+  const top=`<div class="grid">${kpi('Parent birds',n0(birds)+sub(n0(hens)+' hens · '+n0(males)+' males'),'s1')}${kpi('Cages',n0(rows.length)+sub(short.length?short.length+' below standard':'all at standard'),'s1')}${kpi('Hen-day laying % (7d)',hens?(e7/(hens*7)*100).toFixed(1)+'%':'–','s1')}${kpi('Daily feed need',n2(fp.need)+' kg'+sub(n2(fp.min)+' – '+n2(fp.max)+' kg at '+cfg.feedNormMin+'–'+cfg.feedNormMax+' g'))}${kpi('Feed given today',n2(todayKg)+' kg')}${kpi('Male ratio alerts',n0(mi.length),mi.length?'bad':'')}</div>`;
+  const seg=`<div class="seg" style="margin:12px 0 4px">${tabs.map(([k,l])=>`<button class="${tab===k?'on':''}" data-a="s1tab" data-k="${k}">${t(l)}</button>`).join('')}</div>`;
+  let body='';
+  if(tab==='cages'){
+    const cols=[{h:'Cage',f:r=>`<b>${esc(r.c.code)}</b>`},{h:'Location',f:r=>esc(r.c.location||'–')},{h:'Breed',f:r=>esc(r.c.breed||'–')},{h:'Placed on',f:r=>fdate(r.c.placed_on)},{h:'Initial birds',c:'r',f:r=>n0(r.c.initial_birds)},
+     {h:'Mortality',c:'r',f:r=>n0(r.s.mort)},{h:'Mortality %',c:'r',f:r=>pct(r.s.mort,r.c.initial_birds+r.s.top)},{h:'Top-up from reserve',c:'r',f:r=>r.s.top?n0(r.s.top):'–'},{h:'Live birds',c:'r',f:r=>`<b>${n0(r.s.live)}</b>`},{h:'Live M / F',c:'r',f:r=>mf(r.s.liveM,r.s.liveF)},
+     {h:'vs standard',f:r=>r.n.def<=0?`<span class="ok">${t('Full')}</span>`:`<span class="bad">${r.n.sexed?[r.n.dF?'-'+r.n.dF+' hens':'',r.n.dM?'-'+r.n.dM+' males':''].filter(Boolean).join(' · '):'-'+r.n.def+' birds'}</span>`},
+     {h:'Hens per male',c:'r',f:r=>{if(!r.s.sexed||r.s.liveF<=0)return '–';const m=maleIssue(r.s);return `<span class="${m==='bad'?'bad':''}" style="${m==='warn'?'color:var(--warn)':''}">${r.s.liveM>0?'1 : '+(r.s.liveF/r.s.liveM).toFixed(1):t('No males')}</span>`}},
+     {h:'Eggs laid',c:'r',f:r=>n0(r.s.total)},{h:'Hen-day laying % (7d)',c:'r',f:r=>r.s.hens?r.s.lay.toFixed(1)+'%':'–'},{h:'Sent to hatchery',c:'r',f:r=>n0(r.s.sent)},{h:'Eggs in stock',c:'r',f:r=>`<b>${n0(r.s.stock)}</b>`},{h:'Expenses',c:'r',f:r=>inr(r.s.exp)},
+     {h:'',c:'r',f:r=>(r.n.def>0?addBtn('reserve_moves','Top-up','sm',{kind:'topup',cage_id:r.c.id,qty_m:r.n.sexed?r.n.dM||'':'',qty_f:r.n.sexed?r.n.dF||'':''})+' ':'')+btns('cages',r.c.id,`<button class="btn sm" data-a="detail" data-e="cages" data-id="${r.c.id}">${t('Details')}</button> `)}];
+    body=`<p class="sub">Cage standard: ${cfg.cageStdF} hens + ${cfg.cageStdM} males per cage (change in Settings). Laying % is counted per live hen.</p>`+table(cols,rows)+reserveSummary()+`<h3>${t('Recent egg log')}</h3>`+autoTable('egg_production',D.egg_production,12)+`<h3>${t('Recent transfers')}</h3>`+autoTable('egg_transfers',D.egg_transfers,8);
+  }else if(tab==='feed'){
+    const sd=S.cfDate||today(),item=fp.item;
+    const opts=D.feed_items.map(i=>`<option value="${i.id}" ${i.id===item?'selected':''}>${esc(i.name)}</option>`).join('');
+    const tr=rows.map(r=>{const ex=item?D.cage_feed.find(x=>x.cage_id===r.c.id&&x.date===sd&&x.feed_item_id===item):null,sug=Math.round(normKg(r.s.live)*100)/100;
+      return `<tr data-cf="${r.c.id}" data-sug="${sug}"><td><b>${esc(r.c.code)}</b></td><td>${esc(r.c.location||'–')}</td><td class="r">${n0(r.s.live)} <span class="muted">${r.s.sexed?mf(r.s.liveM,r.s.liveF):''}</span></td><td class="r">${n2(sug)}</td><td class="r"><input class="inp cf-kg" style="width:90px" type="number" step="any" min="0" value="${ex?num(ex.feed_kg):sug}"></td><td>${ex?`<span class="ok">✓ ${t('saved')}</span>`:'–'}</td></tr>`}).join('');
+    const tot=sum(rows,r=>normKg(r.s.live));
+    body=`<div class="card"><p class="sub" style="margin-top:0">Each cage is pre-filled with live birds × ${cfg.feedNorm} g. Change any cage that got more or less, then save once — the feed is deducted from the Store (feed stock of the cage's location) and its cost is added to each cage.</p>
+     <div class="bar"><input class="inp" style="width:auto" type="date" value="${sd}" data-a="filter" data-k="cfDate"><select class="inp" style="width:auto" data-a="filter" data-k="cfItem">${opts||`<option value="">${t('No records')}</option>`}</select><button class="btn" data-a="cfFill">${t('Fill suggested')}</button><button class="btn pri" data-a="cfSave">${t('Save feed sheet')}</button></div>
+     <p class="muted">${t('Suggested total')}: <b>${n2(tot)} kg</b> (≈ ${n2(tot/fp.bag)} ${t('bags')}) · ${item?LOCS.map(l=>l+' '+t('stock')+': '+n2(invStats('feed',item,l).bal)+' kg').join(' · ')+' · '+t('Total')+': '+n2(feedStats(item).bal)+' kg':''}</p>
+     ${rows.length?`<div class="tw"><table><thead><tr><th>${t('Cage')}</th><th>${t('Location')}</th><th class="r">${t('Live birds')}</th><th class="r">${t('Suggested (KG)')}</th><th class="r">${t('Feed given (KG)')}</th><th>${t('Status')}</th></tr></thead><tbody>${tr}</tbody></table></div>`:`<p class="muted">${t('No records')}</p>`}</div>
+     <h3>${t('Recent cage feed entries')}</h3>`+autoTable('cage_feed',D.cage_feed,30);
+  }else if(tab==='eff'){
+    const days=+(S.effDays||7),er=rows.map(r=>({...r,e:cageEff(r.c,days)})).sort((a,b)=>b.e.flags.length-a.e.flags.length||byCode(a.c,b.c));
+    const kg=sum(er,x=>x.e.kg),cost=sum(er,x=>x.e.cost),bd=sum(er,x=>x.e.bd),egF=sum(er,x=>x.e.eggsF),egA=sum(er,x=>x.e.eggsAll),flg=er.filter(x=>x.e.flags.length).length;
+    const cols=[{h:'Cage',f:r=>`<b>${esc(r.c.code)}</b>`},{h:'Live M / F',c:'r',f:r=>r.s.sexed?mf(r.s.liveM,r.s.liveF):n0(r.s.live)},{h:'Feed given (KG)',c:'r',f:r=>n2(r.e.kg)+sub(r.e.fd+' '+t('days entered'))},
+     {h:'g / bird / day',c:'r',f:r=>r.e.gpb!=null?`<b>${r.e.gpb.toFixed(1)}</b>`:'–'},{h:'Eggs',c:'r',f:r=>n0(r.e.eggsAll)},{h:'Hen-day laying %',c:'r',f:r=>r.e.lay!=null?r.e.lay.toFixed(1)+'%':'–'},
+     {h:'Feed per egg (g)',c:'r',f:r=>r.e.gpe!=null?r.e.gpe.toFixed(1):'–'},{h:'Feed per dozen eggs (KG)',c:'r',f:r=>r.e.kgDoz!=null?n2(r.e.kgDoz):'–'},{h:'Feed cost per egg',c:'r',f:r=>r.e.cpe!=null?'₹'+r.e.cpe.toFixed(2):'–'},{h:'Flags',f:r=>flagHTML(r.e.flags)}];
+    body=`<div class="bar"><select class="inp" style="width:auto" data-a="filter" data-k="effDays">${[7,15,30].map(d=>`<option value="${d}" ${days===d?'selected':''}>${t('Last')} ${d} ${t('days')}</option>`).join('')}</select><span class="muted">${t('Norm')}: ${cfg.feedNormMin}–${cfg.feedNormMax} g · ${t('Target laying')}: ${cfg.layTarget}%</span></div>
+     <div class="grid">${kpi('Feed given',n2(kg)+' kg')}${kpi('Avg g / bird / day',bd?(kg*1000/bd).toFixed(1)+' g':'–')}${kpi('Hen-day laying %',hens?(egA/(hens*days)*100).toFixed(1)+'%':'–')}${kpi('Feed per egg',egF?(kg*1000/egF).toFixed(1)+' g':'–')}${kpi('Feed cost per egg',egF?'₹'+(cost/egF).toFixed(2):'–')}${kpi('Cages flagged',n0(flg),flg?'bad':'')}</div>
+     <p class="sub">Feed per egg and cost per egg use only the days that have feed entered for that cage. Cages with flags are listed first — "Above feed norm" usually means spillage or wastage at the feeder; "Low laying" cages are candidates for checking or replacing birds.</p>`+table(cols,er);
+  }else{
+    const it=fp.item?byId('feed_items',fp.item):null;
+    const pc=[{h:'Location',f:r=>`<b>${r.l}</b>`},{h:'Parent birds',c:'r',f:r=>n0(r.birds)},{h:'Daily need (KG)',c:'r',f:r=>n2(r.need)},{h:'Stock of this feed (KG)',c:'r',f:r=>`<span class="${r.bal<0?'bad':''}">${n2(r.bal)}</span>`},
+     {h:'Days left',c:'r',f:r=>{if(r.days==null)return '–';const d=Math.max(0,Math.floor(r.days));return `<b class="${d<=num(cfg.feedReorderDays)?'bad':''}">${d}</b>`}},{h:'To order for 30 days',c:'r',f:r=>r.order>0?n0(r.order)+' kg'+sub('≈ '+r.bags+' '+t('bags')):'–'},
+     {h:'',c:'r',f:r=>addBtn('feed_stock','Feed purchase','sm',{kind:'purchase',item_id:fp.item,location:r.l})}];
+    body=`<div class="bar"><span>${t('Parent feed')}:</span><select class="inp" style="width:auto" data-a="filter" data-k="cfItem">${D.feed_items.map(i=>`<option value="${i.id}" ${i.id===fp.item?'selected':''}>${esc(i.name)}</option>`).join('')}</select>${addBtn('store_transfers','Transfer between locations','',{inv:'feed',item_id:fp.item})}</div>
+     <div class="grid">${kpi('Parent birds',n0(fp.birds))}${kpi('Daily need',n2(fp.need)+' kg'+sub(n2(fp.min)+' – '+n2(fp.max)+' kg'))}${kpi('Actual use (7-day avg)',fp.used7?n2(fp.usedDay)+' kg/day':'–')}${kpi('Monthly need (30 days)',n0(fp.month)+' kg'+sub('≈ '+Math.ceil(fp.month/fp.bag)+' '+t('bags')+' of '+fp.bag+' kg'))}${kpi('Stock of this feed',n2(fp.global)+' kg'+sub(it?esc(it.name):''))}${kpi('Days left (all locations)',fp.need?Math.max(0,Math.floor(fp.global/fp.need)):'–')}</div>
+     <p class="sub">Need = live parent birds × ${cfg.feedNorm} g per day. Days left = stock of the chosen feed at that location ÷ daily need; an alert shows on the dashboard when it falls to ${cfg.feedReorderDays} days.</p>`+table(pc,fp.byLoc,'No records');
+  }
+  return head(1)+`<div class="bar">${addBtn('cages','Add cage','pri')}${addBtn('cage_bulk','Add cages in bulk')}${addBtn('egg_production','Log eggs')}${addBtn('egg_transfers','Send eggs to hatchery')}${addBtn('reserve_moves','Top-up cage from reserve','',{kind:'topup'})}${addBtn('mortality','Log mortality','',{stage:1})}${addBtn('expenses','Add expense','',{stage:1})}</div>`+top+seg+body;
 }
 function reserveSummary(){
   const r=reserveStats();
@@ -687,8 +780,8 @@ function pageDetail(){
   let title,stats,secs;
   const rel=(st)=>allMort().filter(m=>m.stage===st&&m.ref_id===id);
   const ex=(...sts)=>D.expenses.filter(x=>sts.includes(x.stage)&&x.ref_id===id);
-  if(e==='cages'){const s=cageStats(r);title='Cage '+r.code;stats=kpi('Live birds',n0(s.live),'s1')+kpi('Live M / F',mf(s.liveM,s.liveF),'s1')+kpi('Top-up from reserve',n0(s.top)+sxs(s.topM,s.topF),'s1')+kpi('Mortality %',pct(s.mort,r.initial_birds+s.top),'s1')+kpi('Eggs laid',n0(s.total),'s1')+kpi('Laying % (7d)',s.live?s.lay.toFixed(1)+'%':'–','s1')+kpi('Eggs in stock',n0(s.stock),'s1')+kpi('Expenses',inr(s.exp));
-    secs=[['Eggs laid',autoTable('egg_production',D.egg_production.filter(x=>x.cage_id===id),50)],['Send eggs to hatchery',autoTable('egg_transfers',D.egg_transfers.filter(x=>x.cage_id===id))],['Top-ups from reserve',autoTable('reserve_moves',D.reserve_moves.filter(x=>x.cage_id===id&&x.kind==='topup'))],['Mortality',autoTable('mortality',rel(1))],['Expenses',autoTable('expenses',ex(1))]]}
+  if(e==='cages'){const s=cageStats(r);title='Cage '+r.code;stats=kpi('Live birds',n0(s.live),'s1')+kpi('Live M / F',mf(s.liveM,s.liveF),'s1')+kpi('Top-up from reserve',n0(s.top)+sxs(s.topM,s.topF),'s1')+kpi('Mortality %',pct(s.mort,r.initial_birds+s.top),'s1')+kpi('Eggs laid',n0(s.total),'s1')+kpi('Hen-day laying % (7d)',s.hens?s.lay.toFixed(1)+'%':'–','s1')+kpi('Feed cost (cage feed)',inr(s.feedCost),'s1')+kpi('Eggs in stock',n0(s.stock),'s1')+kpi('Expenses',inr(s.exp));
+    secs=[['Eggs laid',autoTable('egg_production',D.egg_production.filter(x=>x.cage_id===id),50)],['Send eggs to hatchery',autoTable('egg_transfers',D.egg_transfers.filter(x=>x.cage_id===id))],['Top-ups from reserve',autoTable('reserve_moves',D.reserve_moves.filter(x=>x.cage_id===id&&x.kind==='topup'))],['Mortality',autoTable('mortality',rel(1))],['Expenses',autoTable('expenses',ex(1))],['Daily feed',autoTable('cage_feed',D.cage_feed.filter(x=>x.cage_id===id),30)]]}
   else if(e==='hatch_batches'){const s=batchStats(r),c=batchCost(r);title='Batch '+r.batch_no;stats=kpi('Eggs set',n0(s.set),'s2')+kpi('Hatched chicks',s.done?n0(s.hatched):'–','s2')+kpi('Hatched M / F',s.done?mf(s.hM,s.hF):'–','s2')+kpi('Hatchability',s.done?pct(s.hatched,s.set):'–','s2')+kpi('Available chicks',n0(s.avail),'s2')+kpi('Cost',inr(c.total))+kpi('Chick cost',s.done?inr(c.perChick):'–');
     secs=[['Send eggs to hatchery',autoTable('egg_transfers',D.egg_transfers.filter(x=>x.batch_id===id))],['Chicks sold',autoTable('chick_sales',D.chick_sales.filter(x=>x.batch_id===id))],['Grow-out Flocks',autoTable('flocks',D.flocks.filter(x=>x.batch_id===id))],['Mortality',autoTable('mortality',rel(2))],['Expenses',autoTable('expenses',ex(2))]]}
   else{const s=flockStats(r),c=flockCost(r);title='Flock '+r.code;stats=kpi('Live birds',n0(s.live),'s3')+kpi('Live M / F',mf(s.liveM,s.liveF),'s3')+kpi('Mortality %',pct(s.mort,r.chicks_placed),'s3')+kpi('Age (days)',s.age,'s3')+kpi('Latest weight (g)',s.weight!=null?n0(s.weight):'–','s3')+kpi('Cost',inr(c.total))+kpi('Revenue',inr(s.revenue),'s4')+kpi('Profit',`<span class="${s.revenue-c.total<0?'bad':'ok'}">${inr(s.revenue-c.total)}</span>`);
@@ -698,7 +791,7 @@ function pageDetail(){
 function pageRep(){
   const inR=d=>(!S.from||d>=S.from)&&(!S.to||d<=S.to);
   const ex=D.expenses.filter(x=>inR(x.date)),mo=allMort().filter(x=>inR(x.date)),cs=D.chick_sales.filter(x=>inR(x.date)),ms=D.market_sales.filter(x=>inR(x.date));
-  const srows=[1,2,3,4].map(s=>({s,exp:sum(ex.filter(x=>x.stage===s),x=>x.amount)+(s===3?sum(D.daily_logs.filter(l=>inR(l.date)),feedCostLog):0),rev:s===2?sum(cs,x=>x.amount):s===4?sum(ms,x=>x.amount):0,mort:sum(mo.filter(x=>x.stage===s),x=>x.qty)}));
+  const srows=[1,2,3,4].map(s=>({s,exp:sum(ex.filter(x=>x.stage===s),x=>x.amount)+(s===3?sum(D.daily_logs.filter(l=>inR(l.date)),feedCostLog):0)+(s===1?sum(D.cage_feed.filter(x=>inR(x.date)),x=>x.feed_cost):0),rev:s===2?sum(cs,x=>x.amount):s===4?sum(ms,x=>x.amount):0,mort:sum(mo.filter(x=>x.stage===s),x=>x.qty)}));
   const sc=[{h:'Stage',f:r=>`<span style="color:var(--${STAGES[r.s].c})">●</span> S${r.s} ${t(STAGES[r.s].en)}`},{h:'Total expenses',c:'r',f:r=>inr(r.exp)},{h:'Total revenue',c:'r',f:r=>r.rev?inr(r.rev):'–'},{h:'Mortality',c:'r',f:r=>r.s<4?n0(r.mort):'–'}];
   srows.push({s:0,exp:sum(srows,r=>r.exp),rev:sum(srows,r=>r.rev),mort:sum(srows,r=>r.mort)});
   sc[0].f=r=>r.s?`<span style="color:var(--${STAGES[r.s].c})">●</span> S${r.s} ${t(STAGES[r.s].en)}`:`<b>${t('Total')} · ${t('Net')}: <span class="${r.rev-r.exp<0?'bad':'ok'}">${inr(r.rev-r.exp)}</span></b>`;
@@ -708,16 +801,16 @@ function pageRep(){
   const hr=D.hatch_batches.filter(b=>b.hatched_chicks!=null).map(b=>({b,s:batchStats(b),c:batchCost(b)}));
   const hc=[{h:'Batch',f:r=>`<b>${esc(r.b.batch_no)}</b>`},{h:'Eggs set',c:'r',f:r=>n0(r.s.set)},{h:'Infertile',c:'r',f:r=>n0(r.b.infertile)},{h:'Dead in shell',c:'r',f:r=>n0(r.b.dead_in_shell)},{h:'Hatched chicks',c:'r',f:r=>n0(r.s.hatched)},{h:'Hatchability',c:'r',f:r=>`<b>${pct(r.s.hatched,r.s.set)}</b>`},{h:'Chick cost',c:'r',f:r=>inr(r.c.perChick)},{h:'Chicks sold',c:'r',f:r=>n0(r.s.sold)},{h:'Revenue',c:'r',f:r=>inr(r.s.revenue)}];
   const pr=D.cages.map(c=>({c,s:cageStats(c)}));
-  const pc=[{h:'Cage',f:r=>`<b>${esc(r.c.code)}</b>`},{h:'Live birds',c:'r',f:r=>n0(r.s.live)},{h:'Live M / F',c:'r',f:r=>mf(r.s.liveM,r.s.liveF)},{h:'Mortality %',c:'r',f:r=>pct(r.s.mort,r.c.initial_birds+r.s.top)},{h:'Eggs laid',c:'r',f:r=>n0(r.s.total)},{h:'Broken',c:'r',f:r=>n0(r.s.broken)},{h:'Laying % (7d)',c:'r',f:r=>r.s.live?r.s.lay.toFixed(1)+'%':'–'},{h:'Expenses',c:'r',f:r=>inr(r.s.exp)}];
+  const pc=[{h:'Cage',f:r=>`<b>${esc(r.c.code)}</b>`},{h:'Live birds',c:'r',f:r=>n0(r.s.live)},{h:'Live M / F',c:'r',f:r=>mf(r.s.liveM,r.s.liveF)},{h:'Mortality %',c:'r',f:r=>pct(r.s.mort,r.c.initial_birds+r.s.top)},{h:'Eggs laid',c:'r',f:r=>n0(r.s.total)},{h:'Broken',c:'r',f:r=>n0(r.s.broken)},{h:'Hen-day laying % (7d)',c:'r',f:r=>r.s.hens?r.s.lay.toFixed(1)+'%':'–'},{h:'Expenses',c:'r',f:r=>inr(r.s.exp)}];
   return `<h2>${t('Reports')}</h2><div class="bar"><label>${t('From')} <input type="date" class="inp" style="width:auto" data-a="rf" data-k="from" value="${S.from}"></label><label>${t('To')} <input type="date" class="inp" style="width:auto" data-a="rf" data-k="to" value="${S.to}"></label>
    ${TABLES.map(k=>`<button class="btn sm" data-a="csv" data-k="${k}">${t('Export CSV')}: ${k}</button>`).join('')}</div>
-  <h3>${t('Stage summary')}</h3>${table(sc,srows)}<p class="muted">Cost carries forward: egg cost (Stage 1 expenses ÷ eggs laid) → chick cost (egg cost + hatchery expenses ÷ chicks hatched) → flock cost. Flock profit uses lifetime figures (date filter does not apply).</p>
+  <h3>${t('Stage summary')}</h3>${table(sc,srows)}<p class="muted">Cost carries forward: egg cost (Stage 1 expenses + parent cage feed ÷ eggs laid) → chick cost (egg cost + hatchery expenses ÷ chicks hatched) → flock cost. Flock profit uses lifetime figures (date filter does not apply).</p>
   <h3>${t('Flock profit & loss')}</h3>${table(fc,fr)}<h3>${t('Hatch report')}</h3>${table(hc,hr)}<h3>${t('Parent cage report')}</h3>${table(pc,pr)}`;
 }
 function pageSet(){
   const demo=DB.mode==='local';
   return `<h2>${t('Settings')}</h2><div class="card"><h3 style="margin-top:0">${t('Alert limit & timing')}</h3><div class="fld"><label>${t('Farm name')}</label><input data-a="cfg" data-k="farm" data-t="1" value="${esc(cfg.farm)}"></div><div class="two">
-   ${[['storeDays','Days eggs are stored before loading'],['incDays','Incubation days'],['marketAge','Market age (days)'],['mortPct','Daily mortality alert (% of live birds)'],['bagKg','Feed bag size (KG)'],['reserveMin','Reserve birds low-stock alert (birds)'],['rate_pre','Pre-Starter feed rate (₹/KG)'],['rate_starter','Starter feed rate (₹/KG)'],['rate_grower','Grower feed rate (₹/KG)'],['rate_finisher','Finisher feed rate (₹/KG)'],['rate_other','Other feed rate (₹/KG)']].map(([k,l])=>`<div class="fld"><label>${t(l)}</label><input type="number" step="any" data-a="cfg" data-k="${k}" value="${cfg[k]}"></div>`).join('')}</div></div>
+   ${[['storeDays','Days eggs are stored before loading'],['incDays','Incubation days'],['marketAge','Market age (days)'],['mortPct','Daily mortality alert (% of live birds)'],['bagKg','Feed bag size (KG)'],['reserveMin','Reserve birds low-stock alert (birds)'],['cageStdF','Cage standard — hens (female) per cage'],['cageStdM','Cage standard — males per cage'],['maxHensPerMale','Male ratio alert — max hens per male'],['feedNorm','Parent feed norm — planned (g / bird / day)'],['feedNormMin','Parent feed norm — minimum (g / bird / day)'],['feedNormMax','Parent feed norm — maximum (g / bird / day)'],['layTarget','Target hen-day laying %'],['feedReorderDays','Feed reorder alert (days of feed left)'],['rate_pre','Pre-Starter feed rate (₹/KG)'],['rate_starter','Starter feed rate (₹/KG)'],['rate_grower','Grower feed rate (₹/KG)'],['rate_finisher','Finisher feed rate (₹/KG)'],['rate_other','Other feed rate (₹/KG)']].map(([k,l])=>`<div class="fld"><label>${t(l)}</label><input type="number" step="any" data-a="cfg" data-k="${k}" value="${cfg[k]}"></div>`).join('')}</div></div>
   <div class="card"><div class="bar">${demo?`<button class="btn" data-a="seed">${t('Load sample data')}</button><button class="btn del" data-a="wipe">${t('Erase demo data')}</button>`:''}<button class="btn" data-a="backup">${t('Backup (JSON)')}</button></div></div>`;
 }
 /* Daily sheet — mirrors the paper "Day Old N" slip: opening stock, mortality, cause, medicine, temperature, light, feed, closing stock */
@@ -774,7 +867,7 @@ function pageBS(){
 function pageReserve(){
   const rs=reserveStats(),lots=D.reserve_lots.map(l=>({l,s:reserveStats(null,l.id)})),hasLegacy=D.reserve_moves.some(x=>!x.lot_id);
   const rows=[...lots,...(hasLegacy?[{l:null,s:reserveStats(null,null)}]:[])].sort((a,b)=>String(b.l&&b.l.received_on||'').localeCompare(String(a.l&&a.l.received_on||'')));
-  const short=D.cages.map(c=>{const s=cageStats(c);return{c,s,def:num(c.initial_birds)-s.live,sexed:c.initial_m!=null||c.initial_f!=null,dM:num(c.initial_m)-s.liveM,dF:num(c.initial_f)-s.liveF}}).filter(x=>x.def>0);
+  const short=[...D.cages].sort(byCode).map(c=>{const s=cageStats(c),n=cageNeed(c,s);return{c,s,def:n.def,sexed:n.sexed,dM:n.dM,dF:n.dF,target:n.target}}).filter(x=>x.def>0);
   const st=b=>b<=0?['Empty','var(--bad)']:b<=num(cfg.reserveMin)?['Low','var(--warn)']:['OK','var(--ok)'];
   const lc=[{h:'Lot code',f:r=>r.l?`<b>${esc(r.l.lot_code)}</b>`:`<i>${t('Unassigned')} (older entries)</i>`},{h:'Breed',f:r=>esc(r.l&&r.l.breed||'–')},{h:'Supplier / source',f:r=>esc(r.l&&r.l.supplier||'–')},
    {h:'Received on',f:r=>r.l?fdate(r.l.received_on):'–'},{h:'Days in reserve',c:'r',f:r=>r.l?diffDays(today(),r.l.received_on):'–'},
@@ -782,7 +875,7 @@ function pageReserve(){
    {h:'Balance M / F',c:'r',f:r=>mf(r.s.balM,r.s.balF)},{h:'Balance',c:'r',f:r=>`<b>${n0(r.s.bal)}</b>`},{h:'Cost per bird (₹)',c:'r',f:r=>r.l&&r.l.cost_per_bird!=null?n2(r.l.cost_per_bird):'–'},{h:'Stock value',c:'r',f:r=>r.l?inr(r.s.value):'–'},
    {h:'Status',f:r=>{const [l,c]=st(r.s.bal);return `<span class="badge" style="color:${c}">${t(l)}</span>`}},
    {h:'',c:'r',f:r=>r.l?btns('reserve_lots',r.l.id,`<button class="btn sm" data-a="detail" data-e="reserve_lots" data-id="${r.l.id}">${t('Details')}</button> `):''}];
-  const sc=[{h:'Cage',f:r=>`<b>${esc(r.c.code)}</b>`},{h:'Original strength',c:'r',f:r=>n0(r.c.initial_birds)},{h:'Live now',c:'r',f:r=>n0(r.s.live)},{h:'Shortfall',c:'r',f:r=>`<b class="bad">${n0(r.def)}</b>`},
+  const sc=[{h:'Cage',f:r=>`<b>${esc(r.c.code)}</b>`},{h:'Target strength',c:'r',f:r=>n0(r.target)},{h:'Live now',c:'r',f:r=>n0(r.s.live)},{h:'Shortfall',c:'r',f:r=>`<b class="bad">${n0(r.def)}</b>`},
    {h:'Shortfall M / F',c:'r',f:r=>r.sexed?mf(Math.max(0,r.dM),Math.max(0,r.dF)):'–'},{h:'Top-up from reserve',c:'r',f:r=>r.s.top?n0(r.s.top):'–'},
    {h:'',c:'r',f:r=>addBtn('reserve_moves','Top-up to cage','sm',{kind:'topup',cage_id:r.c.id,qty_m:r.sexed?Math.min(Math.max(0,r.dM),rs.balM)||'':'',qty_f:r.sexed?Math.min(Math.max(0,r.dF),rs.balF)||'':''})}];
   return `<h2>${t('Reserve Birds')}</h2><p class="sub">Spare parent birds kept in reserve. Top up a Stage-1 cage from a lot when it loses birds; the cage's live count goes up and the reserve goes down.</p>
@@ -801,9 +894,9 @@ function reserveDetail(id){
 function pageFeed(){
   const items=D.feed_items.map(i=>({i,s:feedStats(i.id)})),m0=today().slice(0,7);
   const buyM=D.feed_stock.filter(x=>x.kind==='purchase'&&String(x.date).slice(0,7)===m0);
-  const usedM=sum(D.daily_logs.filter(l=>l.feed_item_id&&String(l.date).slice(0,7)===m0),l=>l.feed_kg)+sum(D.expenses.filter(e=>e.feed_item_id&&String(e.date).slice(0,7)===m0),e=>e.qty);
+  const usedM=sum(D.daily_logs.filter(l=>l.feed_item_id&&String(l.date).slice(0,7)===m0),l=>l.feed_kg)+sum(D.expenses.filter(e=>e.feed_item_id&&String(e.date).slice(0,7)===m0),e=>e.qty)+sum(D.cage_feed.filter(x=>String(x.date).slice(0,7)===m0),x=>x.feed_kg);
   const st=x=>x.s.bal<=0?['Out of stock','var(--bad)']:x.s.bal<=num(x.i.min_stock_kg)?['Low','var(--warn)']:['OK','var(--ok)'];
-  const cols=[{h:'Food item',f:r=>`<b>${esc(r.i.name)}</b>`},{h:'Stock in',c:'r',f:r=>n2(r.s.inn)},{h:'Used (daily entry)',c:'r',f:r=>n2(r.s.usedF)},{h:'Used (expenses)',c:'r',f:r=>n2(r.s.usedO)},{h:'Wastage',c:'r',f:r=>n2(r.s.waste)},
+  const cols=[{h:'Food item',f:r=>`<b>${esc(r.i.name)}</b>`},{h:'Stock in',c:'r',f:r=>n2(r.s.inn)},{h:'Used (daily entry)',c:'r',f:r=>n2(r.s.usedF)},{h:'Used (parent cages)',c:'r',f:r=>n2(r.s.usedC)},{h:'Used (expenses)',c:'r',f:r=>n2(r.s.usedO)},{h:'Wastage',c:'r',f:r=>n2(r.s.waste)},
    {h:'Balance (KG)',c:'r',f:r=>`<b>${n2(r.s.bal)}</b>${sub('≈ '+n2(r.s.bal/num(cfg.bagKg||50))+' bags')}`},{h:'Avg cost (₹/KG)',c:'r',f:r=>n2(r.s.avg)},{h:'Stock value',c:'r',f:r=>inr(r.s.value)},...LOCS.map(l=>({h:'Balance — '+l,c:'r',f:r=>{const b=invStats('feed',r.i.id,l).bal;return `<span class="${b<0?'bad':''}">${n2(b)}</span>`}})),
    {h:'Days left',c:'r',f:r=>r.s.days!=null?Math.max(0,Math.floor(r.s.days)):'–'},{h:'Min stock (KG)',c:'r',f:r=>n2(r.i.min_stock_kg)},
    {h:'Status',f:r=>{const [l,c]=st(r);return `<span class="badge" style="color:${c}">${t(l)}</span>`}},
@@ -818,8 +911,10 @@ function feedDetail(id){
   D.feed_stock.filter(x=>x.item_id===id).forEach(x=>rows.push({date:x.date,type:KL[x.kind],det:[x.supplier,x.bill_no].filter(Boolean).join(' · '),kg:x.kind==='wastage'?-x.qty_kg:x.qty_kg,amt:x.total_cost,e:'feed_stock',eid:x.id}));
   D.daily_logs.filter(l=>l.feed_item_id===id).forEach(l=>rows.push({date:l.date,type:'Used (daily entry)',det:refLabel(3,l.flock_id),kg:-num(l.feed_kg),amt:l.feed_cost,e:'daily_logs',eid:l.id}));
   D.expenses.filter(x=>x.feed_item_id===id).forEach(x=>rows.push({date:x.date,type:'Used (expenses)',det:'S'+x.stage+(x.ref_id?' · '+refLabel(x.stage,x.ref_id):''),kg:-num(x.qty),amt:x.amount,e:'expenses',eid:x.id}));
+  {const g={};D.cage_feed.filter(x=>x.feed_item_id===id).forEach(x=>{const k=x.date+'|'+(x.location||'');(g[k]=g[k]||{date:x.date,loc:x.location,n:0,kg:0,amt:0});g[k].n++;g[k].kg+=num(x.feed_kg);g[k].amt+=num(x.feed_cost)});
+   Object.values(g).forEach(x=>rows.push({date:x.date,type:'Used (parent cages)',det:x.n+' cages'+(x.loc?' · '+x.loc:''),kg:-x.kg,amt:x.amt}))}
   rows.sort((a,b)=>b.date.localeCompare(a.date));
-  const cols=[{h:'Date',f:r=>fdate(r.date)},{h:'Movement',f:r=>t(r.type)},{h:'Details',f:r=>esc(r.det||'–')},{h:'Quantity (KG)',c:'r',f:r=>`<span class="${r.kg<0?'bad':'ok'}">${r.kg>0?'+':''}${n2(r.kg)}</span>`},{h:'Amount',c:'r',f:r=>r.amt!=null?inr(r.amt):'–'},{h:'',c:'r',f:r=>btns(r.e,r.eid)}];
+  const cols=[{h:'Date',f:r=>fdate(r.date)},{h:'Movement',f:r=>t(r.type)},{h:'Details',f:r=>esc(r.det||'–')},{h:'Quantity (KG)',c:'r',f:r=>`<span class="${r.kg<0?'bad':'ok'}">${r.kg>0?'+':''}${n2(r.kg)}</span>`},{h:'Amount',c:'r',f:r=>r.amt!=null?inr(r.amt):'–'},{h:'',c:'r',f:r=>r.e?btns(r.e,r.eid):''}];
   return `<div class="bar"><button class="btn" data-a="back">← ${t('Back')}</button>${addBtn('feed_stock','Add stock / purchase','pri',{kind:'purchase',item_id:id})}</div><h2>${esc(it.name)}</h2>
   <div class="grid">${kpi('Balance (KG)',n2(s.bal))}${LOCS.map(l=>{const m=invStats('feed',id,l);return kpi('Balance — '+l,n2(m.bal)+' kg')}).join('')}${kpi('Stock value',inr(s.value))}${kpi('Avg cost (₹/KG)',n2(s.avg))}${kpi('Days left',s.days!=null?Math.max(0,Math.floor(s.days)):'–')}</div><h3>${t('Feed stock')}</h3>`+table(cols,rows);
 }
@@ -996,13 +1091,14 @@ async function saveForm(){
   if(E.validate){const m=E.validate(v,row);if(m)return err(m)}
   if(SEXV[name]){const m=SEXV[name](v,row);if(m)return err(m)}
   if(E.before)E.before(v,row);
+  if(E.save){try{await E.save(v)}catch(e){return err(e.message||String(e))}closeModal();render();return}
   try{if(E.fields.some(f=>f.k==='customer_id'))await resolveCustomer(v);}catch(e){return err(e.message||String(e))}
   try{row?await DB.update(name,row.id,v):await DB.insert(name,v)}catch(e){return err(e.message||String(e))}
   closeModal();toast('✓ '+t('Save'));render();
 }
 async function delRecord(name,id){
   const r=byId(name,id);if(!r)return;
-  if(name==='feed_items'&&(D.daily_logs.some(l=>l.feed_item_id===id)||D.expenses.some(x=>x.feed_item_id===id)))return alert('This food has usage records (daily entries / expenses). Remove or change those first.');
+  if(name==='feed_items'&&(D.daily_logs.some(l=>l.feed_item_id===id)||D.expenses.some(x=>x.feed_item_id===id)||D.cage_feed.some(x=>x.feed_item_id===id)))return alert('This food has usage records (daily entries / expenses). Remove or change those first.');
   if(['feed_items','med_items','sup_items'].includes(name)&&D.store_transfers.some(x=>x.item_id===id))return alert('This item has location transfers. Delete those transfers first.');
   if(name==='sup_items'&&D.expenses.some(x=>x.sup_item_id===id))return alert('This item has been used in expenses. Remove or change those expenses first.');
   if(name==='customers'&&custSales(byId('customers',id)).length)return alert('This customer has sales recorded. Sales keep the customer name; delete or reassign the sales first.');
@@ -1023,19 +1119,20 @@ async function delRecord(name,id){
 async function seed(){
   if(DB.mode!=='local')return;if(D.cages.length&&!confirm('Add sample data to existing demo data?'))return;
   const ago=n=>addDays(today(),-n),R=(a,b)=>a+Math.floor(Math.random()*(b-a+1)),ins=(k,r)=>DB.insert(k,r,{wait:true});
-  const cg=[];for(const [i,[n,b]] of [[250,'Cobb 500 PS'],[260,'Cobb 500 PS'],[240,'Ross 308 PS'],[255,'Ross 308 PS']].entries())cg.push(await ins('cages',{code:'P-'+(i+1),breed:b,initial_birds:n,initial_m:Math.round(n/4),initial_f:n-Math.round(n/4),placed_on:ago(110),notes:''}));
-  for(const c of cg){let live=c.initial_birds;for(let d=75;d>=0;d--){if(Math.random()<.12){const q=R(1,3);await ins('mortality',{stage:1,ref_id:c.id,date:ago(d),qty:q,qty_m:0,qty_f:q,cause:['Disease','Heat stress','Unknown','Culled'][R(0,3)],notes:''});live-=q}
-    const tot=Math.round(live*(0.72+Math.random()*.12));await ins('egg_production',{cage_id:c.id,date:ago(d),eggs_total:tot,eggs_broken:R(1,8),notes:''})}
-    for(const [d,l] of [[30,'Feed (purchased)'],[60,'Feed (purchased)'],[15,'Medicine / Vaccine']])await ins('expenses',{stage:1,ref_id:c.id,date:ago(d),category:l,description:l+' purchase',qty:null,unit:null,amount:R(18,40)*1000})}
+  DB._bulk=true;   // demo seeding: save to the browser once at the end
+  const cg=[];for(let i=1;i<=60;i++)cg.push(await ins('cages',{code:'P-'+i,breed:'Japanese Quail',initial_birds:20,initial_m:5,initial_f:15,placed_on:ago(110),location:'Tekuatad',notes:''}));
+  for(const c of cg){let m=5,f=15;for(let d=75;d>=0;d--){if(Math.random()<.012){const male=Math.random()<.3&&m>1;if(male)m--;else f--;await ins('mortality',{stage:1,ref_id:c.id,date:ago(d),qty:1,qty_m:male?1:0,qty_f:male?0:1,cause:['Disease','Heat stress','Unknown','Culled'][R(0,3)],notes:''})}
+    const tot=Math.round(f*(0.68+Math.random()*.2));await ins('egg_production',{cage_id:c.id,date:ago(d),eggs_total:tot,eggs_broken:R(0,1),notes:''})}}
+  await ins('expenses',{stage:1,ref_id:null,date:ago(15),category:'Medicine / Vaccine',description:'Parent flock vitamins',qty:null,unit:null,amount:6500});
   const R1=await ins('reserve_lots',{lot_code:'R-1',breed:'Cobb 500 PS',supplier:'Suresh Hatchery',received_on:ago(60),initial_birds:60,initial_m:15,initial_f:45,cost_per_bird:150,notes:''});
   const R2=await ins('reserve_lots',{lot_code:'R-2',breed:'Ross 308 PS',supplier:'Suresh Hatchery',received_on:ago(12),initial_birds:40,initial_m:10,initial_f:30,cost_per_bird:160,notes:''});
-  await ins('reserve_moves',{date:ago(25),kind:'topup',lot_id:R1.id,cage_id:cg[0].id,qty:12,qty_m:3,qty_f:9,notes:'Top-up after mortality'});await ins('reserve_moves',{date:ago(10),kind:'mortality',lot_id:R1.id,cage_id:null,qty:2,qty_m:0,qty_f:2,notes:''});
+  await ins('reserve_moves',{date:ago(25),kind:'topup',lot_id:R1.id,cage_id:cg[0].id,qty:2,qty_m:0,qty_f:2,notes:'Top-up after mortality'});await ins('reserve_moves',{date:ago(10),kind:'mortality',lot_id:R1.id,cage_id:null,qty:2,qty_m:0,qty_f:2,notes:''});
   await ins('expenses',{stage:1,ref_id:null,date:ago(20),category:'Permanent Labour',description:'Parent shed labour',qty:null,unit:null,amount:42000});
   const bt=[[70,1200,120,90,980,true],[40,1200,110,80,1010,true],[12,1180,null,null,null,false],[2,1100,null,null,null,false]],B=[];
   for(const [i,[d,set,inf,dis,h,done]] of bt.entries()){
     const sd=addDays(ago(d),cfg.storeDays);
     const b=await ins('hatch_batches',{batch_no:'B-00'+i,received_on:ago(d),set_date:sd,eggs_set:set,machine:'Setter 1',infertile:inf,dead_in_shell:dis,hatched_chicks:done?h:null,hatched_m:done?Math.round(h/2):null,hatched_f:done?h-Math.round(h/2):null,hatch_date:done?addDays(sd,cfg.incDays):null,notes:''});B.push(b);
-    for(const c of cg)await ins('egg_transfers',{date:ago(d),cage_id:c.id,batch_id:b.id,eggs:Math.round(set/4),notes:''});
+    for(const [j,c] of cg.entries())await ins('egg_transfers',{date:ago(d),cage_id:c.id,batch_id:b.id,eggs:Math.floor(set/cg.length)+(j<set%cg.length?1:0),notes:''});
     await ins('expenses',{stage:2,ref_id:b.id,date:sd,category:'Electricity',description:'Incubator power',qty:null,unit:null,amount:R(3,6)*1000});
     if(done)await ins('expenses',{stage:2,ref_id:b.id,date:sd,category:'Permanent Labour',description:'Hatchery labour',qty:null,unit:null,amount:R(4,7)*1000})}
   await ins('chick_sales',{batch_id:B[0].id,date:ago(47),qty:400,qty_m:200,qty_f:200,rate:32,amount:12800,paid:12800,customer:'Ramesh Poultry',notes:''});
@@ -1051,10 +1148,11 @@ async function seed(){
   await ins('expenses',{stage:4,ref_id:F1.id,date:ago(3),category:'Slaughtering Labour',description:'Dressing labour',qty:null,unit:null,amount:3500});
   await ins('expenses',{stage:4,ref_id:F1.id,date:ago(5),category:'Transport – GKP to NDLS',description:'Truck to Delhi',qty:null,unit:null,amount:2800});
   if(!cfg.rate_starter){Object.assign(cfg,{rate_pre:48,rate_starter:42,rate_grower:38,rate_finisher:36});LS('pfm_cfg',JSON.stringify(cfg))}
-  const FI={};for(const [k,nm,mn] of [['pre','Pre-Starter',500],['starter','Starter',300],['grower','Grower',300]])FI[k]=await ins('feed_items',{name:nm,min_stock_kg:mn,notes:''});
+  const FI={};for(const [k,nm,mn] of [['pre','Pre-Starter',500],['starter','Starter',300],['grower','Grower',300],['layer','Breeder Layer Mash',400]])FI[k]=await ins('feed_items',{name:nm,min_stock_kg:mn,notes:''});
   for(const [k,d,kg,rate,sup] of [['pre',60,600,48,'Gorakhpur Feeds'],['starter',60,1500,42,'Gorakhpur Feeds'],['starter',25,1000,43.5,'Gorakhpur Feeds'],['grower',50,2000,38,'Kisan Agro']])
     await ins('feed_stock',{date:ago(d),location:'Siswa',item_id:FI[k].id,kind:'purchase',bags:kg/cfg.bagKg,qty_kg:kg,rate_per_kg:rate,total_cost:Math.round(kg*rate*100)/100,supplier:sup,bill_no:'INV-'+R(1000,9999),notes:''});
-  await ins('expenses',{stage:1,ref_id:cg[0].id,date:ago(14),category:'Feed (purchased)',feed_item_id:FI.grower.id,description:'Parent bird feed',qty:300,unit:'kg',amount:Math.round(300*avgCostAt(FI.grower.id,ago(14))*100)/100});
+  await ins('feed_stock',{date:ago(20),location:'Tekuatad',item_id:FI.layer.id,kind:'purchase',bags:20,qty_kg:1000,rate_per_kg:36,total_cost:36000,supplier:'Kisan Agro',bill_no:'INV-'+R(1000,9999),notes:'Parent bird feed'});
+  for(let d=13;d>=0;d--)for(const c of cg){const live=cageStats(c).live,kg=Math.round(live*R(29,37)/10)/100;await ins('cage_feed',{date:ago(d),location:'Tekuatad',cage_id:c.id,feed_item_id:FI.layer.id,birds:live,feed_kg:kg,feed_cost:Math.round(kg*36*100)/100})}
   for(const F of [F1,F2]){const age=diffDays(today(),F.placed_on);for(let a=0;a<=age;a++){const d=addDays(F.placed_on,a),m=Math.random()<.15?R(1,2):0;
     await ins('daily_logs',{flock_id:F.id,date:d,mortality:m,mortality_m:Math.floor(m/2),mortality_f:m-Math.floor(m/2),cause:m?['Disease','Heat stress','Unknown'][R(0,2)]:null,medicine:a%7===3?'Vitamin B-complex':null,temp_am:R(33,37)-Math.min(a,20)/4,temp_pm:R(32,36)-Math.min(a,20)/4,light_hrs:a<14?24:16,feed_item_id:FI[a<7?'pre':a<28?'starter':'grower'].id,feed_cost:Math.round(Math.round(4+a*1.3)*avgCostAt(FI[a<7?'pre':a<28?'starter':'grower'].id,d)*100)/100,feed_bags:null,feed_kg:Math.round(4+a*1.3)})}}
   const F3=await ins('flocks',{code:'F-03',batch_id:null,placed_on:ago(5),chicks_placed:0,placed_m:0,placed_f:0,chick_price:null,shed:'Chamber 3',notes:'Receives birds from F-02'});
@@ -1070,7 +1168,6 @@ async function seed(){
     LB.push(await ins('labourers',{name:nm,role,location:loc,stage:stg,rate_per_day:rate,joined_on:ago(120),status:'Active',phone:null,notes:''}));
   for(const l of LB)for(let d=0;d<10;d++){const r=R(0,9),at=r<7?'Present':r<9?'Half day':'Absent',days=ATT[at],extra=at==='Present'&&R(0,6)===0?50:0;
     await ins('labour_wages',{date:ago(d),location:l.location,labourer_id:l.id,attendance:at,days,rate:l.rate_per_day,extra,amount:Math.round((days*l.rate_per_day+extra)*100)/100})}
-  await ins('feed_stock',{date:ago(50),location:'Tekuatad',item_id:FI.grower.id,kind:'purchase',bags:12,qty_kg:600,rate_per_kg:38,total_cost:22800,supplier:'Kisan Agro',bill_no:'INV-5521',notes:'Parent feed'});
   const SI={};for(const [k,nm,cat,u,mn] of [['sd','Saw Dust','Saw Dust','kg',200],['dz','Diesel','Diesel','litre',50],['gc','LPG Cylinder','Gas Cylinder','cylinder',2],['bx','Packing Box','Box','piece',100]])SI[k]=await ins('sup_items',{name:nm,category:cat,unit:u,min_stock:mn,notes:''});
   for(const [k,loc,d,q,rate] of [['sd','Siswa',25,1000,6],['sd','Tekuatad',25,500,6],['dz','Siswa',20,200,92],['gc','Siswa',22,6,1800],['gc','Tekuatad',22,3,1800],['bx','Siswa',15,500,12]])
     await ins('sup_stock',{date:ago(d),location:loc,item_id:SI[k].id,kind:'purchase',qty:q,rate,total_cost:q*rate,supplier:'Local Traders',bill_no:'SP-'+R(100,999),notes:''});
@@ -1078,6 +1175,7 @@ async function seed(){
   const MN=D.med_items.find(x=>x.name.startsWith('Ranikhet')),FG=D.feed_items.find(x=>x.name==='Starter');
   await ins('store_transfers',{date:ago(5),inv:'med',item_id:MN.id,from_location:'Tekuatad',to_location:'Siswa',qty:100,rate:invAvgCostAt('med',MN.id,'Tekuatad',ago(5)),notes:'For Siswa vaccination'});
   await ins('store_transfers',{date:ago(4),inv:'feed',item_id:FG.id,from_location:'Siswa',to_location:'Tekuatad',qty:100,rate:invAvgCostAt('feed',FG.id,'Siswa',ago(4)),notes:'Parent feed top-up'});
+  DB._bulk=false;DB.persist();
   toast('Sample data loaded');render();
 }
 
@@ -1099,6 +1197,18 @@ document.addEventListener('click',async ev=>{
   else if(a==='wipe'){if(confirm('Erase ALL demo data in this browser?')){TABLES.forEach(t=>D[t]=[]);DB.persist();render()}}
   else if(a==='csv'){exportCSV(k)}
   else if(a==='backup'){download('poultry-backup-'+today()+'.json',JSON.stringify(D,null,1),'application/json')}
+  else if(a==='s1tab'){S.s1Tab=k;render()}
+  else if(a==='cfFill'){document.querySelectorAll('tr[data-cf]').forEach(tr=>{tr.querySelector('.cf-kg').value=tr.dataset.sug})}
+  else if(a==='cfSave'){const sd=S.cfDate||today(),item=parentFeedItem();if(!item){toast('Add a food item in Store → Feed first',4000);return}
+    const rows=[...document.querySelectorAll('tr[data-cf]')].map(tr=>({c:byId('cages',tr.dataset.cf),kg:num(tr.querySelector('.cf-kg').value)})).filter(r=>r.c);
+    const exAll=D.cage_feed.filter(x=>x.date===sd&&x.feed_item_id===item),total=sum(rows,r=>r.kg),avail=feedStats(item).bal+sum(exAll,x=>x.feed_kg);
+    if(total>avail+1e-9){toast(`Only ${n2(avail)} kg of ${feedName(item)} in stock — this sheet needs ${n2(total)} kg. Add the purchase in Store → Feed first.`,6000);return}
+    const rate=avgCostAt(item,sd);let n=0;
+    await DB.batch(async()=>{for(const r of rows){const ex=exAll.find(x=>x.cage_id===r.c.id);
+      if(!(r.kg>0)){if(ex)await DB.remove('cage_feed',ex.id);continue}
+      const row={date:sd,location:r.c.location||'Tekuatad',cage_id:r.c.id,feed_item_id:item,birds:cageStats(r.c).live,feed_kg:r.kg,feed_cost:Math.round(r.kg*rate*100)/100};
+      ex?await DB.update('cage_feed',ex.id,row):await DB.insert('cage_feed',row);n++}});
+    toast('✓ '+t('Feed saved for')+' '+n+' '+t('cages'));render()}
   else if(a==='allPresent'){document.querySelectorAll('.att-sel').forEach(x=>{if(!x.value)x.value='Present'})}
   else if(a==='saveAtt'){const sd=S.labDate||today(),sl=S.labSheetLoc||LOCS[0];let n=0;
     for(const tr of document.querySelectorAll('tr[data-lab]')){const lid=tr.dataset.lab,at=tr.querySelector('.att-sel').value,rate=num(tr.querySelector('.att-rate').value),extra=num(tr.querySelector('.att-extra').value);
